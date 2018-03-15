@@ -50,11 +50,25 @@ let resolvers = {};
 
 let _query = new Query();
 let _mutation = new Mutation();
+typeDefs += `
+    scalar Date
+    scalar JSON
+`;
 typeDefs += _query.gen_objectDefs();
 typeDefs += _query.gen_defs("Query");
 typeDefs += _mutation.gen_defs("Mutation");
 resolvers = {
     ...resolvers, 
+    Date: {
+        __parseValue(value){ return new Date(value); },
+        __serialize(value: Date){ return value.toISOString(); },
+        __parseLiteral(ast){ return null; }
+    },
+    JSON: {
+        __parseValue(value){ return JSON.stringify(value); },
+        __serialize(value: any){ return JSON.parse(value); },
+        __parseLiteral(ast){ return null; }
+    },
     ..._query.gen_objectResolvers(),
     ..._query.gen_resolvers("Query"),
     ..._mutation.gen_resolvers("Mutation")
