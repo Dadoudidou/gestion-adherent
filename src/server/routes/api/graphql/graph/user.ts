@@ -1,7 +1,7 @@
 import { GraphQLSchema, schemaResolver } from "../utils/GraphQLSchema";
-import { dbcontext } from "datas"
+import { dbcontext } from "./../../../../datas"
 import { args_searchString } from "../utils/ArgsUtils";
-import { UserType } from "datas/entities/users/user";
+import { UserType } from "./../../../../datas/entities/users/user";
 
 export class graphql_user extends GraphQLSchema<UserType> {
     Type = {

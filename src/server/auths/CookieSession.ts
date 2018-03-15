@@ -1,6 +1,6 @@
 import * as Hapi from "hapi"
 import { Policy } from "catbox";
-import { config } from "config";
+import { config } from "./../config";
 
 
 export default (server: Hapi.Server) => {
@@ -17,7 +17,7 @@ export default (server: Hapi.Server) => {
 
             let sid = payload && payload.sid;
 
-            let cached = await cache.get(sid, () => {});
+            let cached = await cache.get(sid);
             console.log("cached", cached);
             if(!cached) return callback(out.err, out.isValid, out.credentials);
 
@@ -31,7 +31,7 @@ export default (server: Hapi.Server) => {
             if(!cache) return out;
 
             let sid = payload && payload.id;
-            let cached = await cache.get(String(sid), () => {});
+            let cached = await cache.get(String(sid));
             if(!cached) return out;
 
             out.isValid = true;

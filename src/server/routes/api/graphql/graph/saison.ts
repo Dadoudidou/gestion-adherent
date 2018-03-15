@@ -1,6 +1,6 @@
 import { GraphQLSchema, schemaResolver } from "../utils/GraphQLSchema";
-import { SaisonType } from "datas/entities/admin/saison";
-import { dbcontext } from "datas"
+import { SaisonType } from "./../../../../datas/entities/admin/saison";
+import { dbcontext } from "./../../../../datas"
 import { args_searchString } from "../utils/ArgsUtils";
 
 export class graphql_saison extends GraphQLSchema<SaisonType> {

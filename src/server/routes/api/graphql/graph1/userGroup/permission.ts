@@ -1,6 +1,6 @@
 import { GraphqlObject } from "../../utils/GraphQLSchema/graphqlObject";
-import { dbcontext } from "datas";
-import { PermissionType } from "datas/entities/users/permission";
+import { dbcontext } from "./../../../../../datas";
+import { PermissionType } from "./../../../../../datas/entities/users/permission";
 
 export class Permission extends GraphqlObject {
     name = "Permission"
@@ -114,6 +114,12 @@ export class Permission extends GraphqlObject {
              }
         },
     }
+    rules = [
+        "users/permissions/add",
+        "users/permissions/edit",
+        "users/permissions/remove",
+        "users/permissions/view"
+    ]
 }
 
 export class InputUser extends GraphqlObject

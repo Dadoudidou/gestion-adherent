@@ -1,9 +1,9 @@
 import { GraphQLSchema } from "../utils/GraphQLSchema";
-import { dbcontext } from "datas"
+import { dbcontext } from "./../../../../datas"
 
 
 import { args_searchString } from "../utils/ArgsUtils";
-import { LieuType } from "datas/entities/admin/lieu";
+import { LieuType } from "./../../../../datas/entities/admin/lieu";
 
 
 export class graphql_Lieu extends GraphQLSchema<LieuType> {

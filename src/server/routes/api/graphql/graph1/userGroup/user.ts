@@ -1,6 +1,6 @@
 import { GraphqlObject } from "../../utils/GraphQLSchema/graphqlObject";
-import { dbcontext } from "datas";
-import { UserType } from "datas/entities/users/user";
+import { dbcontext } from "./../../../../../datas";
+import { UserType } from "./../../../../../datas/entities/users/user";
 
 export class User extends GraphqlObject {
     name = "User"
@@ -113,6 +113,12 @@ export class User extends GraphqlObject {
              }
         },
     }
+    rules = [
+        "users/users/add",
+        "users/users/edit",
+        "users/users/remove",
+        "users/users/view"
+    ]
 }
 
 export class InputUser extends GraphqlObject

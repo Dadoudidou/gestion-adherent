@@ -1,8 +1,8 @@
 import * as jwt from "jsonwebtoken"
 import { config } from "./../config"
-import { dbcontext } from "datas";
-import { CheckPassword } from "datas/entities/users/user";
-import { PermissionType } from "datas/entities/users/permission";
+import { dbcontext } from "./../datas";
+import { CheckPassword } from "./../datas/entities/users/user";
+import { PermissionType } from "./../datas/entities/users/permission";
 
 export type Credentials = {
     sid: string
@@ -11,7 +11,7 @@ export type Credentials = {
         nom: string,
         prenom: string,
         login: string,
-        permissions: number[]
+        permissions: string[]
     }
 }
 
@@ -33,13 +33,6 @@ export const testLogin = (username: string, password: string): Promise<testLogin
         resolve({ username, password });
     })
     .then(obj => {
-        /*return {
-            isValid: true,
-            credentials: {
-                sid: jwt.sign({ id:1 }, config.secret, { expiresIn: 1 * 24 * 60 * 60 * 1000 }),
-                id: 1,
-            }
-        }*/
         
         return dbcontext.models.users
             .find({ where: { login: username } })
@@ -53,31 +46,36 @@ export const testLogin = (username: string, password: string): Promise<testLogin
             })
             .then(user => {
                 // -- get permissions
-                let _permissions = [];
-                user.getGroups({ include: [ { model:dbcontext.models.permissions, as:"permissions"} ] })
+                let _permissions: string[] = [];
+                return user.getGroups({ include: [ { model:dbcontext.models.permissions, as:"permissions"} ] })
                 .then(groups => {
+                    let _permissions: string[] = [];
                     groups.forEach(group => {
                         if(!group["permissions"]) return;
                         group["permissions"].forEach((permission: PermissionType) => {
-                            let _index = _permissions.indexOf(permission.id);
-                            if(_index == -1) _permissions.push(permission.id);
+                            
+                            let _index = _permissions.indexOf(permission.nom.toLowerCase());
+                            if(_index == -1) _permissions.push(permission.nom.toLowerCase());
                         })
                     })
+                    return _permissions
                 })
-
-                return {
-                    isValid: true,
-                    credentials: {
-                        sid: jwt.sign({ id: user.id }, config.secret, { expiresIn: 1 * 24 * 60 * 60 * 1000 }),
-                        user: {
-                            id: user.id,
-                            nom: user.nom,
-                            prenom: user.prenom,
-                            login: user.login,
-                            permissions: _permissions
-                        }
-                    } as Credentials
-                }
+                .then(permissions => {
+                    return {
+                        isValid: true,
+                        credentials: {
+                            sid: jwt.sign({ id: user.id }, config.secret, { expiresIn: 1 * 24 * 60 * 60 * 1000 }),
+                            user: {
+                                id: user.id,
+                                nom: user.nom,
+                                prenom: user.prenom,
+                                login: user.login,
+                                permissions: permissions
+                            }
+                        } as Credentials
+                    }
+                })
+                
             })
     })
     .catch((err: Error) => {
@@ -95,14 +93,14 @@ export const testLogin = (username: string, password: string): Promise<testLogin
  * @param permissions tableau de droits devant apparaître chez l'utilisateur
  * @param credential 
  */
-export const testPermissions = (permissions:number[], credential: Credentials) => {
+export const testPermissions = (permissions:string[], credential: Credentials): boolean => {
     if(!credential) return false;
     if(!credential.user) return false;
     if(!credential.user.permissions) return false;
     let _auth = true;
     let i = 0;
     while(_auth == true && i <permissions.length){
-        if(credential.user.permissions.indexOf(permissions[i]) == -1)
+        if(credential.user.permissions.map(x => x.toLowerCase()).indexOf(permissions[i].toLowerCase()) == -1)
             _auth = false;
         i++;
     }

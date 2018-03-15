@@ -1,7 +1,7 @@
 import { GraphQLSchema, schemaResolver } from "../utils/GraphQLSchema";
-import { dbcontext } from "datas"
+import { dbcontext } from "./../../../../datas"
 import { args_searchString } from "../utils/ArgsUtils";
-import { PermissionType } from "datas/entities/users/permission";
+import { PermissionType } from "./../../../../datas/entities/users/permission";
 
 export class graphql_permission extends GraphQLSchema<PermissionType> {
     Type = {

@@ -1,7 +1,7 @@
 import { GraphQLSchema } from "../utils/GraphQLSchema";
-import { dbcontext } from "datas"
+import { dbcontext } from "./../../../../datas"
 
-import { ActActiviteType } from "datas/entities/admin/activite_activite";
+import { ActActiviteType } from "./../../../../datas/entities/admin/activite_activite";
 import { args_searchString } from "../utils/ArgsUtils";
 
 export class graphql_actActivite extends GraphQLSchema<ActActiviteType> {

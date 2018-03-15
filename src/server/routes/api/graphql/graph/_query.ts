@@ -1,6 +1,6 @@
 import { GraphQLSchema } from "../utils/GraphQLSchema";
-import { __tabGraphs } from "./.."
-
+//import { __tabGraphs } from "./.."
+const __tabGraphs = [];
 export class Query extends GraphQLSchema<any>
 {
     Type= {

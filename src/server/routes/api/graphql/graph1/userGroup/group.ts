@@ -1,6 +1,6 @@
 import { GraphqlObject } from "../../utils/GraphQLSchema/graphqlObject";
-import { dbcontext } from "datas";
-import { GroupType } from "datas/entities/users/group";
+import { dbcontext } from "./../../../../../datas";
+import { GroupType } from "./../../../../../datas/entities/users/group";
 
 export class Group extends GraphqlObject {
     name = "Group"
@@ -67,4 +67,10 @@ export class Group extends GraphqlObject {
              }
         },
     }
+    rules = [
+        "users/groups/add",
+        "users/groups/edit",
+        "users/groups/remove",
+        "users/groups/view"
+    ]
 }

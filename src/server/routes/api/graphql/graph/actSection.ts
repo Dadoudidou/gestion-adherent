@@ -1,7 +1,7 @@
 import { GraphQLSchema } from "../utils/GraphQLSchema";
-import { dbcontext } from "datas"
+import { dbcontext } from "./../../../../datas"
 
-import { ActSectionType } from "datas/entities/admin/activite_section";
+import { ActSectionType } from "./../../../../datas/entities/admin/activite_section";
 import { args_searchString } from "../utils/ArgsUtils";
 
 export class graphql_actSection extends GraphQLSchema<ActSectionType> {

@@ -61,7 +61,7 @@ resolvers = {
 }
 
 
-console.log(typeDefs);
+//console.log(typeDefs);
 
 /*console.log(JSON.stringify(resolvers, function (key, val) {
     if (typeof val === 'function') {
@@ -76,7 +76,7 @@ export const schema = makeExecutableSchema({
 })
 
 import * as Hapi from "hapi";
-import { Credentials } from "auths";
+import { Credentials } from "./../../../auths";
 
 export type GraphQlContext = {
     auth: Hapi.RequestAuth

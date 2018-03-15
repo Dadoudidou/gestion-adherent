@@ -1,7 +1,7 @@
 import { GraphQLSchema, schemaResolver } from "../utils/GraphQLSchema";
-import { dbcontext } from "datas"
+import { dbcontext } from "./../../../../datas"
 import { args_searchString } from "../utils/ArgsUtils";
-import { GroupType } from "datas/entities/users/group";
+import { GroupType } from "./../../../../datas/entities/users/group";
 
 export class graphql_group extends GraphQLSchema<GroupType> {
     Type = {

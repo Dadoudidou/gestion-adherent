@@ -1,7 +1,7 @@
 import { GraphQLSchema } from "../utils/GraphQLSchema";
-import { dbcontext } from "datas"
+import { dbcontext } from "./../../../../datas"
 
-import { ActSessionType } from "datas/entities/admin/activite_session";
+import { ActSessionType } from "./../../../../datas/entities/admin/activite_session";
 
 export class graphql_actSession extends GraphQLSchema<ActSessionType> {
     Type = {

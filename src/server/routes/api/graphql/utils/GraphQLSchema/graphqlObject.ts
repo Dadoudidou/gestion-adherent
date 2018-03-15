@@ -1,6 +1,8 @@
 import { GraphqlTypes } from "./graphqlType";
 import { GraphQlContext } from "../..";
+import * as Boom from "boom";
 
+import { testPermissions } from "./../../../../../auths"
 
 export type GraphqlResolverFn = (root: any, args: any, context: GraphQlContext, info: any) => any;
 
@@ -16,6 +18,7 @@ export interface GraphqlObjectProperty {
     }
     resolver?: GraphqlResolverFn
     require?: boolean
+    rules?: string[]
 }
 
 export interface GraphqlObjectProperties {
@@ -30,6 +33,7 @@ export abstract class GraphqlObject {
     queryAttributes: { [name: string]: GraphqlObjectProperty }
     mutationAttributes: { [name: string]: GraphqlObjectProperty }
     isInput: boolean = false
+    rules: string[] = [];
 
     private __gen_property(name, property: string | GraphqlObjectProperty): string {
         let _def = '';
@@ -65,6 +69,16 @@ export abstract class GraphqlObject {
         return _def;
     }
 
+    private __gen_resolver(resolver, rules: string[] = undefined){
+        let _rules: string[] = ["authentification", ...this.rules];
+        if(rules) _rules = [..._rules, ...rules];
+        return (root, args, context: GraphQlContext ) => {
+            if(!context.credentials) return Boom.unauthorized();
+            if(!testPermissions(_rules, context.credentials)) return Boom.unauthorized();
+            return resolver(root, args, context);
+        }
+    }
+
     gen_defs() {
         let _def = "";
         if(this.type == "scalar"){
@@ -89,7 +103,7 @@ export abstract class GraphqlObject {
             if (typeof this.attributes[propertykey] != "string") {
                 let _prop = this.attributes[propertykey] as GraphqlObjectProperty;
                 if (_prop.resolver) {
-                    _resolverType[this.name][propertykey] = _prop.resolver;
+                    _resolverType[this.name][propertykey] = this.__gen_resolver(_prop.resolver, _prop.rules);
                 }
             }
         }
@@ -113,7 +127,7 @@ export abstract class GraphqlObject {
             if (typeof this.queryAttributes[attr] != "string") {
                 let _prop = this.queryAttributes[attr] as GraphqlObjectProperty;
                 if (_prop.resolver) {
-                    _resolver[attr] = _prop.resolver;
+                    _resolver[attr] = this.__gen_resolver(_prop.resolver, _prop.rules);
                 }
             }
         }
@@ -137,7 +151,7 @@ export abstract class GraphqlObject {
             if (typeof this.mutationAttributes[attr] != "string") {
                 let _prop = this.mutationAttributes[attr] as GraphqlObjectProperty;
                 if (_prop.resolver) {
-                    _resolver[attr] = _prop.resolver;
+                    _resolver[attr] = this.__gen_resolver(_prop.resolver, _prop.rules);
                 }
             }
         }

@@ -3,6 +3,7 @@ import { graphiqlHapi, graphqlHapi } from "apollo-server-hapi"
 import * as HapiBasicAuth from "hapi-auth-basic"
 import * as HapiCookieAuth from "hapi-auth-cookie"
 import { HapiAuthJWT } from "./auths/hapiAuthJwtPlugin"
+import * as Boom from "boom";
 
 import { config } from "./config"
 import BasicAdmin from "./auths/BasicAdmin"
@@ -14,7 +15,7 @@ import { test } from "./routes/api/graphql/utils/GraphQLSchema/graphqlObject"
 
 // -- database
 import { dbcontext } from "./datas"
-import { getLogger } from "services/Logger";
+import { getLogger } from "./services/Logger";
 dbcontext.start();
 
 
@@ -27,7 +28,7 @@ async function webserver() {
 
 
     // -- auths
-    await server.register(HapiBasicAuth);
+    await server.register(HapiBasicAuth as any);
     await server.register(HapiAuthJWT);
     //await server.register(HapiCookieAuth);
     BasicAdmin(server);
@@ -59,7 +60,15 @@ async function webserver() {
                         auth: request.auth,
                         request: request,
                         credentials: request.auth.credentials
-                    } as GraphQlContext
+                    } as GraphQlContext,
+                    formatError: err => {
+                        //console.debug(err);
+                        if(err.originalError && Boom.isBoom(err.originalError)){
+
+                        }
+                        return err;
+                    },
+                    debug: true
                 }
             }
         },
@@ -121,6 +130,6 @@ webserver()
         //getLogger().info(`Serveur démarré à l'url : ${server.info.uri}`);
     })
     .catch((err) => {
-        console.error(err);
-        process.exit(1);
+        
+        //process.exit(1);
     });;

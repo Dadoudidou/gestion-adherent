@@ -23,8 +23,9 @@ export default (server: Hapi.Server) => {
             let cache = server.app["cache"] as Policy;
             if(cache){
                 let sid = login.credentials.sid;
-                await cache.set(login.credentials.user.id.toString(), login.credentials, 0, () => {});
+                await cache.set(login.credentials.user.id.toString(), login.credentials, 0);
             }
+            
         }
         return {
             isValid: login.isValid,

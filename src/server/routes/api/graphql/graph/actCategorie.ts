@@ -1,6 +1,6 @@
 import { GraphQLSchema } from "../utils/GraphQLSchema";
-import { dbcontext } from "datas"
-import { ActCategorieType } from "datas/entities/admin/activite_categorie";
+import { dbcontext } from "./../../../../datas"
+import { ActCategorieType } from "./../../../../datas/entities/admin/activite_categorie";
 import { args_searchString } from "../utils/ArgsUtils";
 
 export class graphql_actCategorie extends GraphQLSchema<ActCategorieType> {
