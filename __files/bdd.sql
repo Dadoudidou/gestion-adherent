@@ -408,8 +408,8 @@ CREATE TABLE `admin_tarif` (
   PRIMARY KEY (`id`),
   KEY `fk_admin_tarif_admin_saison1_idx` (`admin_saison_id`),
   KEY `fk_admin_tarif_admin_activite_section1_idx` (`admin_activite_section_id`),
-  CONSTRAINT `fk_admin_tarif_admin_saison1` FOREIGN KEY (`admin_saison_id`) REFERENCES `admin_saison` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_admin_tarif_admin_activite_section1` FOREIGN KEY (`admin_activite_section_id`) REFERENCES `admin_activite_section` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_admin_tarif_admin_activite_section1` FOREIGN KEY (`admin_activite_section_id`) REFERENCES `admin_activite_section` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_admin_tarif_admin_saison1` FOREIGN KEY (`admin_saison_id`) REFERENCES `admin_saison` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -641,7 +641,7 @@ CREATE TABLE `user_group_has_user_permission` (
 
 LOCK TABLES `user_group_has_user_permission` WRITE;
 /*!40000 ALTER TABLE `user_group_has_user_permission` DISABLE KEYS */;
-INSERT INTO `user_group_has_user_permission` VALUES (1,1);
+INSERT INTO `user_group_has_user_permission` VALUES (1,1),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15);
 /*!40000 ALTER TABLE `user_group_has_user_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -684,7 +684,7 @@ CREATE TABLE `user_user` (
   `login` varchar(45) NOT NULL,
   `pwd` varchar(60) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -710,8 +710,8 @@ CREATE TABLE `user_user_has_user_group` (
   PRIMARY KEY (`user_user_id`,`user_group_id`),
   KEY `fk_user_user_has_user_group_user_group1_idx` (`user_group_id`),
   KEY `fk_user_user_has_user_group_user_user1_idx` (`user_user_id`),
-  CONSTRAINT `fk_user_user_has_user_group_user_user1` FOREIGN KEY (`user_user_id`) REFERENCES `user_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_user_has_user_group_user_group1` FOREIGN KEY (`user_group_id`) REFERENCES `user_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_user_user_has_user_group_user_group1` FOREIGN KEY (`user_group_id`) REFERENCES `user_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_user_has_user_group_user_user1` FOREIGN KEY (`user_user_id`) REFERENCES `user_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -734,4 +734,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-02  9:24:29
+-- Dump completed on 2018-03-16 16:27:35
