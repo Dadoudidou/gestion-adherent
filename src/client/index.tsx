@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import App from "./../shared";
+import App from "./../shared/Test";
 
 class Main extends React.PureComponent<any, any>
 {

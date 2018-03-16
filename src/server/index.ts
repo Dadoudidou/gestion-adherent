@@ -4,6 +4,7 @@ import * as HapiBasicAuth from "hapi-auth-basic"
 import * as HapiCookieAuth from "hapi-auth-cookie"
 import { HapiAuthJWT } from "./auths/hapiAuthJwtPlugin"
 import * as Boom from "boom";
+import * as Path from "path"
 
 import { config } from "./config"
 import BasicAdmin from "./auths/BasicAdmin"
@@ -20,7 +21,9 @@ dbcontext.start();
 
 
 async function webserver() {
-    const server = new Hapi.Server({ ...config.server });
+    const server = new Hapi.Server({ 
+        ...config.server
+    });
 
     // -- cache
     const cache = server.cache({ segment: "sessions", expiresIn: 1 * 24 * 60 * 60 * 1000 });
@@ -41,9 +44,32 @@ async function webserver() {
         method: "GET",
         path: "/",
         handler: (request, reply) => {
-            return test();
+            return `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                <link rel="icon" type="image/png" href="/assets/favicon.ico" />
+            </head>
+            <body>
+                <div id="root"></div>
+                <script src="/static/js/vendor.js"></script>
+                <script src="/static/js/client.js"></script>
+            </body>
+            </html>
+            `;
         }
     })
+
+    // -- files
+    /*server.route({
+        method: 'GET',
+        path: '/{filename}',
+        handler: (request, reply) => {
+            return reply.fi
+        }
+    })*/
 
     // -- /api/graphql
     await server.register({
@@ -126,10 +152,10 @@ async function webserver() {
 
 webserver()
     .then((server) => {
-        //console.log(`Serveur démarré à l'url : ${server.info.uri}`);
+        console.log(`Serveur démarré à l'url : ${server.info.uri}`);
         //getLogger().info(`Serveur démarré à l'url : ${server.info.uri}`);
     })
     .catch((err) => {
-        
-        //process.exit(1);
+        console.log(err);
+        process.exit(err.message);
     });;

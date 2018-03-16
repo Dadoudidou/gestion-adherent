@@ -29,8 +29,17 @@ module.exports = {
         loaders: [
             {
                 test: /.tsx?$/,
-                loader: ['babel-loader','ts-loader'],
                 exclude: [ /node_modules/ , path.resolve(__dirname, 'node_modules')],
+                include: path.resolve('./src'),
+                use: [
+                    { loader: 'babel-loader' },
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true,
+                        }
+                    }
+                ]
             },
             {
                 test: /.jsx?$/,
