@@ -1,4 +1,5 @@
 import * as Hapi from "hapi"
+import * as Inert from "inert"
 import { graphiqlHapi, graphqlHapi } from "apollo-server-hapi"
 import * as HapiBasicAuth from "hapi-auth-basic"
 import * as HapiCookieAuth from "hapi-auth-cookie"
@@ -33,6 +34,7 @@ async function webserver() {
     // -- auths
     await server.register(HapiBasicAuth as any);
     await server.register(HapiAuthJWT);
+    await server.register(Inert);
     //await server.register(HapiCookieAuth);
     BasicAdmin(server);
     authCookieSession(server);
@@ -51,6 +53,7 @@ async function webserver() {
                 <meta charset="UTF-8">
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                 <link rel="icon" type="image/png" href="/assets/favicon.ico" />
+                <link href="/static/css/client.css" rel="stylesheet" />
             </head>
             <body>
                 <div id="root"></div>
@@ -63,13 +66,17 @@ async function webserver() {
     })
 
     // -- files
-    /*server.route({
+    server.route({
         method: 'GET',
-        path: '/{filename}',
-        handler: (request, reply) => {
-            return reply.fi
+        path: '/static/{param*}',
+        handler: {
+            directory: {
+                path: "./build/static",
+                listing: false,
+                index: false
+            }
         }
-    })*/
+    })
 
     // -- /api/graphql
     await server.register({

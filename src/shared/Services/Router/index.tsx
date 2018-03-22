@@ -1,5 +1,7 @@
 import * as React from "react";
-import { Switch, Route } from "react-router";
+import { Switch, Route } from "react-router-dom";
+
+import DefaultPage from "./../../Routes/Errors/NotFound"
 
 // -- HISTORY
 import { createHashHistory, History } from "history"
@@ -20,16 +22,18 @@ export type RouterRoute = {
 type RenderRoutesProps = {
     routes: RouterRoute[]
 }
-export class RenderRoutes extends React.PureComponent<RenderRoutesProps, any>
+export class RenderRoutes extends React.Component<RenderRoutesProps, any>
 {
     render(){
         return (
             <Switch>
+                <Route exact path="/" component={DefaultPage} />
                 {this.props.routes.map((route, index) => {
                     return (
                         <Route key={index} {...route} />
                     )
                 })}
+                <Route component={DefaultPage} />
             </Switch>
         )
     }

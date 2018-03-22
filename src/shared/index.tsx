@@ -15,6 +15,7 @@ import apolloClient from "./Services/Store/apollo"
 
 // -- ROUTER
 import { Router } from "react-router"
+import { HashRouter } from "react-router-dom";
 import { getHistory, RenderRoutes } from "./Services/Router"
 import { loadRoutes } from "./Routes/routes"
 
@@ -32,13 +33,24 @@ const theme = createMuiTheme({
     }
 })
 
+let _routes = loadRoutes();
+console.log(_routes);
 
 export default class Application extends React.PureComponent<any, any>
 {
     render(){
         return (
-            <ApolloProvider client={apolloClient}>
-                <Router history={getHistory()}>
+            <HashRouter>
+                <div>
+                    <RenderRoutes routes={loadRoutes()} />
+                </div>
+            </HashRouter>
+        )
+    }
+}
+/*
+ <HashRouter>
+                <ApolloProvider client={apolloClient}>
                     <div>
                         <JssProvider Jss={jss}>
                             <MuiThemeProvider theme={theme}>
@@ -46,8 +58,6 @@ export default class Application extends React.PureComponent<any, any>
                             </MuiThemeProvider>
                         </JssProvider>
                     </div>
-                </Router>
-            </ApolloProvider>
-        )
-    }
-}
+                </ApolloProvider>
+            </HashRouter>
+            */

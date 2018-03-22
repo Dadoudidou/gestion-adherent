@@ -3,9 +3,16 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const path = require('path');
 const webpack = require('webpack');
 
+//#region PRODUCTION DEVELOPMENT
+if (!process.env.NODE_ENV) process.env.NODE_ENV = "development";
+else process.env.NODE_ENV = process.env.NODE_ENV.trim().toLowerCase();
+const production = (process.env.NODE_ENV) ? process.env.NODE_ENV === 'production' : false;
+//#endregion
+
+
 const srcPath = path.resolve(__dirname, 'src');
 const distPath = path.resolve(__dirname, 'build/static');
-const production = false;
+
 
 const extractCss = new ExtractTextPlugin({
     filename: "css/[name].css",
@@ -15,6 +22,7 @@ const extractCss = new ExtractTextPlugin({
 const plugins = [
     new HTMLWebpackPlugin({
         title: 'Dev server',
+        chunksSortMode: 'dependency',
         template: path.resolve(__dirname, 'src/client/index.ejs'),
     }),
     new webpack.optimize.CommonsChunkPlugin({
@@ -22,9 +30,13 @@ const plugins = [
         minChunks: Infinity,
     }),
     new webpack.DefinePlugin({
-        'process.env.NODE_ENV': '"production"',
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
+    extractCss
 ];
+if(production){
+    plugins.push(new webpack.optimize.UglifyJsPlugin());
+}
 
 /*if (process.env.NODE_ENV === 'analyse') {
     plugins.push(new BundleAnalyzerPlugin());
@@ -103,5 +115,19 @@ module.exports = {
         ],
     },
     plugins,
-    devtool: 'source-map',
+    devtool: !production ? 'inline-source-map' : 'source-map',
+    devServer: {
+        hot: true,
+        inline: true,
+        port: 9081,
+        stats: {
+            warnings: false
+        },
+        proxy: {
+            "*": {
+                target: "http://localhost:9080",
+                //secure: false
+            }
+        }
+    }
 };
