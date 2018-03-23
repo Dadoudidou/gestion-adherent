@@ -1,10 +1,5 @@
 import { RouterRoute } from "@shared/Services/Router";
-//import LoginPage from "./Login"
-
-import loadable from "loadable-components";
-
-
-
+import { loadable } from "@shared/Services/Loadable"
 
 export const loadRoutes = (parent = ""): RouterRoute[] => {
     return [
@@ -14,7 +9,7 @@ export const loadRoutes = (parent = ""): RouterRoute[] => {
         },
         {
             path: `${parent}/login`,
-            component: loadable(() => import("./Login/index"))
+            component: loadable(() => import("./Login/index"), { timeout: 2000 })
         }
     ]
 }
