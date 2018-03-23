@@ -27,12 +27,13 @@ const plugins = [
     }),
     new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        minChunks: Infinity,
+        minChunks: Infinity
     }),
     new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
-    extractCss
+    extractCss,
+    
 ];
 if(production){
     plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -42,21 +43,33 @@ if(production){
     plugins.push(new BundleAnalyzerPlugin());
 }*/
 
+//vendor: Object.keys(package.dependencies)
+
 module.exports = {
     context: srcPath,
     target: 'web',
     entry: {
         client: `${srcPath}/client/index.tsx`,
-        vendor: ['react', 'react-dom'],
+        vendor: [
+            'react', 'react-dom', 
+            'react-router', 'react-router-dom',
+            'react-apollo', 'apollo-boost',
+            'material-ui', 'jss', 'react-jss', 'jss-preset-default',
+            'moment', 'isomorphic-fetch', 'deep-extend', 'es6-promise'
+        ],
     },
     output: {
         path: distPath,
         filename: 'js/[name].js',
+        chunkFilename: 'js/[name].js',
         publicPath: '/static/',
     },
     resolve: {
         modules: ['node_modules', 'src'],
         extensions: ['*', '.js', '.json', '.ts', '.tsx'],
+        alias: {
+            "@shared": path.join(__dirname, 'src/shared')
+        }
     },
     module: {
         loaders: [

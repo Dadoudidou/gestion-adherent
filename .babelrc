@@ -1,7 +1,7 @@
 {
     "plugins": [
-        ["dynamic-import-webpack"],
-        ["syntax-dynamic-import"],
+        "dynamic-import-webpack",
+        "syntax-dynamic-import",
         ["transform-runtime", {
             "helpers": false,
             "polyfill": false,
@@ -19,5 +19,6 @@
                 }
             }
         ]
-    ]
+    ],
+    "comments": true
 }

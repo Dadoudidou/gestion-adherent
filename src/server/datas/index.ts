@@ -1,5 +1,5 @@
 import * as Sequelize from "sequelize"
-import { config } from "./../config"
+import { config } from "./../config/index"
 
 import { Entity_Saison, SaisonDBSet } from "./entities/admin/saison";
 import { ActCategorieDBSet, Entity_ActCategorie } from "./entities/admin/activite_categorie";

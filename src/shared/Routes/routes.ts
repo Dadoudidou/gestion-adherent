@@ -15,6 +15,7 @@ export const loadRoutes = (parent = ""): RouterRoute[] => {
     */
 
     return [
-        ...require("./Test/routes").loadRoutes(`${parent}`)
+        ...require("./Test/routes").loadRoutes(`${parent}`),
+        ...require("./Users/routes").loadRoutes(`${parent}`),
     ]
 }

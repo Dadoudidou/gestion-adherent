@@ -1,5 +1,8 @@
 import * as React from "react";
 
+import * as ES6Promise from "es6-promise";
+ES6Promise.polyfill();
+
 // -- config moment
 import * as moment from "moment";
 moment.locale("fr");
@@ -33,23 +36,11 @@ const theme = createMuiTheme({
     }
 })
 
-let _routes = loadRoutes();
-console.log(_routes);
-
 export default class Application extends React.PureComponent<any, any>
 {
     render(){
         return (
             <HashRouter>
-                <div>
-                    <RenderRoutes routes={loadRoutes()} />
-                </div>
-            </HashRouter>
-        )
-    }
-}
-/*
- <HashRouter>
                 <ApolloProvider client={apolloClient}>
                     <div>
                         <JssProvider Jss={jss}>
@@ -60,4 +51,6 @@ export default class Application extends React.PureComponent<any, any>
                     </div>
                 </ApolloProvider>
             </HashRouter>
-            */
+        )
+    }
+}
