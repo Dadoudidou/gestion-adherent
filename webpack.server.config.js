@@ -21,6 +21,7 @@ module.exports = {
             "config": path.resolve(__dirname, "./src/server/config"),
             "services": path.resolve(__dirname, "./src/server/services"),
             "datas": path.resolve(__dirname, "./src/server/datas"),
+            "@server": path.join(__dirname, 'src/server')
         },
         modules: [ "src", "node_modules" ]
     },

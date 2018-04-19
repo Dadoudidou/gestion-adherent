@@ -11,7 +11,7 @@ import { config } from "./config"
 import BasicAdmin from "./auths/BasicAdmin"
 import authCookieSession from "./auths/CookieSession";
 
-import handler_login from "./routes/login"
+import handler_login from "./routes/auth"
 import { schema, GraphQlContext } from "./routes/api/graphql"
 import { test } from "./routes/api/graphql/utils/GraphQLSchema/graphqlObject"
 
@@ -142,10 +142,10 @@ async function webserver() {
         }
     })
 
-    // -- /login
+    // -- /auth
     server.route({
-        method: "GET",
-        path: "/login",
+        method: "POST",
+        path: "/auth",
         handler: handler_login
     })
 

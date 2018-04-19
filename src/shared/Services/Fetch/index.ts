@@ -1,6 +1,7 @@
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
-import * as deepExtend from "deep-extend";
+import deepExtend from "deep-extend";
+
 
 export class FetchError extends Error {
     type: string = "fetcherror"
