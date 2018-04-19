@@ -4,6 +4,7 @@ import DocumentTitle from "@shared/Components/DocumentTitle"
 import Fetch from "@shared/Services/Fetch"
 import { Login as LoginFn } from "@shared/Services/Auth"
 import { getHistory } from "@shared/Services/Router"
+import QueueAnim from "rc-queue-anim"
 
 type LoginClassKey = "root" | "paper" | "container" | "paperitem"
 
@@ -105,59 +106,61 @@ class Login extends React.PureComponent<LoginProps, LoginState>
             <DocumentTitle title="Connexion">
                 <Grid container className={this.props.classes.container} direction="row" justify="center" alignItems="center">
                     <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
-                        <Paper classes={{ root: this.props.classes.paper }}>
-                            <form autoComplete="off" noValidate>
+                        <QueueAnim type="top">
+                            <Paper key="1" classes={{ root: this.props.classes.paper }}>
+                                <form autoComplete="off" noValidate>
 
-                                <Grid container direction="column">
-                                
-                                    {this.state.err && this.state.err.global && 
-                                    <Grid item className={this.props.classes.paperitem}>
-                                        <Typography color="error">
-                                            {this.state.err.global}
-                                        </Typography>
-                                    </Grid>}
+                                    <Grid container direction="column">
+                                    
+                                        {this.state.err && this.state.err.global && 
+                                        <Grid item className={this.props.classes.paperitem}>
+                                            <Typography color="error">
+                                                {this.state.err.global}
+                                            </Typography>
+                                        </Grid>}
 
-                                    <Grid item className={this.props.classes.paperitem}>
-                                        <TextField 
-                                            fullWidth
-                                            label="Login"
-                                            autoFocus
-                                            value={this.state.user || ""}
-                                            onChange={event => this.setState({ 
-                                                ...this.state, 
-                                                user: event.target.value,
-                                                err: { ...this.state.err, user: undefined }
-                                            })}
-                                            error={(this.state.err && this.state.err.user) ? true : false}
-                                            helperText={this.state.err && this.state.err.user}
-                                        />
+                                        <Grid item className={this.props.classes.paperitem}>
+                                            <TextField 
+                                                fullWidth
+                                                label="Login"
+                                                autoFocus
+                                                value={this.state.user || ""}
+                                                onChange={event => this.setState({ 
+                                                    ...this.state, 
+                                                    user: event.target.value,
+                                                    err: { ...this.state.err, user: undefined }
+                                                })}
+                                                error={(this.state.err && this.state.err.user) ? true : false}
+                                                helperText={this.state.err && this.state.err.user}
+                                            />
+                                        </Grid>
+
+                                        <Grid item className={this.props.classes.paperitem}>
+                                            <TextField 
+                                                fullWidth
+                                                label="Mot de passe"
+                                                type="password"
+                                                value={this.state.pwd || ""}
+                                                onChange={event => this.setState({ 
+                                                    ...this.state, 
+                                                    pwd: event.target.value,
+                                                    err: { ...this.state.err, pwd: undefined }
+                                                })}
+                                                error={(this.state.err && this.state.err.pwd) ? true : false}
+                                                helperText={this.state.err && this.state.err.pwd}
+                                            />
+                                        </Grid>
+
+                                        <Grid item className={this.props.classes.paperitem} style={{ alignSelf: "flex-end" }} >
+                                            <Button type="submit" color="primary" onClick={this.onLogin}>Se connecter</Button>
+                                        </Grid>
+
                                     </Grid>
 
-                                    <Grid item className={this.props.classes.paperitem}>
-                                        <TextField 
-                                            fullWidth
-                                            label="Mot de passe"
-                                            type="password"
-                                            value={this.state.pwd || ""}
-                                            onChange={event => this.setState({ 
-                                                ...this.state, 
-                                                pwd: event.target.value,
-                                                err: { ...this.state.err, pwd: undefined }
-                                            })}
-                                            error={(this.state.err && this.state.err.pwd) ? true : false}
-                                            helperText={this.state.err && this.state.err.pwd}
-                                        />
-                                    </Grid>
+                                </form>
 
-                                    <Grid item className={this.props.classes.paperitem} style={{ alignSelf: "flex-end" }} >
-                                        <Button type="submit" color="primary" onClick={this.onLogin}>Se connecter</Button>
-                                    </Grid>
-
-                                </Grid>
-
-                            </form>
-
-                        </Paper>
+                            </Paper>
+                        </QueueAnim>
                     </Grid>
                 </Grid>
             </DocumentTitle>

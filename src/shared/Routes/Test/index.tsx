@@ -8,6 +8,8 @@ import Authenticated from "@shared/Services/Auth/Authenticated"
 
 import { Button } from "material-ui"
 
+import QueueAnim from "rc-queue-anim"
+
 require("./index.scss");
 
 export default class Test extends React.PureComponent<any, any>
@@ -17,10 +19,12 @@ export default class Test extends React.PureComponent<any, any>
             <Authenticated>
                 <DocumentTitle title="Test">
                     <div>
-                        <Button>Menu 1</Button>
-                        <Button>Menu 2</Button>
-                        <Button>Menu 3</Button>
-                        <Button>Menu 4</Button>
+                        <QueueAnim type="top">
+                            <Button key="1">Menu 1</Button>
+                            <Button key="2">Menu 2</Button>
+                            <Button key="3">Menu 3</Button>
+                            <Button key="4">Menu 4</Button>
+                        </QueueAnim>
                     </div>
                 </DocumentTitle>
             </Authenticated>
