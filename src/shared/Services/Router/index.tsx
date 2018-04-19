@@ -2,6 +2,7 @@ import * as React from "react";
 import { Switch, Route } from "react-router-dom";
 
 import DefaultPage from "./../../Routes/Errors/NotFound"
+import NotFoundPage from "@shared/Components/ErrorsPages/NotFoundPage"
 
 // -- HISTORY
 import { createHashHistory, History } from "history"
@@ -33,7 +34,7 @@ export class RenderRoutes extends React.Component<RenderRoutesProps, any>
                         <Route key={index} {...route} />
                     )
                 })}
-                <Route component={DefaultPage} />
+                <Route component={NotFoundPage} />
             </Switch>
         )
     }

@@ -2,6 +2,8 @@ import * as React from "react"
 import { getToken, checkToken } from "./index"
 import { getHistory } from "@shared/Services/Router"
 
+import ForbiddenPage from "@shared/Components/ErrorsPages/ForbiddenPage"
+
 type AuthenticatedProps = {
     authenticateAction?: () => Promise<any>
     AuthenticatingComponent?: React.ReactNode
@@ -22,7 +24,7 @@ class Authenticated extends React.PureComponent<AuthenticatedProps, Authenticate
     static defaultProps: Partial<AuthenticatedProps> = {
         authenticateAction: () => checkToken(getToken()),
         AuthenticatingComponent: <div>Authentification...</div>,
-        ForbiddenComponent: <div>Vous n'êtes pas autorisé à aller sur cette page. Vous allez être redirigé.</div>,
+        ForbiddenComponent: <ForbiddenPage />,
         redirectionPath: "/login",
         redirectionTimeout: 2000
     }
