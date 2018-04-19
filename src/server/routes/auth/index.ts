@@ -1,8 +1,9 @@
 import { Request, ResponseToolkit } from "hapi";
 import * as jwt from "jsonwebtoken"
 import { config } from "@server/config"
-import { testLogin } from "@server/auths"
+import { testLogin, JwtPayload } from "@server/auths"
 import * as boom from "boom";
+import { Policy } from "catbox";
 
 const handler = async ( request: Request, h: ResponseToolkit ) => {
 
@@ -10,6 +11,8 @@ const handler = async ( request: Request, h: ResponseToolkit ) => {
     let _user = undefined;
     let _pwd = undefined;
     let _token = undefined;
+
+    let _cache = request.server.app["cache"] as Policy;
 
     // -- récupération des paramètres
     let _post = request.payload as any;
@@ -22,19 +25,24 @@ const handler = async ( request: Request, h: ResponseToolkit ) => {
     _pwd = (_post && _post.pwd) ? _post.pwd : _pwd;
     _token = (_post && _post.token) ? _post.token : _token;
 
+
     // -- test token 
     if(_token){
-        jwt.verify(_token, config.secret, undefined, (err, decoded: any) => {
+        return jwt.verify(_token, config.secret, undefined, async (err, decoded: JwtPayload) => {
             if(err){
                 if(err.name.toLowerCase() == "tokenexpirederror")
                     throw(boom.unauthorized("Token expiré", "Jwt"));
                 throw(boom.unauthorized());
             }
-            if(!decoded.user) throw(boom.unauthorized);
-            if(!decoded.user.id) throw(boom.unauthorized());
-            /*return authModelUser({ id: decoded.user.id }, (obj, user) => {
-                return reply(obj);
-            });*/
+
+            // -- cache ok ?
+            if(!decoded.id) throw(boom.badData("Le token fourni n'est pas valide"));
+            let _cached = await _cache.get(decoded.id.toString());
+            if(!_cached) throw(boom.unauthorized("Session perdue"));
+
+            return {
+                sid: _token
+            }
         })
     }
     
@@ -43,8 +51,12 @@ const handler = async ( request: Request, h: ResponseToolkit ) => {
     let _login = await testLogin(_user, _pwd);
     if(!_login) throw(boom.forbidden("Le login ou mot de passe sont incorrects"));
     if(_login.isValid){
+        // -- mise en cache
+        let _cache = request.server.app["cache"] as Policy;
+        await _cache.set(_login.credentials.user.id.toString(), _login.credentials, 0);
+        // -- retour
         return {
-            connected: true
+            sid: _login.credentials.sid
         }
     }
 

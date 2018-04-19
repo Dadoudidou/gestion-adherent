@@ -3,6 +3,7 @@ import { Paper, TextField, Button, Typography, Grid, withStyles, StyleRulesCallb
 import DocumentTitle from "@shared/Components/DocumentTitle"
 import Fetch from "@shared/Services/Fetch"
 import { Login as LoginFn } from "@shared/Services/Auth"
+import { getHistory } from "@shared/Services/Router"
 
 type LoginClassKey = "root" | "paper" | "container" | "paperitem"
 
@@ -46,7 +47,10 @@ class Login extends React.PureComponent<LoginProps, LoginState>
         }
     }
 
-    onLogin = () => {
+    onLogin = (event: React.MouseEvent<HTMLElement>) => {
+
+        event.stopPropagation();
+        event.preventDefault();
 
         let _state = this.state;
 
@@ -76,7 +80,7 @@ class Login extends React.PureComponent<LoginProps, LoginState>
 
             LoginFn(_state.user, _state.pwd)
             .then(rep => {
-                console.log(rep);
+                getHistory().push("/test");
             })
             .catch(err => {
                 let _message = "Une erreur est survenue";

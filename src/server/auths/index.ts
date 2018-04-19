@@ -15,6 +15,10 @@ export type Credentials = {
     }
 }
 
+export type JwtPayload = {
+    id: number
+}
+
 type testLoginOut = {
     isValid: boolean
     credentials: Credentials
@@ -88,6 +92,7 @@ export const testLogin = (username: string, password: string): Promise<testLogin
     
 }
 
+
 /**
  * Test les droits d'un utilisateur
  * @param permissions tableau de droits devant apparaître chez l'utilisateur
@@ -106,3 +111,4 @@ export const testPermissions = (permissions:string[], credential: Credentials): 
     }
     return _auth;
 }
+
