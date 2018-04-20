@@ -10,10 +10,14 @@ import { LieuDBSet, Entity_Lieu } from "./entities/admin/lieu";
 import { UserDBSet, Entity_User } from "./entities/users/user";
 import { GroupDBSet, Entity_Group } from "./entities/users/group";
 import { PermissionDBSet, Entity_Permission } from "./entities/users/permission";
+import { Entity_Adherent, AdherentDBSet } from "@server/datas/entities/members/adherent";
+import { Entity_Document, DocumentDBSet } from "@server/datas/entities/members/document";
+import { Entity_TarifLicence, TarifLicenceDBSet } from "@server/datas/entities/comptabilite/tarif_licence";
 
 export type DBModels = { } &
-    SaisonDBSet &
+    SaisonDBSet & TarifLicenceDBSet &
     ActCategorieDBSet & ActActiviteDBSet & ActSectionDBSet & ActSessionDBSet &
+    AdherentDBSet & DocumentDBSet &
     LieuDBSet &
     UserDBSet & GroupDBSet & PermissionDBSet
 
@@ -28,7 +32,10 @@ class DBContext {
         new Entity_Lieu(),
         new Entity_User(),
         new Entity_Group(),
-        new Entity_Permission()
+        new Entity_Permission(),
+        new Entity_Adherent(),
+        new Entity_Document(),
+        new Entity_TarifLicence(),
     ]
     private _sequelize: Sequelize.Sequelize
 

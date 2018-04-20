@@ -3,6 +3,7 @@ import { dataTypes } from "./../../dataTypes"
 import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { ActCategorieType } from "./activite_categorie";
+import { TarifLicenceType } from "@server/datas/entities/comptabilite/tarif_licence";
 
 
 export type SaisonType = {
@@ -12,6 +13,7 @@ export type SaisonType = {
     nom: string
 
     getCategories: (opt?: Sequelize.FindOptions<ActCategorieType>) => Promise<ActCategorieType[]>
+    getLicences: (opt?: Sequelize.FindOptions<TarifLicenceType>) => Promise<TarifLicenceType[]>
 }
 
 export type SaisonDBSet = {
@@ -46,6 +48,10 @@ export class Entity_Saison extends EntityClass {
         this._model.hasMany(models.actCategories, {
             as: "categories",
             foreignKey: "admin_saison_id"
-        })
+        });
+        this._model.hasMany(models.tarifLicences, {
+            as: "activites",
+            foreignKey: "admin_saison_id"
+        });
     }
 }
