@@ -12,6 +12,8 @@ require("font-awesome/css/font-awesome.min.css");
 
 // -- STORE
 // ---- redux
+import { Provider as ReduxProvider } from "react-redux"
+import reduxClient from "./Services/Store/redux"
 // ---- apollo
 import { ApolloProvider } from "react-apollo"
 import apolloClient from "./Services/Store/apollo"
@@ -21,6 +23,9 @@ import { Router } from "react-router"
 import { HashRouter } from "react-router-dom";
 import { getHistory, RenderRoutes } from "./Services/Router"
 import { loadRoutes } from "./Routes/routes"
+
+// -- SESSIONS
+require("./Services/Session");
 
 // -- config material-ui
 import { create as createJss } from "jss";
@@ -41,15 +46,17 @@ export default class Application extends React.PureComponent<any, any>
     render(){
         return (
             <HashRouter>
-                <ApolloProvider client={apolloClient}>
-                    <div>
-                        <JssProvider Jss={jss}>
-                            <MuiThemeProvider theme={theme}>
-                                <RenderRoutes routes={loadRoutes()} />
-                            </MuiThemeProvider>
-                        </JssProvider>
-                    </div>
-                </ApolloProvider>
+                <ReduxProvider store={reduxClient}>
+                    <ApolloProvider client={apolloClient}>
+                        <div>
+                            <JssProvider Jss={jss}>
+                                <MuiThemeProvider theme={theme}>
+                                    <RenderRoutes routes={loadRoutes()} />
+                                </MuiThemeProvider>
+                            </JssProvider>
+                        </div>
+                    </ApolloProvider>
+                </ReduxProvider>
             </HashRouter>
         )
     }

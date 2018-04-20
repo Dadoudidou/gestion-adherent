@@ -1,4 +1,6 @@
-import * as assign from "object-assign";
+import assign from "object-assign";
+
+
 
 export interface IAction<T> {
     type: string,

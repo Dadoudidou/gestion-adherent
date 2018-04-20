@@ -5,10 +5,12 @@ import DocumentTitle from "@shared/Components/DocumentTitle"
 import Overdrive from "@shared/Services/Overdrive"
 
 import Authenticated from "@shared/Services/Auth/Authenticated"
+import Authorized from "@shared/Services/Auth/Authorized"
 
 import { Button } from "material-ui"
 
 import QueueAnim from "rc-queue-anim"
+import { PermissionsList } from "@shared/Services/Auth/permissions";
 
 require("./index.scss");
 
@@ -23,7 +25,9 @@ export default class Test extends React.PureComponent<any, any>
                             <Button key="1">Menu 1</Button>
                             <Button key="2">Menu 2</Button>
                             <Button key="3">Menu 3</Button>
-                            <Button key="4">Menu 4</Button>
+                            <Authorized key="4" permissions={[ 1,3,53 ]}>
+                                <Button >Menu 4</Button>
+                            </Authorized>
                         </QueueAnim>
                     </div>
                 </DocumentTitle>

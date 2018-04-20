@@ -37,12 +37,16 @@ const handler = async ( request: Request, h: ResponseToolkit ) => {
 
             // -- cache ok ?
             if(!decoded.id) throw(boom.badData("Le token fourni n'est pas valide"));
-            let _cached = await _cache.get(decoded.id.toString());
+            let _cached = await _cache.get(decoded.id.toString()) as any;
             if(!_cached) throw(boom.unauthorized("Session perdue"));
 
             return {
-                sid: _token
-            }
+                ..._cached,
+                user: {
+                    ..._cached.user,
+                    permissions: _cached.user.permissions.map(x => x.id)
+                }
+            };
         })
     }
     
@@ -56,7 +60,11 @@ const handler = async ( request: Request, h: ResponseToolkit ) => {
         await _cache.set(_login.credentials.user.id.toString(), _login.credentials, 0);
         // -- retour
         return {
-            sid: _login.credentials.sid
+            ..._login.credentials,
+            user: {
+                ..._login.credentials.user,
+                permissions: _login.credentials.user.permissions.map(x => x.id)
+            }
         }
     }
 

@@ -11,7 +11,7 @@ export type Credentials = {
         nom: string,
         prenom: string,
         login: string,
-        permissions: string[]
+        permissions: { id: number, nom: string }[]
     }
 }
 
@@ -50,16 +50,20 @@ export const testLogin = (username: string, password: string): Promise<testLogin
             })
             .then(user => {
                 // -- get permissions
-                let _permissions: string[] = [];
+                let _permissions: { id: number, nom: string }[] = [];
                 return user.getGroups({ include: [ { model:dbcontext.models.permissions, as:"permissions"} ] })
                 .then(groups => {
-                    let _permissions: string[] = [];
+                    let _permissions: { id: number, nom: string }[] = [];
                     groups.forEach(group => {
                         if(!group["permissions"]) return;
                         group["permissions"].forEach((permission: PermissionType) => {
                             
-                            let _index = _permissions.indexOf(permission.nom.toLowerCase());
-                            if(_index == -1) _permissions.push(permission.nom.toLowerCase());
+                            let _index = _permissions.map(x => x.id).indexOf(permission.id);
+                            if(_index == -1) 
+                                _permissions.push({ 
+                                    id: permission.id,
+                                    nom: permission.nom.toLowerCase()
+                                 });
                         })
                     })
                     return _permissions
@@ -105,7 +109,7 @@ export const testPermissions = (permissions:string[], credential: Credentials): 
     let _auth = true;
     let i = 0;
     while(_auth == true && i <permissions.length){
-        if(credential.user.permissions.map(x => x.toLowerCase()).indexOf(permissions[i].toLowerCase()) == -1)
+        if(credential.user.permissions.map(x => x.nom.toLowerCase()).indexOf(permissions[i].toLowerCase()) == -1)
             _auth = false;
         i++;
     }
