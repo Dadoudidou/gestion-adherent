@@ -3,6 +3,8 @@ import { dataTypes } from "./../../dataTypes"
 import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { DocumentType } from "./document";
+import { AdherentLicenceType } from "@server/datas/entities/members/licence";
+import { AdhesionType } from "@server/datas/entities/members/adhesion";
 
 
 
@@ -21,6 +23,8 @@ export type AdherentType = {
     email: string
 
     getDocuments: (opt?: Sequelize.FindOptions<DocumentType>) => Promise<DocumentType[]>
+    getLicences: (opt?: Sequelize.FindOptions<AdherentLicenceType>) => Promise<AdherentLicenceType[]>
+    getAdhesions: (opt?: Sequelize.FindOptions<AdhesionType>) => Promise<AdhesionType[]>
 }
 
 export type AdherentDBSet = {
@@ -87,6 +91,14 @@ export class Entity_Adherent extends EntityClass {
     associations = (models: DBModels) => {
         this._model.hasMany(models.documents, {
             as: "documents",
+            foreignKey: "adherent_adherent_id"
+        })
+        this._model.hasMany(models.adherentLicences, {
+            as: "licences",
+            foreignKey: "adherent_adherent_id"
+        })
+        this._model.hasMany(models.adhesions, {
+            as: "adhesions",
             foreignKey: "adherent_adherent_id"
         })
     }

@@ -12,12 +12,15 @@ import { GroupDBSet, Entity_Group } from "./entities/users/group";
 import { PermissionDBSet, Entity_Permission } from "./entities/users/permission";
 import { Entity_Adherent, AdherentDBSet } from "@server/datas/entities/members/adherent";
 import { Entity_Document, DocumentDBSet } from "@server/datas/entities/members/document";
-import { Entity_TarifLicence, TarifLicenceDBSet } from "@server/datas/entities/comptabilite/tarif_licence";
+import { Entity_TarifLicence, TarifLicenceDBSet } from "@server/datas/entities/admin/tarif_licence";
+import { AdherentLicenceDBSet, Entity_AdherentLicence } from "@server/datas/entities/members/licence";
+import { TarifDBSet, Entity_Tarif } from "@server/datas/entities/admin/tarif";
+import { AdhesionDBSet, Entity_Adhesion } from "@server/datas/entities/members/adhesion";
 
 export type DBModels = { } &
-    SaisonDBSet & TarifLicenceDBSet &
+    SaisonDBSet & TarifLicenceDBSet & TarifDBSet &
     ActCategorieDBSet & ActActiviteDBSet & ActSectionDBSet & ActSessionDBSet &
-    AdherentDBSet & DocumentDBSet &
+    AdherentDBSet & DocumentDBSet & AdherentLicenceDBSet & AdhesionDBSet &
     LieuDBSet &
     UserDBSet & GroupDBSet & PermissionDBSet
 
@@ -36,6 +39,9 @@ class DBContext {
         new Entity_Adherent(),
         new Entity_Document(),
         new Entity_TarifLicence(),
+        new Entity_AdherentLicence(),
+        new Entity_Tarif(),
+        new Entity_Adhesion()
     ]
     private _sequelize: Sequelize.Sequelize
 

@@ -3,16 +3,18 @@ import { dataTypes } from "./../../dataTypes"
 import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { SaisonType } from "@server/datas/entities/admin/saison";
+import { AdherentLicenceType } from "@server/datas/entities/members/licence";
 
 
 export type TarifLicenceType = {
     id: number
     montant: number
-    restriction_age_min: number
-    restriction_age_max: number
+    restriction_age_min?: number
+    restriction_age_max?: number
     admin_saison_id: number
 
     getSaison: () => Promise<SaisonType>
+    getLicences: (opt?: Sequelize.FindOptions<AdherentLicenceType>) => Promise<AdherentLicenceType[]>
 }
 
 export type TarifLicenceDBSet = {
@@ -51,6 +53,10 @@ export class Entity_TarifLicence extends EntityClass {
         this._model.belongsTo(models.saisons, {
             as: "saison",
             foreignKey: "admin_saison_id"
-        })
+        });
+        this._model.hasMany(models.adherentLicences, {
+            as: "licences",
+            foreignKey: "admin_licence_id"
+        });
     }
 }

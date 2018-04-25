@@ -4,6 +4,7 @@ import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { ActSectionType } from "./activite_section";
 import { LieuType } from "./lieu";
+import { AdhesionType } from "@server/datas/entities/members/adhesion";
 
 
 export type ActSessionType = {
@@ -17,6 +18,7 @@ export type ActSessionType = {
 
     getSection: () => Promise<ActSectionType>
     getLieu: () => Promise<LieuType>
+    getAdhesions: (opt?: Sequelize.FindOptions<AdhesionType>) => Promise<AdhesionType[]>
 }
 
 export type ActSessionDBSet = {
@@ -69,5 +71,10 @@ export class Entity_ActSession extends EntityClass {
             as: "lieu",
             foreignKey: "admin_lieu_id"
         })
+        this._model.belongsToMany(models.adhesions, {
+            through: "adherent_adhesion_session",
+            as: "adhesions",
+            foreignKey: "admin_activite_session_id"
+        });
     }
 }

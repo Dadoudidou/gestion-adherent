@@ -4,6 +4,8 @@ import { EntityClass } from "../../EntityClass";
 import { ActSessionType } from "./activite_session";
 import { DBModels } from "../..";
 import { ActActiviteType } from "./activite_activite";
+import { TarifType } from "@server/datas/entities/admin/tarif";
+import { AdhesionType } from "@server/datas/entities/members/adhesion";
 
 
 export type ActSectionType = {
@@ -13,6 +15,8 @@ export type ActSectionType = {
 
     getSessions: (opt?: Sequelize.FindOptions<ActSessionType>) => Promise<ActSessionType[]>
     getActivite: () => Promise<ActActiviteType>
+    getTarifs: (opt?: Sequelize.FindOptions<TarifType>) => Promise<TarifType[]>
+    getAdhesions: (opt?: Sequelize.FindOptions<AdhesionType>) => Promise<AdhesionType[]>
 }
 
 export type ActSectionDBSet = {
@@ -48,6 +52,14 @@ export class Entity_ActSection extends EntityClass {
         this._model.belongsTo(models.actActivites, {
             as: "activite",
             foreignKey: "admin_activite_activite_id"
+        })
+        this._model.hasMany(models.tarifs, {
+            as: "tarifs",
+            foreignKey: "admin_activite_section_id"
+        })
+        this._model.hasMany(models.adhesions, {
+            as: "adhesions",
+            foreignKey: "admin_activite_section_id"
         })
     }
 }

@@ -26,6 +26,10 @@ async function webserver() {
         ...config.server
     });
 
+    server.events.on("log", (event, tags) => {
+        console.log("ServerLog", event);
+    })
+
     // -- cache
     const cache = server.cache({ segment: "sessions", expiresIn: 1 * 24 * 60 * 60 * 1000 });
     server.app["cache"] = cache;
