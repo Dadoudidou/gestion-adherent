@@ -15,7 +15,7 @@ export type TarifLicenceType = {
 
     getSaison: () => Promise<SaisonType>
     getLicences: (opt?: Sequelize.FindOptions<AdherentLicenceType>) => Promise<AdherentLicenceType[]>
-}
+} & Sequelize.Instance<any>
 
 export type TarifLicenceDBSet = {
     tarifLicences: Sequelize.Model<TarifLicenceType, any>

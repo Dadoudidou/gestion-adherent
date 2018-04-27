@@ -13,7 +13,7 @@ export type LieuType = {
     ville: string
 
     getSessions: (opt?: Sequelize.FindOptions<ActSessionType>) => Promise<ActSessionType[]>
-}
+} & Sequelize.Instance<any>
 
 export type LieuDBSet = {
     lieux: Sequelize.Model<LieuType, any>

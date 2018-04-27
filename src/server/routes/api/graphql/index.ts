@@ -71,7 +71,7 @@ resolvers = {
     },
     ..._query.gen_objectResolvers(),
     ..._query.gen_resolvers("Query"),
-    ..._mutation.gen_resolvers("Mutation")
+    ..._mutation.gen_resolvers("Mutation"),
 }
 
 

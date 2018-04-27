@@ -39,4 +39,47 @@ export class Lieu extends GraphqlObject {
             }
         }
     }
+    mutationAttributes={
+        addLieu: {
+            type: "Lieu",
+            args: { lieu: "_Lieu!" },
+            resolver: async (root, args, context) => {
+                return dbcontext.models.lieux.create(args.lieu);
+            }
+        },
+        deleteLieu: {
+            type: "Boolean",
+            args: { id: "Int!" },
+            resolver: async (root, args, context) => {
+                let entity = await dbcontext.models.lieux.find({ where: { id: args.id } });
+                if(!entity) return true;
+                await entity.destroy();
+                return true;
+            }
+        },
+        updateLieu: {
+            type: "Lieu",
+            args: { id: "Int!", lieu: "_Lieu!" },
+            resolver: async (root, args, context) => {
+                let entity = await dbcontext.models.lieux.find({ where: { id: args.id } });
+                if(!entity) throw new Error(`Not found lieu with id ${args.id}`);
+                
+                for(let key in args.lieu){ entity[key] = args.lieu[key]; }
+                entity = await entity.save();
+                return entity;
+            }
+        }
+    }
+}
+
+export class InputLieu  extends GraphqlObject
+{
+    type = "input"
+    name="_Lieu";
+    attributes = {
+        nom: "String",
+        adresse: "String",
+        codepostal: "String",
+        ville: "String",
+    }
 }

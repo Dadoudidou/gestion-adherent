@@ -20,7 +20,7 @@ export type TarifType = {
     getSaison: () => Promise<SaisonType>
     getSection: () => Promise<ActSectionType>
     getAdhesions: (opt?: Sequelize.FindOptions<AdhesionType>) => Promise<AdhesionType[]>
-}
+} & Sequelize.Instance<any>
 
 export type TarifDBSet = {
     tarifs: Sequelize.Model<TarifType, any>

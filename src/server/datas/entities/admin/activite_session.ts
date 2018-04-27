@@ -19,7 +19,7 @@ export type ActSessionType = {
     getSection: () => Promise<ActSectionType>
     getLieu: () => Promise<LieuType>
     getAdhesions: (opt?: Sequelize.FindOptions<AdhesionType>) => Promise<AdhesionType[]>
-}
+} & Sequelize.Instance<any>
 
 export type ActSessionDBSet = {
     actSessions: Sequelize.Model<ActSessionType, any>

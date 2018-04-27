@@ -2,7 +2,7 @@ import { GraphqlGroup } from "../../../utils/GraphQLSchema/graphqlObject";
 import { Activite } from "./activite"
 import { Categorie } from "./categorie"
 import { Section } from "./section"
-import { Session } from "./session"
+import { Session, InputSession } from "./session"
 
 export class AdminActiviteGroup extends GraphqlGroup
 {
@@ -11,6 +11,7 @@ export class AdminActiviteGroup extends GraphqlGroup
         new Categorie(),
         new Activite(),
         new Section(),
-        new Session()
+        new Session(),
+        new InputSession()
     ]
 }

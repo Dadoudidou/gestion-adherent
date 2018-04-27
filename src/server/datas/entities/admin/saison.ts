@@ -16,7 +16,16 @@ export type SaisonType = {
     getCategories: (opt?: Sequelize.FindOptions<ActCategorieType>) => Promise<ActCategorieType[]>
     getLicences: (opt?: Sequelize.FindOptions<TarifLicenceType>) => Promise<TarifLicenceType[]>
     getTarifs: (opt?: Sequelize.FindOptions<TarifType>) => Promise<TarifType[]>
-}
+
+    setCategories: (values?: ActCategorieType[]) => Promise<void>
+    createCategorie: (value: Partial<ActCategorieType>) => Promise<ActCategorieType>
+
+    setLicences: (values?: TarifLicenceType[]) => Promise<void>
+    createLicence: (value: Partial<TarifLicenceType>) => Promise<TarifLicenceType>
+
+    setTarifs: (values?: Partial<TarifType>[]) => Promise<void>
+    createTarif: (value: Partial<TarifType>) => Promise<TarifType>
+} & Sequelize.Instance<any>
 
 export type SaisonDBSet = {
     saisons: Sequelize.Model<SaisonType, any>

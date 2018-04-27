@@ -13,7 +13,10 @@ export type ActActiviteType = {
 
     getSections: (opt?: Sequelize.FindOptions<ActSectionType>) => Promise<ActSectionType[]>
     getCategorie: () => Promise<ActCategorieType>
-}
+
+    createSection: (value: Partial<ActSectionType>) => Promise<ActSectionType>
+
+} & Sequelize.Instance<any>
 
 export type ActActiviteDBSet = {
     actActivites: Sequelize.Model<ActActiviteType, any>
