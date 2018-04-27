@@ -12,6 +12,7 @@ export type TarifLicenceType = {
     restriction_age_min?: number
     restriction_age_max?: number
     admin_saison_id: number
+    nom?: string
 
     getSaison: () => Promise<SaisonType>
     getLicences: (opt?: Sequelize.FindOptions<AdherentLicenceType>) => Promise<AdherentLicenceType[]>
@@ -45,6 +46,10 @@ export class Entity_TarifLicence extends EntityClass {
         admin_saison_id: {
             type: dataTypes.INTEGER,
             allowNull: false,
+        } as Sequelize.DefineAttributeColumnOptions,
+        nom: {
+            type: dataTypes.STRING,
+            allowNull: true,
         } as Sequelize.DefineAttributeColumnOptions
     }
     model_options: Sequelize.DefineOptions<Entity_TarifLicence> = {}

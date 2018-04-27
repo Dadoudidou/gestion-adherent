@@ -12,6 +12,7 @@ export class TarifLicence extends GraphqlObject {
         montant: "Float",
         restriction_age_min: "Int",
         restriction_age_max: "Int",
+        nom: "String",
         
         saison: {
             type: "Saison",
@@ -80,5 +81,6 @@ export class InputTarifLicence  extends GraphqlObject
         montant: "Float",
         restriction_age_min: "Int",
         restriction_age_max: "Int",
+        nom: "String",
     }
 }
