@@ -8,7 +8,7 @@ const distPath = path.resolve(__dirname, 'build');
 module.exports = {
     name: "Server",
     context: srcPath,
-    entry: "./server/index.ts",
+    entry: "./server2/server.ts",
     output: {
         path: distPath,
         filename: "server.js",
@@ -21,7 +21,7 @@ module.exports = {
             "config": path.resolve(__dirname, "./src/server/config"),
             "services": path.resolve(__dirname, "./src/server/services"),
             "datas": path.resolve(__dirname, "./src/server/datas"),
-            "@server": path.join(__dirname, 'src/server')
+            "@server": path.join(__dirname, 'src/server2')
         },
         modules: [ "src", "node_modules" ]
     },

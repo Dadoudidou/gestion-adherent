@@ -25,7 +25,7 @@
         "jsx": "react",
         "paths": {
             "@shared/*": ["src/shared/*"],
-            "@server/*": ["src/server/*"],
+            "@server/*": ["src/server2/*"],
             "@client/*": ["src/client/*"]
         }
     }

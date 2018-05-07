@@ -7,7 +7,7 @@ const stock_sid = "main:sid";
 const stock_user = "user";
 
 export type clientAuth = {
-    sid: string
+    token: string
     user: {
         id: number
         login: string
@@ -25,8 +25,8 @@ export const Login = (user: string, pwd: string): Promise<any> => {
     })
     .then(rep => rep.json())
     .then((rep: clientAuth) => {
-        if(rep.sid){
-            setToken(rep.sid);
+        if(rep.token){
+            setToken(rep.token);
             setClientAuth(rep);
         } else {
             throw new Error("Une erreur est survenue");
@@ -47,7 +47,7 @@ export const checkToken = (token: string) => {
     })
     .then(rep => rep.json())
     .then((rep: clientAuth) => {
-        setToken(rep.sid);
+        setToken(rep.token);
         setClientAuth(rep);
         return rep;
     })
