@@ -2,8 +2,8 @@ import * as Sequelize from "sequelize"
 import { dataTypes } from "./../../dataTypes"
 import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
-import { SaisonType } from "@server/datas/entities/admin/saison";
-import { AdherentLicenceType } from "@server/datas/entities/members/licence";
+import { SaisonType } from "@server/database/entities/admin/saison";
+import { AdherentLicenceType } from "@server/database/entities/members/licence";
 
 
 export type TarifLicenceType = {

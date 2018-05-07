@@ -4,8 +4,8 @@ import { EntityClass } from "../../EntityClass";
 import { ActSessionType } from "./activite_session";
 import { DBModels } from "../..";
 import { ActActiviteType } from "./activite_activite";
-import { TarifType } from "@server/datas/entities/admin/tarif";
-import { AdhesionType } from "@server/datas/entities/members/adhesion";
+import { TarifType } from "@server/database/entities/admin/tarif";
+import { AdhesionType } from "@server/database/entities/members/adhesion";
 
 
 export type ActSectionType = {

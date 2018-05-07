@@ -3,8 +3,8 @@ import { dataTypes } from "./../../dataTypes"
 import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { DocumentType } from "./document";
-import { AdherentLicenceType } from "@server/datas/entities/members/licence";
-import { AdhesionType } from "@server/datas/entities/members/adhesion";
+import { AdherentLicenceType } from "@server/database/entities/members/licence";
+import { AdhesionType } from "@server/database/entities/members/adhesion";
 
 
 

@@ -2,10 +2,10 @@ import * as Sequelize from "sequelize"
 import { dataTypes } from "./../../dataTypes"
 import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
-import { AdherentType } from "@server/datas/entities/members/adherent";
-import { ActSectionType } from "@server/datas/entities/admin/activite_section";
-import { TarifType } from "@server/datas/entities/admin/tarif";
-import { ActSessionType } from "@server/datas/entities/admin/activite_session";
+import { AdherentType } from "@server/database/entities/members/adherent";
+import { ActSectionType } from "@server/database/entities/admin/activite_section";
+import { TarifType } from "@server/database/entities/admin/tarif";
+import { ActSessionType } from "@server/database/entities/admin/activite_session";
 
 
 export type AdhesionType = {

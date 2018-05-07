@@ -3,8 +3,8 @@ import { dataTypes } from "./../../dataTypes"
 import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { ActCategorieType } from "./activite_categorie";
-import { TarifLicenceType } from "@server/datas/entities/admin/tarif_licence";
-import { TarifType } from "@server/datas/entities/admin/tarif";
+import { TarifLicenceType } from "@server/database/entities/admin/tarif_licence";
+import { TarifType } from "@server/database/entities/admin/tarif";
 
 
 export type SaisonType = {
