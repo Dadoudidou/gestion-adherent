@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "baseUrl": "./",
+        "rootDirs": ["src", "stories"],
         "noImplicitAny": false,
         "noEmitOnError": true,
         "removeComments": false,
