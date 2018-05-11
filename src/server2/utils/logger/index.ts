@@ -16,6 +16,7 @@ _logger.add(winston.transports.Console, {
 })
 
 // -- mysql
+/*
 _logger.add(WinstonMysqlTransport as any, {
     host: config.connectors.default.host,
     user: config.connectors.default.user,
@@ -38,5 +39,6 @@ _logger.add(WinstonMysqlTransport as any, {
         }
     }
 } as WinstonMysqlTransportOptions)
+*/
 
-export const getLogger = () => _logger;
+export const logApp = _logger;

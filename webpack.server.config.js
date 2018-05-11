@@ -18,9 +18,7 @@ module.exports = {
     resolve: {
         extensions: [".json", ".ts", ".tsx", ".js"],
         alias: { 
-            "config": path.resolve(__dirname, "./src/server/config"),
-            "services": path.resolve(__dirname, "./src/server/services"),
-            "datas": path.resolve(__dirname, "./src/server/datas"),
+            "@shared": path.join(__dirname, 'src/shared'),
             "@server": path.join(__dirname, 'src/server2')
         },
         modules: [ "src", "node_modules" ]

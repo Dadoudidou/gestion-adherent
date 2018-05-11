@@ -9,6 +9,7 @@ import { PermissionType } from "@server/database/entities/users/permission";
 import { Policy } from "catbox";
 
 import * as Boom from "boom";
+import { sharedCheckPermissions } from "@shared/permissions";
 
 
 const TestUsernamePassword = async function(username: string, password: string) {
@@ -111,18 +112,11 @@ export const login = async (user: checkUserResponse) => {
 }
 
 /** Test les permissions d'accès d'un utilisateur */
-export const checkPermissions = (permissions:string[], credential: Credentials): boolean => {
-    if(!credential) return false;
-    if(!credential.user) return false;
-    if(!credential.user.permissions) return false;
-    let _auth = true;
-    let i = 0;
-    while(_auth == true && i <permissions.length){
-        if(credential.user.permissions.map(x => x.nom.toLowerCase()).indexOf(permissions[i].toLowerCase()) == -1)
-            _auth = false;
-        i++;
-    }
-    return _auth;
+export const checkPermissions = (permissions:number[], user: cacheUser): boolean => {
+    if(!user) return false;
+    if(!user.user) return false;
+    if(!user.user.permissions) return false;
+    return sharedCheckPermissions(permissions, user.user.permissions.map(x => x.id));
 }
 
 export const readUserToken = async (token: string) => {

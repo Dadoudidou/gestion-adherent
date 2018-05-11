@@ -14,6 +14,9 @@ import { config } from "./config"
 import { getSchema } from "./graphql/default"
 import routeHandler_auth from "./routes/auth"
 import routeHandler_Root from "./routes/root"
+import LoggerPlugin from "./utils/logger/hapi-log-plugin";
+import { ReporterConsole } from "./utils/logger/hapi-log-plugin/reporters/console";
+import { ResponseLog } from "@server/utils/logger/hapi-log-plugin/types/ResponseLog";
 
 let server: Hapi.Server = undefined;
 
@@ -24,24 +27,29 @@ async function createServer(){
     // -- création du serveur
     server = new Hapi.Server({ 
         ...config.server,
-        debug: {
-            request: ['error']
-        }
+        //debug: {
+        //    request: ['error']
+        //}
     });
 
     // -- cache
     const cache = server.cache({ segment: "sessions", expiresIn: 1 * 24 * 60 * 60 * 1000 });
     server.app["cache"] = cache;
 
-    // -- logs
-    server.events.on('log', (event, tags) => {
-        console.log(event);
-    })
-
     // -- enregistrement de plugins
     await server.register(HapiBasicAuth);       // authentification basic
     await server.register(HapiAuthJWT);         // authentification basic jwt
     await server.register(Inert);               // static files and directory
+    await server.register({
+        plugin: LoggerPlugin,
+        options: {
+            reporters: [
+                { 
+                    reporter: new ReporterConsole()
+                }
+            ]
+        }
+    })
 
     // -- enregistrement des stratégies d'authentifications
     setGraphiqlStrategy(server);
@@ -51,6 +59,9 @@ async function createServer(){
     server.route({
         method: "GET",
         path: "/",
+        options: {
+            log: { collect: true }
+        },
         handler: routeHandler_Root
     })
 
@@ -136,6 +147,19 @@ async function createServer(){
         method: "POST",
         path: "/auth",
         handler: routeHandler_auth
+    })
+
+    // -- /all pages
+    server.route({
+        method: "*",
+        path: "/{p*}",
+        options: {
+            log: { collect: true }
+        },
+        handler: (request, reply) => {
+            return reply.response("Not found").code(404);
+            //return "Not found";
+        }
     })
 
     return server;
