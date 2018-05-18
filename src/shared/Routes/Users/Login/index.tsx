@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Paper, TextField, Button, Typography, Grid, withStyles, StyleRulesCallback, WithStyles } from "material-ui"
-import DocumentTitle from "@shared/Components/DocumentTitle"
+import DocumentTitle from "@shared/Components/Commons/DocumentTitle"
 import Fetch from "@shared/Services/Fetch"
 import { Login as LoginFn } from "@shared/Services/Auth"
 import { getHistory } from "@shared/Services/Router"

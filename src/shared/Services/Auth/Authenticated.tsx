@@ -2,7 +2,7 @@ import * as React from "react"
 import { getToken, checkToken } from "./index"
 import { getHistory } from "@shared/Services/Router"
 
-import ForbiddenPage from "@shared/Components/ErrorsPages/ForbiddenPage"
+import ForbiddenPage from "@shared/Components/Components/ErrorsPages/ForbiddenPage"
 
 type AuthenticatedProps = {
     authenticateAction?: () => Promise<any>

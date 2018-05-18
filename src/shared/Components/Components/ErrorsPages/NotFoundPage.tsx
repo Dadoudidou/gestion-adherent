@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import DocumentTitle from "@shared/Components/DocumentTitle";
+import DocumentTitle from "@shared/Components/Commons/DocumentTitle";
 
 class NotFoundPage extends React.PureComponent<any, any>
 {

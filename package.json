@@ -98,6 +98,8 @@
     "react-router-dom": "4.2.2",
     "react-apollo": "2.1.4",
     "apollo-boost": "0.1.6",
+    "apollo-client": "2.3.1",
+    "apollo-cache-inmemory": "1.2.1",
     "redux": "4.0.0",
     "react-redux": "5.0.7",
     "redux-thunk": "2.2.0",
@@ -126,6 +128,7 @@
     "@types/sequelize": "4.27.11",
     "@types/boom": "7.1.1",
     "@types/jsonwebtoken": "7.2.5",
-    "@types/winston": "2.3.8"
+    "@types/winston": "2.3.8",
+    "@types/graphql": "0.13.1"
   }
 }

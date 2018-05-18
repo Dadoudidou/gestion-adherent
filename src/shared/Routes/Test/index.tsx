@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import TestComp from "@shared/Components/TestComp"
-import DocumentTitle from "@shared/Components/DocumentTitle"
+
+import DocumentTitle from "@shared/Components/Commons/DocumentTitle"
 import Overdrive from "@shared/Services/Overdrive"
 
 import Authenticated from "@shared/Services/Auth/Authenticated"
@@ -12,7 +12,191 @@ import { Button } from "material-ui"
 import QueueAnim from "rc-queue-anim"
 import { PermissionsList } from "@shared/Services/Auth/permissions";
 
+import ActivitiesList from "@shared/Components/Components/Lists/ActivitiesList"
+
 require("./index.scss");
+
+export class TestComponent extends React.PureComponent<any, any>
+{
+    render(){
+        return (
+            <div>
+                <ActivitiesList 
+                    sections={[
+                        {
+                          "id": 1,
+                          "nom": "President",
+                          "activite": {
+                            "id": 1,
+                            "nom": "Bureau",
+                            "categorie": {
+                              "id": 1,
+                              "nom": "Bénévoles"
+                            }
+                          }
+                        },
+                        {
+                          "id": 2,
+                          "nom": "Trésorier",
+                          "activite": {
+                            "id": 1,
+                            "nom": "Bureau",
+                            "categorie": {
+                              "id": 1,
+                              "nom": "Bénévoles"
+                            }
+                          }
+                        },
+                        {
+                          "id": 3,
+                          "nom": "Secrétaire",
+                          "activite": {
+                            "id": 1,
+                            "nom": "Bureau",
+                            "categorie": {
+                              "id": 1,
+                              "nom": "Bénévoles"
+                            }
+                          }
+                        },
+                        {
+                          "id": 4,
+                          "nom": "Membre",
+                          "activite": {
+                            "id": 1,
+                            "nom": "Bureau",
+                            "categorie": {
+                              "id": 1,
+                              "nom": "Bénévoles"
+                            }
+                          }
+                        },
+                        {
+                          "id": 5,
+                          "nom": "Encadrant",
+                          "activite": {
+                            "id": 2,
+                            "nom": "Encadrant",
+                            "categorie": {
+                              "id": 1,
+                              "nom": "Bénévoles"
+                            }
+                          }
+                        },
+                        {
+                          "id": 6,
+                          "nom": "Minime",
+                          "activite": {
+                            "id": 3,
+                            "nom": "Natation",
+                            "categorie": {
+                              "id": 2,
+                              "nom": "Compétition"
+                            }
+                          }
+                        },
+                        {
+                          "id": 7,
+                          "nom": "Cadet",
+                          "activite": {
+                            "id": 3,
+                            "nom": "Natation",
+                            "categorie": {
+                              "id": 2,
+                              "nom": "Compétition"
+                            }
+                          }
+                        },
+                        {
+                          "id": 8,
+                          "nom": "Elite",
+                          "activite": {
+                            "id": 3,
+                            "nom": "Natation",
+                            "categorie": {
+                              "id": 2,
+                              "nom": "Compétition"
+                            }
+                          }
+                        },
+                        {
+                          "id": 9,
+                          "nom": "Creps",
+                          "activite": {
+                            "id": 3,
+                            "nom": "Natation",
+                            "categorie": {
+                              "id": 2,
+                              "nom": "Compétition"
+                            }
+                          }
+                        },
+                        {
+                          "id": 10,
+                          "nom": "Water-Polo",
+                          "activite": {
+                            "id": 4,
+                            "nom": "Water-Polo",
+                            "categorie": {
+                              "id": 2,
+                              "nom": "Compétition"
+                            }
+                          }
+                        },
+                        {
+                          "id": 11,
+                          "nom": "Aquagym",
+                          "activite": {
+                            "id": 5,
+                            "nom": "Aquaforme",
+                            "categorie": {
+                              "id": 3,
+                              "nom": "Loisir"
+                            }
+                          }
+                        },
+                        {
+                          "id": 12,
+                          "nom": "AquaPalming",
+                          "activite": {
+                            "id": 5,
+                            "nom": "Aquaforme",
+                            "categorie": {
+                              "id": 3,
+                              "nom": "Loisir"
+                            }
+                          }
+                        },
+                        {
+                          "id": 13,
+                          "nom": "Adolescent",
+                          "activite": {
+                            "id": 6,
+                            "nom": "Natation",
+                            "categorie": {
+                              "id": 3,
+                              "nom": "Loisir"
+                            }
+                          }
+                        },
+                        {
+                          "id": 14,
+                          "nom": "Adulte",
+                          "activite": {
+                            "id": 6,
+                            "nom": "Natation",
+                            "categorie": {
+                              "id": 3,
+                              "nom": "Loisir"
+                            }
+                          }
+                        }
+                      ]}
+                />
+            </div>
+        )
+    }
+}
 
 export default class Test extends React.PureComponent<any, any>
 {

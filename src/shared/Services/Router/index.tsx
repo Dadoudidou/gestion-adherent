@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Switch, Route } from "react-router-dom";
 
-import NotFoundPage from "@shared/Components/ErrorsPages/NotFoundPage"
+import NotFoundPage from "@shared/Components/Components/ErrorsPages/NotFoundPage"
 
 // -- HISTORY
 import { createHashHistory, History } from "history"
