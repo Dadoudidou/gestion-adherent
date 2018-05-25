@@ -71,6 +71,8 @@ declare namespace APIObjects {
         nbsessionmax?: number
         carte?: boolean
         carte_nbsession?: number
+        restriction_date_debut?: Date
+        restriction_date_fin?: Date
         campagne: Campagne
         section: ActiviteSection
     }>

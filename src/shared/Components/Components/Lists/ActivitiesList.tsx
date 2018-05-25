@@ -1,21 +1,36 @@
 import * as React from "react";
 import { 
     withStyles, StyleRulesCallback, WithStyles,
-    List, ListItem, ListItemText 
+    List, ListItem, ListItemText ,
+    Menu, MenuItem, MenuList
 } from "material-ui"
 
-type ActivitiesListClassKey = "secondaryElement"
+type ActivitiesListClassKey = "secondaryElement" | "selectedItem" | "item"
 
 const styles: StyleRulesCallback<ActivitiesListClassKey> = theme => ({
-    secondaryElement: { textAlign: "right"  }
+    secondaryElement: { textAlign: "right"  },
+    selectedItem: {
+        background: theme.palette.secondary.dark,
+        color: theme.palette.secondary.light
+    },
+    item: {
+        paddingTop: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing.unit * 2
+    }
 })
 
 export type ActivitiesListProps = {
     sections: APIObjects.ActiviteSection[]
+    sectionSelected?: APIObjects.ActiviteSection
+    onSelectSection?: (section: APIObjects.ActiviteSection) => void
 } & WithStyles<ActivitiesListClassKey>
 
 class ActivitiesList extends React.PureComponent<ActivitiesListProps, any>
 {
+    static defaultProps: Partial<ActivitiesListProps> = {
+        onSelectSection: () => {}
+    }
+
     private nbPlacesRestantes = (section: APIObjects.ActiviteSection) => {
         if(!section.sessions) return undefined;
         let _places = 0;
@@ -26,14 +41,23 @@ class ActivitiesList extends React.PureComponent<ActivitiesListProps, any>
         return _places;
     }
 
+    onSelect = (section: APIObjects.ActiviteSection) => {
+        if(this.props.onSelectSection){
+            this.props.onSelectSection(section);
+        }
+    }
+
     render(){
-        const { sections, classes } = this.props;
+        const { sections, classes, sectionSelected } = this.props;
         return (
-            <List dense>
+            <MenuList dense disablePadding={false}>
                 {sections.map(section => {
                     let _nbplaces = this.nbPlacesRestantes(section);
                     return (
-                    <ListItem key={section.id} button>
+                    <MenuItem 
+                        key={section.id} button classes={{ root: classes.item }}
+                        selected={sectionSelected ? sectionSelected.id == section.id : false}
+                        onClick={() => { this.onSelect(section) }}>
                         <ListItemText 
                             primary={section.nom}
                             secondary={`${section.activite.categorie.nom} / ${section.activite.nom}`}
@@ -44,9 +68,9 @@ class ActivitiesList extends React.PureComponent<ActivitiesListProps, any>
                                 _nbplaces ? `${_nbplaces} places` : undefined
                             }
                         />
-                    </ListItem>
+                    </MenuItem>
                 )})}
-            </List>
+            </MenuList>
         )
     }
 }

@@ -14,6 +14,8 @@ export type TarifType = {
     nbsessionmax?: number
     carte?: boolean
     carte_nbsession?: number
+    restriction_date_debut?: Date
+    restriction_date_fin?: Date
     admin_saison_id: number
     admin_activite_section_id: number
 
@@ -53,6 +55,14 @@ export class Entity_Tarif extends EntityClass {
         } as Sequelize.DefineAttributeColumnOptions,
         carte_nbsession: {
             type: dataTypes.INTEGER,
+            allowNull: true,
+        } as Sequelize.DefineAttributeColumnOptions,
+        restriction_date_debut: {
+            type: dataTypes.DATE,
+            allowNull: true,
+        } as Sequelize.DefineAttributeColumnOptions,
+        restriction_date_fin: {
+            type: dataTypes.DATE,
             allowNull: true,
         } as Sequelize.DefineAttributeColumnOptions,
         admin_saison_id: {
