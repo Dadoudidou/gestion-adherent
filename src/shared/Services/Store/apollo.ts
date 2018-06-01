@@ -2,6 +2,7 @@ import { ApolloClient } from "apollo-client";
 import { HttpLink } from "apollo-link-http";
 import { ApolloLink, from } from "apollo-link"
 import { InMemoryCache } from "apollo-cache-inmemory"
+import { getToken } from "../Auth/index";
 
 const httplink = new HttpLink({
     uri: "/api/graphql"
@@ -11,7 +12,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
     operation.setContext(({ headers = {} }) => ({
         headers: {
             ...headers,
-            authorization: localStorage.getItem('token') || null
+            authorization: 'JWT ' + getToken()
         }
     }))
     return forward(operation);

@@ -3,7 +3,8 @@ import moment from "moment"
 import { 
     withStyles, StyleRulesCallback, WithStyles,
     Drawer, Paper, Typography,
-    Dialog, DialogTitle, Button
+    Dialog, DialogTitle, Button, IconButton,
+    Toolbar,
 } from "material-ui"
 import { DialogProps } from "material-ui/Dialog";
 
@@ -261,8 +262,12 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
         const { open } = this.props;
 
         return (
-            <Dialog open maxWidth={false} fullWidth>
-                <DialogTitle classes={{ root: this.props.classes.DialogTitle }}>Quelle activité ?</DialogTitle>
+            <Dialog open={this.props.open} maxWidth={false} fullWidth>
+                <Toolbar classes={{ root: this.props.classes.DialogTitle }}>
+                    <DialogTitle style={{ flex: 1 }}>Quelle activité ?</DialogTitle>
+                    <IconButton onClick={this.props.onClose} ><i className="fa fa-times" /></IconButton>
+                </Toolbar>
+
                 <div className={this.props.classes.PopUpFrame}>
                     {this.renderDrawer()}
                     <main className={this.props.classes.main}>

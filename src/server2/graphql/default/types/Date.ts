@@ -1,8 +1,15 @@
 import { GraphQLScalarType } from "graphql"
+import * as moment from "moment"
 
 export const ScalarDate = new GraphQLScalarType({
     name: "Date",
-    serialize: (value: Date) => { return value.toISOString(); },
-    parseValue: (value) => { return new Date(value); },
-    parseLiteral: () => null
+    description: "Date custom scalar type",
+    serialize: (value: Date | string) => { return moment(value).toISOString(); },
+    parseValue: (value) => { return moment(value).toDate(); },
+    parseLiteral: (ast) => {
+        if (ast.kind === "IntValue") {
+            return parseInt(ast.value, 10); // ast value is always in string format
+        }
+        return null;
+    },
 })

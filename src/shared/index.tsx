@@ -41,6 +41,8 @@ const theme = createMuiTheme({
     }
 })
 
+require("./index.scss");
+
 export default class Application extends React.PureComponent<any, any>
 {
     render(){

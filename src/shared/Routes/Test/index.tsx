@@ -13,7 +13,7 @@ import QueueAnim from "rc-queue-anim"
 import { PermissionsList } from "@shared/Services/Auth/permissions";
 
 import ActivitiesList from "@shared/Components/Components/Lists/ActivitiesList"
-import ActivitiesPopUp from "@shared/Components/Components/Popups/ActivitiesPopup";
+import ActivitiesPopUp from "@shared/Components/Connected/Popups/ActivitiesPopup";
 
 import DataTable from "@shared/Components/Commons/DataTable"
 
@@ -21,13 +21,25 @@ require("./index.scss");
 
 export class TestComponent extends React.PureComponent<any, any>
 {
+    state = {
+      open: false 
+    }
     render(){
         return (
             <div>
-                
+                <Button onClick={() => { this.setState({ open: true }) }}>Click here !</Button>
                 <ActivitiesPopUp 
-                  open={true}
-                  sections={[
+                  open={this.state.open}
+                  onClose={() => { this.setState({ open: false }) }}
+                />
+                
+            </div>
+        )
+    }
+}
+
+/*
+sections={[
                     {
                       "id": 1,
                       "nom": "President",
@@ -275,12 +287,7 @@ export class TestComponent extends React.PureComponent<any, any>
                       }
                     }
                   ]}
-                />
-                
-            </div>
-        )
-    }
-}
+*/
 
 export default class Test extends React.PureComponent<any, any>
 {

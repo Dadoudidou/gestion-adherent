@@ -46,7 +46,7 @@ class SectionTarifs extends React.PureComponent<SectionTarifsProps, any>
     static dureeTarif = (tarif: APIObjects.Tarif): string => {
         let _desc = "";
         if(tarif.restriction_date_debut && tarif.restriction_date_fin){
-            _desc = `du ${moment(tarif.restriction_date_debut).format("ll")} au ${moment(tarif.restriction_date_fin).format("ll")}`;
+            _desc = `du ${moment(tarif.restriction_date_debut).utc().format("ll")} au ${moment(tarif.restriction_date_fin).utc().format("ll")}`;
         } else {
             _desc = "Tarif annuel"
         }
