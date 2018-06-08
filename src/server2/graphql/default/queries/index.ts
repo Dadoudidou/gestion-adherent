@@ -2,6 +2,7 @@ import { GraphQLObjectType } from "graphql";
 
 import { QuerySystem } from "./system";
 import { QueryAdmin } from "./admin"
+import { QueryMember } from "./member";
 
 export const Query = new GraphQLObjectType({
     name: "Query",
@@ -13,6 +14,10 @@ export const Query = new GraphQLObjectType({
         admin: {
             type: QueryAdmin,
             resolve: () => "QueryAdmin"
+        },
+        member: {
+            type: QueryMember,
+            resolve: () => "QueryMember"
         }
     }
 })

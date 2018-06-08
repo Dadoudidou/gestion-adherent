@@ -16,7 +16,7 @@ export type AdherentLicenceType = {
 
     getTarif: () => Promise<TarifLicenceType>
     getAdherent: () => Promise<AdherentType>
-}
+} & Sequelize.Instance<any>
 
 export type AdherentLicenceDBSet = {
     adherentLicences: Sequelize.Model<AdherentLicenceType, any>

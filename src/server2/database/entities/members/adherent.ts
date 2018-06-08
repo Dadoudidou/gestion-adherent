@@ -25,7 +25,7 @@ export type AdherentType = {
     getDocuments: (opt?: Sequelize.FindOptions<DocumentType>) => Promise<DocumentType[]>
     getLicences: (opt?: Sequelize.FindOptions<AdherentLicenceType>) => Promise<AdherentLicenceType[]>
     getAdhesions: (opt?: Sequelize.FindOptions<AdhesionType>) => Promise<AdhesionType[]>
-}
+} & Sequelize.Instance<any>
 
 export type AdherentDBSet = {
     adherents: Sequelize.Model<AdherentType, any>

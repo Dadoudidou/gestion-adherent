@@ -13,7 +13,7 @@ export type DocumentType = {
     document: any
     validite: string
     adherent_adherent_id: number
-}
+} & Sequelize.Instance<any>
 
 export type DocumentDBSet = {
     documents: Sequelize.Model<DocumentType, any>

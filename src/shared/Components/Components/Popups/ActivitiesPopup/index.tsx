@@ -46,7 +46,8 @@ const styles: StyleRulesCallback<ActivitiesPopupClassKey> = theme => ({
 type ActivitiesPopupProps = {
     sections: APIObjects.ActiviteSection[]
     open: boolean
-    onSave?: (section: APIObjects.ActiviteSection, tarif: APIObjects.Tarif, sessions: APIObjects.ActiviteSession[]) => void
+    adhesion?: APIObjects.Adherent_Adhesion
+    onSave?: (adhesion: APIObjects.Adherent_Adhesion) => void
     onClose?: () => void
 } & WithStyles<ActivitiesPopupClassKey>
 
@@ -62,7 +63,7 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
 
     static defaultProps: Partial<ActivitiesPopupProps> = {
         onClose: () => {},
-        onSave: () => { console.log("Save") }
+        onSave: () => {}
     }
 
     constructor(props){
@@ -165,6 +166,15 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
         return _tarifs;
     }
 
+    handle_save = () => {
+        this.props.onSave({
+            ...this.props.adhesion,
+            section: this.state.section,
+            tarif: this.state.tarifSelected[0],
+            sessions: this.state.sessionsSelected
+        });
+    }
+
     handle_analyse = () => {
         let _state = this.state;
         _state = {..._state, analyseMessage: null};
@@ -249,7 +259,7 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
                     </Typography>
                     <Button 
                         variant="raised" color="primary" 
-                        onClick={() => { this.props.onSave(this.state.section, this.state.tarifSelected[0], this.state.sessionsSelected) }}
+                        onClick={this.handle_save}
                         disabled={this.state.analyseMessage!=null}>
                         Ajouter l'activité
                     </Button>

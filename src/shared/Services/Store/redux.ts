@@ -16,7 +16,7 @@ let _asyncReducers: {[key:string]:Reducer<any>} = {};
 
 export const injectReducer = (reducer: { [key:string]: Reducer<any> }) => {
     _asyncReducers = { ..._asyncReducers, ...reducer }
-    store.replaceReducer(combineReducers(_asyncReducers));
+    store.replaceReducer(combineReducers(_asyncReducers) as any);
 }
 
 export default store;

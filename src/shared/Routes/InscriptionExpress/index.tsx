@@ -14,7 +14,7 @@ import {
 import HeaderBar from "./Components/HeaderBar"
 import StepperBar from "./Components/StepperBar"
 import SwipeableViews from 'react-swipeable-views';
-import ViewAdherent from "./Components/ViewAdherent"
+import ViewAdherent from "./Components/StepAdherent"
 import ViewFacture from "./Components/ViewFacture"
 
 import QueueAnim from "rc-queue-anim"

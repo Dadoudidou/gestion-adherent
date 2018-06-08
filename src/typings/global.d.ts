@@ -86,4 +86,45 @@ declare namespace APIObjects {
     }>
     //#endregion
 
+    //#region MEMBERS
+
+    type Adherent = Partial<{
+        __id: number
+        id: number
+        nom: string
+        prenom: string
+        datenaissance: Date
+        male: boolean
+        adresse: string
+        codepostal: string
+        ville: string
+        numero_licence: string
+        telephone_fixe: string
+        telephone_mobile: string
+        email: string
+        adhesions: Adherent_Adhesion[]
+        documents: Document[]
+    }>
+
+    type Adherent_Adhesion = Partial<{
+        __id: number
+        id: number
+        valide: boolean
+        adherent: Adherent
+        section: ActiviteSection
+        tarif: Tarif
+        sessions: ActiviteSession[]
+    }>
+
+    type Document = Partial<{
+        __id: number
+        id: number
+        type: string
+        date_creation: Date
+        libelle: string
+        document: any
+        validite: string
+    }>
+
+    //#endregion
 }

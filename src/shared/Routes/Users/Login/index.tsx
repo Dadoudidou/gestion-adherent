@@ -123,6 +123,7 @@ class Login extends React.PureComponent<LoginProps, LoginState>
                                             <TextField 
                                                 fullWidth
                                                 label="Login"
+                                                autoComplete="username"
                                                 autoFocus
                                                 value={this.state.user || ""}
                                                 onChange={event => this.setState({ 
@@ -140,6 +141,7 @@ class Login extends React.PureComponent<LoginProps, LoginState>
                                                 fullWidth
                                                 label="Mot de passe"
                                                 type="password"
+                                                autoComplete="current-password"
                                                 value={this.state.pwd || ""}
                                                 onChange={event => this.setState({ 
                                                     ...this.state, 
