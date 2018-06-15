@@ -6,6 +6,8 @@ import {
     StyleRulesCallback, withStyles, WithStyles, Button, IconButton
 } from "material-ui"
 import { GridProps } from "material-ui/Grid";
+import { descriptionTarif, dureeTarif } from "../../Utils/Tarifs";
+
 
 
 type classkey = "section" | "headSection" | "flex"
@@ -70,10 +72,52 @@ export class ListAdherentActivites extends React.PureComponent<ListAdherentActiv
                                 <List>
                                     {_adhesions.map(adhesion => {
                                         return (
-                                            <ListItem key={adhesion.__id}>
+                                            <ListItem key={adhesion.__id} button>
                                                 <ListItemText 
                                                     primary={adhesion.section.nom} 
-                                                    secondary={`${adhesion.section.activite.categorie.nom} / ${adhesion.section.activite.nom}`}
+                                                    secondary={(
+                                                        <div>
+                                                            <Typography variant="caption">
+                                                                {adhesion.section.activite.categorie.nom} / {adhesion.section.activite.nom}
+                                                            </Typography>
+                                                            {!adhesion.tarif.nbsessionmin && !adhesion.tarif.nbsessionmax &&
+                                                                <div key="">
+                                                                    {adhesion.section.sessions.map(session => {
+                                                                        let _dateD = moment().day(session.jour).startOf("day").add(moment.duration(session.heure_debut));
+                                                                        let _dateF = moment().day(session.jour).startOf("day").add(moment.duration(session.heure_fin));
+                                                                        return (
+                                                                            <Typography key={session.id}>
+                                                                                {_dateD.format("dddd")} de {_dateD.format("LT")} à {_dateF.format("LT")} ({session.lieu.nom})
+                                                                            </Typography>
+                                                                        )
+                                                                    })}
+                                                                </div>
+                                                            }
+                                                            {(adhesion.tarif.nbsessionmin || adhesion.tarif.nbsessionmax) &&
+                                                                <div>
+                                                                    {adhesion.sessions.map(session => {
+                                                                        let _dateD = moment().day(session.jour).startOf("day").add(moment.duration(session.heure_debut));
+                                                                        let _dateF = moment().day(session.jour).startOf("day").add(moment.duration(session.heure_fin));
+                                                                        return (
+                                                                            <Typography key={session.id}>
+                                                                                {_dateD.format("dddd")} de {_dateD.format("LT")} à {_dateF.format("LT")} ({session.lieu.nom})
+                                                                            </Typography>
+                                                                        )
+                                                                    })}
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    )}
+                                                />
+                                                <ListItemText 
+                                                    style={{ textAlign: "right" }}
+                                                    primary={`${adhesion.tarif.montant} €`}
+                                                    secondary={(
+                                                        <div>
+                                                            <Typography variant="caption">{dureeTarif(adhesion.tarif)}</Typography>
+                                                            <Typography variant="caption">{descriptionTarif(adhesion.tarif)}</Typography>
+                                                        </div>
+                                                    )}
                                                 />
                                             </ListItem>
                                         )

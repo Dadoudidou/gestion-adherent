@@ -13,7 +13,7 @@ type ListAdherentsProps = {
     adherents?: APIObjects.Adherent[]
     adherentSelected?: APIObjects.Adherent
     onSelectAdherent?: (adherent: APIObjects.Adherent) => void
-    onAddAdherent?: () => void
+    onAddAdherent?: (adherent?: APIObjects.Adherent) => void
 }
 
 type classKey = "ListItemSelected"
@@ -30,6 +30,20 @@ class ListAdherents extends React.PureComponent<ListAdherentsProps & WithStyles<
         adherents: [],
         onSelectAdherent: () => {},
         onAddAdherent: () => {}
+    }
+
+    handle_onAddAdherent = () => {
+        let _adherent: APIObjects.Adherent = undefined;
+        if(this.props.adherents.length > 0){
+            _adherent = {
+                adresse: this.props.adherents[0].adresse,
+                ville: this.props.adherents[0].ville,
+                codepostal: this.props.adherents[0].codepostal,
+                telephone_fixe: this.props.adherents[0].telephone_fixe,
+                nom: this.props.adherents[0].nom
+            }
+        }
+        this.props.onAddAdherent(_adherent);
     }
 
     render(){
@@ -55,7 +69,7 @@ class ListAdherents extends React.PureComponent<ListAdherentsProps & WithStyles<
                         )
                     })}
                 </List>
-                <Button fullWidth variant="flat" color="primary" onClick={this.props.onAddAdherent}>
+                <Button fullWidth variant="flat" color="primary" onClick={this.handle_onAddAdherent}>
                     Ajouter un adhérent
                 </Button>
             </div>
@@ -70,9 +84,9 @@ export default connect<ListAdherentsProps, ListAdherentsProps, any, IEReducer>(
         adherentSelected: state.InscriptionExpress.adherents[state.InscriptionExpressStepAdherents.adherentSelected]
     }),
     (dispatch) => ({
-        onAddAdherent: () => {
+        onAddAdherent: (adherent) => {
             let __id = Date.now();
-            dispatch(IE.Actions.addAdherent({ __id }));
+            dispatch(IE.Actions.addAdherent({ __id, ...adherent }));
             setTimeout(() => {
                 let _state: IEReducer = ReduxStore.getState() as any;
                 let _index = _state.InscriptionExpress.adherents.map(x => x.__id).indexOf(__id);

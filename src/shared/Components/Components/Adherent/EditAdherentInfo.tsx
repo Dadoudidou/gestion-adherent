@@ -6,6 +6,8 @@ import {
 } from "material-ui"
 import { GridProps } from "material-ui/Grid";
 
+import AutoCompleteAdherents from "@shared/Components/Connected/Adherent/SearchAdherentsAutoComplete"
+
 
 type classkey = "section" | "headSection"
 
@@ -40,16 +42,27 @@ export class EditAdherentInfo extends React.PureComponent<EditAdherentInfoProps 
                     <Typography variant="headline" className={this.props.classes.headSection}><i className="fa fa-user" /> Profil</Typography>
                     <Grid container {..._commonContainer}>
                         <Grid item {..._commonItem}>
-                            <TextField 
+                            <AutoCompleteAdherents 
+                                textFieldProps={{
+                                    label: "Nom",
+                                    autoFocus: adherent.nom == undefined || adherent.nom == ""
+                                }}
+                                inputValue={adherent.nom || ""}
+                                onInputValueChange={value => onUpdateAdherent({...adherent, nom: value})}
+                                onSelect={item => { onUpdateAdherent({ ...adherent, ...item }) }}
+                            />
+                            {/*<TextField 
                                 fullWidth
+                                autoFocus={adherent.nom == undefined || adherent.nom == ""}
                                 label="Nom"
                                 value={adherent.nom || ""}
                                 onChange={(event) => onUpdateAdherent({...adherent, nom: event.target.value}) }
-                            />
+                            />*/}
                         </Grid>
                         <Grid item {..._commonItem}>
                             <TextField 
                                 fullWidth
+                                autoFocus={(adherent.prenom == undefined || adherent.prenom == "") && !(adherent.nom == undefined || adherent.nom == "")}
                                 label="Prénom"
                                 value={adherent.prenom || ""}
                                 onChange={(event) => onUpdateAdherent({...adherent, prenom: event.target.value}) }
@@ -60,11 +73,12 @@ export class EditAdherentInfo extends React.PureComponent<EditAdherentInfoProps 
                                 fullWidth
                                 type="Date"
                                 label="Date de naissance"
-                                value={moment(adherent.datenaissance).format("YYYY-MM-DD") || ""}
+                                value={adherent.datenaissance ? moment(adherent.datenaissance).format("YYYY-MM-DD") : ""}
                                 onChange={(event) => {
                                     console.log("update date", event.target.value);
                                     onUpdateAdherent({...adherent, datenaissance: moment(event.target.value).toDate()}) 
                                 }}
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                     </Grid>

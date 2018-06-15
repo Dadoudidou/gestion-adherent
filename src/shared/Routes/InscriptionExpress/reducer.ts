@@ -78,7 +78,6 @@ export const reducer = (state: IEState = InitialState, action: IAction<any>): IE
     }
 
     if(isType(action, Actions.updateAdherent)){
-        console.log("Update adherent", state, action.payload)
         let _index = state.adherents.map(x => x.__id).indexOf(action.payload.__id);
         if(_index > -1){
             return {

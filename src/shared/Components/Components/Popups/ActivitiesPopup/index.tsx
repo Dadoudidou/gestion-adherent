@@ -4,7 +4,7 @@ import {
     withStyles, StyleRulesCallback, WithStyles,
     Drawer, Paper, Typography,
     Dialog, DialogTitle, Button, IconButton,
-    Toolbar,
+    Toolbar, TextField
 } from "material-ui"
 import { DialogProps } from "material-ui/Dialog";
 
@@ -56,6 +56,7 @@ type ActivitiesPopupState = {
     sessionsSelected: APIObjects.ActiviteSession[]
     tarifSelected: APIObjects.Tarif[]
     analyseMessage: string
+    searchLabel: string
 }
 
 class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, ActivitiesPopupState>
@@ -73,6 +74,7 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
             sessionsSelected: [],
             tarifSelected: [],
             analyseMessage: "",
+            searchLabel: undefined
         };
     }
 
@@ -209,6 +211,11 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
     }
 
     renderDrawer = () => {
+        let _sections = this.props.sections;
+        if(this.state.searchLabel && this.state.searchLabel != ""){
+            _sections = this.props.sections
+                .filter(x => x.nom.toLowerCase().indexOf(this.state.searchLabel.toLowerCase()) > -1);
+        }
         return (
             <Drawer 
                 variant="permanent" 
@@ -219,8 +226,15 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
                     paper: this.props.classes.DrawerPaper,
                     docked: this.props.classes.Drawer
                 }}>
+                <TextField 
+                    placeholder="Rechercher..."
+                    InputProps={{ disableUnderline: true }}
+                    fullWidth
+                    value={this.state.searchLabel || ""}
+                    onChange={(event) => { this.setState({ ...this.state, searchLabel: event.target.value }) }}
+                />
                 <ActivitiesList 
-                    sections={this.props.sections}
+                    sections={_sections}
                     sectionSelected={this.state.section}
                     onSelectSection={this.handle_onSelectSection}
                 />

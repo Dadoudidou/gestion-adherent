@@ -37,7 +37,15 @@ jss.setup(jss_preset_default);
 import { MuiThemeProvider, createMuiTheme, colors } from "material-ui";
 const theme = createMuiTheme({
     palette: {
-        primary: colors.blueGrey
+        primary: colors.blue,
+        secondary: colors.deepOrange
+    },
+    overrides: {
+        MuiMenuItem: {
+            selected: {
+                backgroundColor: `${colors.deepOrange["100"]} !important`
+            }
+        }
     }
 })
 
