@@ -15,11 +15,15 @@ import HeaderBar from "./Components/HeaderBar"
 import StepperBar from "./Components/StepperBar"
 import SwipeableViews from 'react-swipeable-views';
 import ViewAdherent from "./Components/StepAdherent"
-import ViewFacture from "./Components/ViewFacture"
+import ViewFacture from "./Components/StepFacture"
 
 import QueueAnim from "rc-queue-anim"
 import { PermissionsList } from "@shared/Services/Auth/permissions";
 
+
+import { connect } from "react-redux"
+import { IEReducer } from "./routes"
+import { Actions } from "./reducer"
 
 
 
@@ -32,8 +36,9 @@ const styles: StyleRulesCallback<classKey> = theme => ({
 })
 
 type InscriptionExpressPageProps = {
-
-} & WithStyles<classKey>
+    activeStep: number
+    onSelectStep?: (step: number) => void
+}
 
 type InscriptionExpressState = {
     activeStep: number
@@ -44,7 +49,7 @@ export type InscriptionExpressFormData = {
     adherents: any[]
 }
 
-class InscriptionExpressPage extends React.PureComponent<InscriptionExpressPageProps, InscriptionExpressState>
+class InscriptionExpressPage extends React.PureComponent<InscriptionExpressPageProps & WithStyles<classKey>, InscriptionExpressState>
 {
     constructor(props){
         super(props);
@@ -62,10 +67,13 @@ class InscriptionExpressPage extends React.PureComponent<InscriptionExpressPageP
                 <DocumentTitle title="Inscription Express">
                     <div>
                         <HeaderBar />
-                        <StepperBar activeStep={this.state.activeStep} />
+                        <StepperBar 
+                            activeStep={this.props.activeStep} 
+                            onSelectStep={this.props.onSelectStep}
+                        />
                         <SwipeableViews
                             axis="x"
-                            index={this.state.activeStep}
+                            index={this.props.activeStep}
                             cellPadding={16}
                         >
                             <div className={this.props.classes.slide}><ViewAdherent /></div>
@@ -78,4 +86,16 @@ class InscriptionExpressPage extends React.PureComponent<InscriptionExpressPageP
     }
 }
 
-export default withStyles(styles)(InscriptionExpressPage)
+export default connect<InscriptionExpressPageProps, Partial<InscriptionExpressPageProps>, any, IEReducer>(
+    (state: IEReducer) => ({
+        activeStep: state.InscriptionExpress.step
+    }),
+    (dispatch) => ({
+        onSelectStep: (step) => {
+            dispatch(Actions.gotoStep(step))
+        }
+    })
+)(
+    withStyles(styles)(InscriptionExpressPage)
+)
+

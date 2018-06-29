@@ -75,7 +75,7 @@ export class EditAdherentInfo extends React.PureComponent<EditAdherentInfoProps 
                                 label="Date de naissance"
                                 value={adherent.datenaissance ? moment(adherent.datenaissance).format("YYYY-MM-DD") : ""}
                                 onChange={(event) => {
-                                    console.log("update date", event.target.value);
+                                    //console.log("update date", event.target.value);
                                     onUpdateAdherent({...adherent, datenaissance: moment(event.target.value).toDate()}) 
                                 }}
                                 InputLabelProps={{ shrink: true }}

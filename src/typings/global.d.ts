@@ -1,6 +1,53 @@
 
 declare namespace APIObjects {
     
+    //#region COMPTABILITE
+
+    type Tiers = Partial<{
+        __id: number
+        id: number
+        nom: string
+        prenom: string
+        adresse: string
+        codepostal: string
+        ville: string
+        email:string
+        telephone_fixe: string
+        telephone_mobile: string
+        factures: Facture[]
+    }>
+
+    type Facture = Partial<{
+        __id: number
+        id: number
+        date_creation: Date
+        details: FactureDetail[]
+        paiements: FacturePaiement[]
+        tiers: Tiers
+    }>
+
+    type FactureDetail = Partial<{
+        __id: number
+        id: number
+        libelle: string
+        description: string
+        montant: number
+        ordre: number
+    }>
+
+    type FacturePaiement = Partial<{
+        __id: number
+        id: number
+        type: string
+        montant: number
+        date_banque: Date
+        reference: string
+        banque: string
+        valide: boolean
+    }>
+
+    //#endregion
+
     //#region SYSTEM
     type User = Partial<{
 

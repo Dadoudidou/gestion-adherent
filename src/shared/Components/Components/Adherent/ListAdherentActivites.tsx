@@ -29,6 +29,7 @@ export type ListAdherentActivitesProps = {
     campagnes?: APIObjects.Campagne[]
     adherent?: APIObjects.Adherent,
     onClickAddActivite?: (campagne: APIObjects.Campagne) => void
+    onSelectActivite?: (adhesion?: APIObjects.Adherent_Adhesion) => void
 }
 
 export class ListAdherentActivites extends React.PureComponent<ListAdherentActivitesProps & WithStyles<classkey>, any>
@@ -36,7 +37,8 @@ export class ListAdherentActivites extends React.PureComponent<ListAdherentActiv
     static defaultProps: ListAdherentActivitesProps = {
         adherent: undefined,
         campagnes: [],
-        onClickAddActivite: () => {}
+        onClickAddActivite: () => {},
+        onSelectActivite: () => {}
     }
 
     render(){
@@ -72,9 +74,15 @@ export class ListAdherentActivites extends React.PureComponent<ListAdherentActiv
                                 <List>
                                     {_adhesions.map(adhesion => {
                                         return (
-                                            <ListItem key={adhesion.__id} button>
+                                            <ListItem 
+                                                key={adhesion.__id} 
+                                                button
+                                                onClick={() => { this.props.onSelectActivite(adhesion); }}
+                                            >
                                                 <ListItemText 
-                                                    primary={adhesion.section.nom} 
+                                                    disableTypography
+                                                    
+                                                    primary={(<Typography>{adhesion.section.nom}</Typography>)}
                                                     secondary={(
                                                         <div>
                                                             <Typography variant="caption">
@@ -110,8 +118,9 @@ export class ListAdherentActivites extends React.PureComponent<ListAdherentActiv
                                                     )}
                                                 />
                                                 <ListItemText 
+                                                    disableTypography
                                                     style={{ textAlign: "right" }}
-                                                    primary={`${adhesion.tarif.montant} €`}
+                                                    primary={(<Typography>{`${adhesion.tarif.montant} €`}</Typography>)}
                                                     secondary={(
                                                         <div>
                                                             <Typography variant="caption">{dureeTarif(adhesion.tarif)}</Typography>

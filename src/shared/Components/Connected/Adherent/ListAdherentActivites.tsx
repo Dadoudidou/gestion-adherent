@@ -11,6 +11,7 @@ window["deepExtend"] = deepExtend;
 type ComponentProps = {
     adherent: APIObjects.Adherent,
     onClickAddActivite?: (campagne: APIObjects.Campagne) => void
+    onSelectActivite?: (adhesion?: APIObjects.Adherent_Adhesion) => void
 }
 
 

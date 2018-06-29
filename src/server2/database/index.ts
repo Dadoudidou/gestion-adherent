@@ -16,13 +16,18 @@ import { Entity_TarifLicence, TarifLicenceDBSet } from "./entities/admin/tarif_l
 import { AdherentLicenceDBSet, Entity_AdherentLicence } from "./entities/members/licence";
 import { TarifDBSet, Entity_Tarif } from "./entities/admin/tarif";
 import { AdhesionDBSet, Entity_Adhesion } from "./entities/members/adhesion";
+import { Entity_Facture, FactureDBSet } from "./entities/comptabilite/facture";
+import { Entity_FactureDetail, FactureDetailDBSet } from "./entities/comptabilite/facture_detail";
+import { Entity_FacturePaiement, FacturePaiementDBSet } from "./entities/comptabilite/facture_paiement";
+import { Entity_Tiers, TiersDBSet } from "./entities/comptabilite/tiers";
 
 export type DBModels = { } &
     SaisonDBSet & TarifLicenceDBSet & TarifDBSet &
     ActCategorieDBSet & ActActiviteDBSet & ActSectionDBSet & ActSessionDBSet &
     AdherentDBSet & DocumentDBSet & AdherentLicenceDBSet & AdhesionDBSet &
     LieuDBSet &
-    UserDBSet & GroupDBSet & PermissionDBSet
+    UserDBSet & GroupDBSet & PermissionDBSet &
+    FactureDBSet & FactureDetailDBSet & FacturePaiementDBSet & TiersDBSet
 
 class DBContext {
 
@@ -41,7 +46,11 @@ class DBContext {
         new Entity_TarifLicence(),
         new Entity_AdherentLicence(),
         new Entity_Tarif(),
-        new Entity_Adhesion()
+        new Entity_Adhesion(),
+        new Entity_Facture(),
+        new Entity_FactureDetail(),
+        new Entity_FacturePaiement(),
+        new Entity_Tiers(),
     ]
     private _sequelize: Sequelize.Sequelize
 

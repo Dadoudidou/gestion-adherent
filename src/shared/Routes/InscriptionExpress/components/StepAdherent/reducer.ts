@@ -6,7 +6,7 @@ const _rootActions = "IEActions/StepAdherentsActions/"
 export const Actions = {
     selectAdherent: actionCreator<number>(`${_rootActions}selectAdherent`),
     selectTab: actionCreator<IEViewAdherentTabValue>(`${_rootActions}selectTab`),
-    openPopupActivites: actionCreator<boolean | { campagne_id: number }>(`${_rootActions}openPopupActivites`),
+    openPopupActivites: actionCreator<boolean | { campagne_id: number, adhesion?: APIObjects.Adherent_Adhesion }>(`${_rootActions}openPopupActivites`),
 }
 
 export type IEState = {
@@ -14,6 +14,7 @@ export type IEState = {
     adherentSelected: number
     popupActivitesOpened: boolean
     popupCampagne_id?: number
+    popupAdhesion_Selected?: APIObjects.Adherent_Adhesion
 }
 
 export const InitialState: IEState = {
@@ -46,7 +47,8 @@ export const reducer = (state: IEState = InitialState, action: IAction<any>): IE
         return {
             ...state,
             popupActivitesOpened: (_obj) ? true : false,
-            popupCampagne_id: (_obj) ? _obj.campagne_id : undefined
+            popupCampagne_id: (_obj) ? _obj.campagne_id : undefined,
+            popupAdhesion_Selected: (_obj) ? _obj.adhesion : undefined
         }
     }
     

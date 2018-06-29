@@ -25,7 +25,8 @@ type ViewAdherentProps = {
     
     popupActivitesOpened?: boolean
     popupCampagne_id?: number
-    OpenPopupActivites?: (open: boolean | { campagne_id: number }) => void
+    popupAdhesion?: APIObjects.Adherent_Adhesion
+    OpenPopupActivites?: (open: boolean | { campagne_id: number, adhesion?: APIObjects.Adherent_Adhesion }) => void
 }
 
 type classKey = "tabContainer"
@@ -85,6 +86,13 @@ class ViewAdherent extends React.PureComponent<ViewAdherentProps & WithStyles<cl
         this.props.OpenPopupActivites(false);
     }
 
+    handle_onSelectActivite = (adhesion: APIObjects.Adherent_Adhesion) => {
+        this.props.OpenPopupActivites({
+            campagne_id: adhesion.section.activite.categorie.campagne.id,
+            adhesion: adhesion
+        });
+    }
+
     render(){
         if(!this.props.adherentSelected) return <div></div>
         return (
@@ -104,11 +112,13 @@ class ViewAdherent extends React.PureComponent<ViewAdherentProps & WithStyles<cl
                         <ListAdherentActivites 
                             adherent={this.props.adherentSelected}
                             onClickAddActivite={this.handle_onClickAddActivite}
+                            onSelectActivite={this.handle_onSelectActivite}
                         />
                     }
                 </div>
                 <ActivitiesPopup
                     campagne_id={this.props.popupCampagne_id}
+                    adhesion={this.props.popupAdhesion}
                     open={this.props.popupActivitesOpened}
                     onClose={() => { this.props.OpenPopupActivites(false) }}
                     onSave={this.handle_onSaveAddActivite}
@@ -124,7 +134,8 @@ export default connect<ViewAdherentProps, ViewAdherentProps, any, IEReducer>(
         adherentSelected: state.InscriptionExpress.adherents[state.InscriptionExpressStepAdherents.adherentSelected],
         selectedTab: state.InscriptionExpressStepAdherents.tab_index,
         popupActivitesOpened: state.InscriptionExpressStepAdherents.popupActivitesOpened,
-        popupCampagne_id: state.InscriptionExpressStepAdherents.popupCampagne_id
+        popupCampagne_id: state.InscriptionExpressStepAdherents.popupCampagne_id,
+        popupAdhesion: state.InscriptionExpressStepAdherents.popupAdhesion_Selected
     }),
     (dispatch) => ({
         onUpdateAdherent: (adherent) => { dispatch(IE.Actions.updateAdherent(adherent)) },

@@ -85,7 +85,27 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
     }
 
     componentWillReceiveProps(nextProps: ActivitiesPopupProps){
+        let _state = this.state;
+        if(nextProps.open != this.props.open){
+            _state = {
+                ..._state,
+                section: (nextProps.sections && nextProps.sections.length > 0) ? nextProps.sections[0] : null,
+                sessionsSelected: [],
+                tarifSelected: [],
+                analyseMessage: ""
+            }
+        }
+        if(nextProps.adhesion && nextProps.adhesion != this.props.adhesion){
+            _state = {
+                ..._state,
+                section: nextProps.adhesion.section,
+                sessionsSelected: nextProps.adhesion.sessions,
+                tarifSelected: [nextProps.adhesion.tarif],
+                analyseMessage: ""
+            }
+        }
 
+        if(this.state != _state) this.setState(_state);
     }
 
     handle_onSelectSection = (section: APIObjects.ActiviteSection) => {
@@ -275,7 +295,7 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
                         variant="raised" color="primary" 
                         onClick={this.handle_save}
                         disabled={this.state.analyseMessage!=null}>
-                        Ajouter l'activité
+                        {this.props.adhesion ? "Modifier l'activité" : "Ajouter l'activité"}
                     </Button>
                 </div>
             </div>
@@ -288,7 +308,9 @@ class ActivitiesPopup extends React.PureComponent<ActivitiesPopupProps, Activiti
         return (
             <Dialog open={this.props.open} maxWidth={false} fullWidth>
                 <Toolbar classes={{ root: this.props.classes.DialogTitle }}>
-                    <DialogTitle style={{ flex: 1 }}>Quelle activité ?</DialogTitle>
+                    <DialogTitle style={{ flex: 1 }}>
+                        {this.props.adhesion ? "Modifier l'activité" : "Ajouter une activité"}
+                    </DialogTitle>
                     <IconButton onClick={this.props.onClose} ><i className="fa fa-times" /></IconButton>
                 </Toolbar>
 
