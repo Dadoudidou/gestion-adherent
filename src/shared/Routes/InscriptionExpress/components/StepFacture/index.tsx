@@ -2,11 +2,13 @@ import * as React from "react";
 import moment from "moment"
 import {
     StyleRulesCallback, withStyles, WithStyles,
-    Grid, Paper, Typography
+    Grid, Paper, Typography, Button
 } from "material-ui"
 
 import {connect} from "react-redux"
 import { IEReducer } from "./../../routes"
+import Store from "@shared/Services/Store/redux"
+import { Actions } from "./../../reducer"
 
 import ElementsAFacturer from "./comps/ElementsAFacturer"
 
@@ -25,11 +27,15 @@ const styles: StyleRulesCallback<classKey> = theme => ({
 
 type StepFactureProps = {
     adherents?: APIObjects.Adherent[]
+    facture?: APIObjects.Facture
+    onDeleteItem?: (item: APIObjects.FactureDetail) => void
+    onUpdateFacture?: (facture: APIObjects.Facture) => void
 }
 
 class StepFacture extends React.PureComponent<StepFactureProps & WithStyles<classKey>, any>
 {
-    render(){
+    componentWillMount(){
+        // -- création d'un objet Facture
         let _facture: APIObjects.Facture = { 
             details: [],
             paiements: []
@@ -56,42 +62,38 @@ class StepFacture extends React.PureComponent<StepFactureProps & WithStyles<clas
                     ordre: _ordre,
                     libelle: `${adherent.prenom} - ${adhesion.section.nom}`,
                     description: _description,
-                    montant: adhesion.tarif.montant
+                    montant: adhesion.tarif.montant,
+                    __id: _ordre,
+                    __canDeleted: false
                 })
                 _ordre++;
             })
         })
+        this.props.onUpdateFacture(_facture);
+    }
 
+    render(){
+        if(!this.props.facture) return <div></div>
+        
+        let _tiers: APIObjects.Tiers[] = []
+        
 
         return (
             <div>
                 <Grid container justify="center" spacing={24}>
                     <Grid item xl={6} lg={6} md={6}>
                         <Facture 
-                            facture={_facture}
+                            facture={this.props.facture}
+                            tiersList={_tiers}
+                            onUpdateFacture={this.props.onUpdateFacture}
                         />
+                        <div style={{ marginTop: "1em", marginBottom: "1em", textAlign: "right" }}>
+                            <Button variant="raised" color="primary">
+                                Passer au règlement
+                            </Button>
+                        </div>
                     </Grid>
                 </Grid>
-                {/*
-                <Grid container justify="center" spacing={24}>
-                    <Grid item xl={6} lg={6} md={6}>
-                            <Grid container direction="row">
-                                <Grid item className={this.props.classes.flex}>
-                                    <Typography>Tiers Payeur</Typography>
-                                </Grid>
-                                <Grid item className={this.props.classes.flex}>
-                                    <Typography>Montant à régler</Typography>
-                                </Grid>
-                            </Grid>
-
-                            <Grid container>
-                                <Grid item className={this.props.classes.flex}>
-                                    <ElementsAFacturer />
-                                </Grid>
-                            </Grid>
-                    </Grid>
-                </Grid>
-                */}
             </div>
         )
     }
@@ -99,9 +101,14 @@ class StepFacture extends React.PureComponent<StepFactureProps & WithStyles<clas
 
 export default connect<StepFactureProps,Partial<StepFactureProps>, any, IEReducer>(
     (state) => ({
-        adherents: state.InscriptionExpress.adherents
+        adherents: state.InscriptionExpress.adherents,
+        facture: state.InscriptionExpress.facture
     }),
-    (dispatch) => ({})
+    (dispatch) => ({
+        onUpdateFacture: (facture) => {
+            dispatch(Actions.setFacture(facture))
+        }
+    })
 ) (
     withStyles(styles)(StepFacture)
 )

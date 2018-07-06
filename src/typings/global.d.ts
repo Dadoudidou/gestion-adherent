@@ -28,6 +28,8 @@ declare namespace APIObjects {
 
     type FactureDetail = Partial<{
         __id: number
+        __canDeleted: boolean
+        __canEdited: boolean
         id: number
         libelle: string
         description: string

@@ -9,6 +9,7 @@ export const Actions = {
     addAdherents: actionCreator<APIObjects.Adherent[]>(`${_rootActions}addAdherents`),
     removeAdherent: actionCreator<APIObjects.Adherent>(`${_rootActions}removeAdherent`),
     updateAdherent: actionCreator<APIObjects.Adherent>(`${_rootActions}updateAdherent`),
+    setFacture: actionCreator<APIObjects.Facture>(`${_rootActions}setFacture`),
     gotoStep: actionCreator<number>(`${_rootActions}gotoStep`),
     nextStep: actionCreator(`${_rootActions}nextStep`),
     previousStep: actionCreator(`${_rootActions}previousStep`),
@@ -16,11 +17,13 @@ export const Actions = {
 
 export type IEState = {
     adherents: APIObjects.Adherent[]
+    facture?: APIObjects.Facture
     step: number
 }
 
 export let InitialState: IEState = {
     adherents: [],
+    facture: undefined,
     step: 0,
 }
 
@@ -89,6 +92,13 @@ export const reducer = (state: IEState = InitialState, action: IAction<any>): IE
                     return action.payload;
                 })
             }
+        }
+    }
+
+    if(isType(action, Actions.setFacture)){
+        return {
+            ...state,
+            facture: action.payload
         }
     }
 
