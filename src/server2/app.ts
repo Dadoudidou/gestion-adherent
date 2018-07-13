@@ -3,6 +3,7 @@ import * as Inert from "inert"
 import { graphiqlHapi, graphqlHapi } from "apollo-server-hapi"
 import * as Boom from "boom";
 import * as Path from "path"
+import * as moment from "moment"
 
 import * as HapiBasicAuth from "hapi-auth-basic"
 import { HapiAuthJWT } from "./utils/auth/plugins/hapi-auth-jwt"
@@ -17,6 +18,8 @@ import routeHandler_Root from "./routes/root"
 import LoggerPlugin from "./utils/logger/hapi-log-plugin";
 import { ReporterConsole } from "./utils/logger/hapi-log-plugin/reporters/console";
 import { ResponseLog } from "@server/utils/logger/hapi-log-plugin/types/ResponseLog";
+
+moment.locale("fr");
 
 let server: Hapi.Server = undefined;
 

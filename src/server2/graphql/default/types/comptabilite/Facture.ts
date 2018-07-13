@@ -22,21 +22,27 @@ export const Facture = new GraphQLObjectType({
             type: Tiers,
             args: {},
             resolve: (root, args, context) => {
-                return root.getTiers();
+                if(root.getTiers) return root.getTiers();
+                if(root["tiers"]) return root["tiers"];
+                return null;
             },
         },
         details: {
             type: new  GraphQLList(FactureDetail),
             args: {},
             resolve: (root, args, context) => {
-                return root.getDetails();
+                if(root.getDetails) return root.getDetails();
+                if(root["details"]) return root["details"];
+                return null;
             },
         },
         paiements: {
             type: new  GraphQLList(FacturePaiement),
             args: {},
             resolve: (root, args, context) => {
-                return root.getPaiements();
+                if(root.getPaiements) return root.getPaiements();
+                if(root["paiements"]) return root["paiements"];
+                return null;
             },
         }
     })

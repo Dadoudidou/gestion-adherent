@@ -1,4 +1,4 @@
-import assign from "object-assign";
+import * as assign from "object-assign";
 
 
 

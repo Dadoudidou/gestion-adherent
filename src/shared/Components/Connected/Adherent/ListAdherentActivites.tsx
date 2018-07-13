@@ -1,6 +1,6 @@
 import * as React from "react"
 import gql from "graphql-tag"
-import deepExtend from "deep-extend"
+import * as deepExtend from "deep-extend"
 import { graphql, ChildDataProps, compose, Query } from "react-apollo"
 
 import * as Queries from "@shared/Components/Connected/Queries";

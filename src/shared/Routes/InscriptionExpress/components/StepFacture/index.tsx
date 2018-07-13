@@ -1,5 +1,5 @@
 import * as React from "react";
-import moment from "moment"
+import * as moment from "moment"
 import {
     StyleRulesCallback, withStyles, WithStyles,
     Grid, Paper, Typography, Button
@@ -14,6 +14,9 @@ import ElementsAFacturer from "./comps/ElementsAFacturer"
 
 import Facture from "@shared/Components/Components/Facture/Facture"
 import { dureeTarif, descriptionTarif } from "../../../../Components/Utils/Tarifs";
+
+import ApolloStore from "@shared/Services/Store/apollo"
+import gql from "graphql-tag"
 
 
 type classKey = "root" | "flex"
@@ -35,41 +38,49 @@ type StepFactureProps = {
 class StepFacture extends React.PureComponent<StepFactureProps & WithStyles<classKey>, any>
 {
     componentWillMount(){
-        // -- création d'un objet Facture
-        let _facture: APIObjects.Facture = { 
-            details: [],
-            paiements: []
-        }
-        let _ordre = 1;
+
+        let _adhesions: APIObjects.Adherent_Adhesion[] = [];
         this.props.adherents.forEach(adherent => {
             adherent.adhesions.forEach(adhesion => {
                 if(adhesion.id) return;
-                let _description = ''
-                _description += `${adhesion.section.activite.categorie.nom} / ${adhesion.section.activite.nom} \n`
-                _description += `${descriptionTarif(adhesion.tarif)} - ${dureeTarif(adhesion.tarif)}\n`
-                if(adhesion.sessions){
-                    adhesion.sessions.concat().sort((a,b) => {
-                        if(a.jour < b.jour) return -1;
-                        if(a.jour > b.jour) return 1;
-                        return 0;
-                    }).forEach(session => {
-                        let _dateD = moment().day(session.jour).startOf("day").add(moment.duration(session.heure_debut));
-                        let _dateF = moment().day(session.jour).startOf("day").add(moment.duration(session.heure_fin));
-                        _description += `${_dateD.format("dddd")} de ${_dateD.format("LT")} à ${_dateF.format("LT")} (${session.lieu.nom})\n`;
-                    })
-                }
-                _facture.details.push({
-                    ordre: _ordre,
-                    libelle: `${adherent.prenom} - ${adhesion.section.nom}`,
-                    description: _description,
-                    montant: adhesion.tarif.montant,
-                    __id: _ordre,
-                    __canDeleted: false
+                _adhesions.push({
+                    adherent: {
+                        id: adherent.id,
+                        nom: adherent.nom,
+                        prenom: adherent.prenom,
+                        datenaissance: adherent.datenaissance
+                    },
+                    tarif: {
+                        id: adhesion.tarif.id
+                    }
                 })
-                _ordre++;
-            })
+            });
+        });
+
+        ApolloStore.query({
+            query: gql`
+                query getFacture($adhesions: [AdhesionInput]) {
+                    comptabilite {
+                        Facture(adhesions: $adhesions){
+                            id, date_creation
+                            details {
+                                id, date_creation, libelle, description, montant, ordre
+                            }
+                            paiements {
+                                id
+                            }
+                        }
+                    }
+                }
+            `,
+            variables: {
+                adhesions: _adhesions
+            },
+            fetchPolicy: 'no-cache'
+        }).then(result => {
+            this.props.onUpdateFacture(result.data.comptabilite.Facture);
         })
-        this.props.onUpdateFacture(_facture);
+
     }
 
     render(){

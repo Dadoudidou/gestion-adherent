@@ -1,4 +1,4 @@
-import moment from "moment";
+import * as moment from "moment";
 
 export const dureeTarif = (tarif: APIObjects.Tarif): string => {
     let _desc = "";
