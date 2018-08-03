@@ -25,7 +25,7 @@ module.exports = {
     },
     externals: [ nodeExternals(), 'pg', 'sqlite3', 'tedious', 'pg-hstore'],
     module: {
-        loaders: [
+        rules: [
             {
                 test: /.tsx?$/,
                 exclude: [ /node_modules/ , path.resolve(__dirname, 'node_modules')],

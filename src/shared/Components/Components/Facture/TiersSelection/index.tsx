@@ -22,6 +22,7 @@ type TiersSelectionProps = {
     tiersSelected?: APIObjects.Tiers
     onSelect?: (tiers: APIObjects.Tiers) => void
     onAddTiers?: (tiers: APIObjects.Tiers) => void
+    readOnly?: boolean
 }
 
 type TiersSelectionState = {
@@ -46,10 +47,14 @@ class TiersSelection extends React.PureComponent<TiersSelectionProps & WithStyle
     anchorElement = undefined
 
     renderNone = () => {
+        let _text = "Créer un tiers";
+        if(this.props.tiersSelected){
+            _text = "Utiliser un autre tiers";
+        }
         return (
             <ListItem button>
                 <ListItemText 
-                    primary={(<span><i className="fa fa-plus" /> Utiliser un autre tiers</span>)}
+                    primary={(<span><i className="fa fa-plus" /> {_text}</span>)}
                     onClick={() => { 
                         this.setState({ 
                             ...this.state,
@@ -67,13 +72,15 @@ class TiersSelection extends React.PureComponent<TiersSelectionProps & WithStyle
         return (
             <div ref={(element) => this.anchorElement = element} style={{position:"relative"}}>
                 <TiersListItem 
-                    selectable
+                    selectable={!this.props.readOnly}
                     tiers={tiers}
-                    onClick={() => { this.setState({ popup: true }) }}
+                    onClick={() => { !this.props.readOnly && this.setState({ popup: true }) }}
                 />
-                <div style={{position:"absolute", top:0, right:0, bottom: 0, padding: "1em", display: "flex", alignItems: "center"}}>
-                    <i className="fa fa-caret-down" />
-                </div>
+                {!this.props.readOnly &&
+                    <div style={{position:"absolute", top:0, right:0, bottom: 0, padding: "1em", display: "flex", alignItems: "center"}}>
+                        <i className="fa fa-caret-down" />
+                    </div>
+                }
             </div>
         )
     }
@@ -84,9 +91,9 @@ class TiersSelection extends React.PureComponent<TiersSelectionProps & WithStyle
             _tiers = this.props.tiers[0];
         }
         return (
-            <div className={this.props.classes.root}>
+            <div className={!this.props.readOnly && this.props.classes.root}>
                 {
-                    this.props.tiers && this.props.tiers.length > 0 ?
+                    _tiers ?
                     this.renderSelected(_tiers)
                     :
                     this.renderNone()
@@ -128,7 +135,7 @@ class TiersSelection extends React.PureComponent<TiersSelectionProps & WithStyle
                     onClose={() => this.setState({...this.state, popupNew: false, popupNewTiers: undefined})}
                 >
                     <DialogTitle>
-                        {this.state.popupNewTiers && this.state.popupNewTiers.id ? "Modifier le tiers" : "Utiliser un autre tiers"}
+                        Tiers
                     </DialogTitle>
                     <DialogContent>
                         <TiersForm 
@@ -144,7 +151,7 @@ class TiersSelection extends React.PureComponent<TiersSelectionProps & WithStyle
                                 let _tiers = this.state.popupNewTiers;
                                 this.setState({...this.state, popupNew: false, popupNewTiers: undefined}, () => {
                                     this.props.onSelect(_tiers);
-                                    this.props.onAddTiers(_tiers);
+                                    //this.props.onAddTiers(_tiers);
                                 })
                             }}>
                             Sélectionner ce tiers

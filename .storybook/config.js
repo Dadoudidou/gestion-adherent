@@ -1,8 +1,12 @@
 import { configure } from '@storybook/react';
+import '@storybook/addon-console';
 
+// automatically import all files ending in *.stories.js
+const req = require.context('../stories', true, /.stories.jsx?$/);
+const reqTs = require.context('../stories', true, /.stories.tsx$/);
 function loadStories() {
-  require('../stories/index.tsx');
-  // You can require as many stories as you need.
+  req.keys().forEach(filename => req(filename));
+  reqTs.keys().forEach(filename => reqTs(filename));
 }
 
 configure(loadStories, module);

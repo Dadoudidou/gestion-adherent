@@ -3,19 +3,37 @@ import { dataTypes } from "./../../dataTypes"
 import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { TiersType } from "./tiers";
-import { FactureDetailType } from "./facture_detail";
-import { FacturePaiementType } from "./facture_paiement";
+import { FactureDetailType, FactureDetailInputType } from "./facture_detail";
+import { FacturePaiementType, FacturePaiementInputType } from "./facture_paiement";
+import { AdhesionType } from "../members/adhesion";
+
+export type FactureTableType = {
+    id?: number
+    date_creation: Date
+    comptabilite_tiers_id: number
+}
 
 export type FactureType = {
     id: number
     date_creation: Date
+
     getTiers: () => Promise<TiersType>
+    setTiers: (value: TiersType) => Promise<TiersType>
+
     getDetails: (opt?: Sequelize.FindOptions<FactureDetailType>) => Promise<FactureDetailType[]>
+    setDetails: (values: FactureDetailType[]) => Promise<void>
+    createDetail: (value: Partial<FactureDetailInputType>) => Promise<FactureDetailType>
+
     getPaiements: (opt?: Sequelize.FindOptions<FacturePaiementType>) => Promise<FacturePaiementType[]>
+    setPaiements: (values: FacturePaiementType[]) => Promise<void>
+    createPaiement: (value: Partial<FacturePaiementInputType>) => Promise<FacturePaiementType>
+
+    getAdhesions: (opt?: Sequelize.FindOptions<AdhesionType>) => Promise<AdhesionType[]>
+    setAdhesions: (values: AdhesionType[]) => Promise<void>
 } & Sequelize.Instance<any>
 
 export type FactureDBSet = {
-    Factures: Sequelize.Model<FactureType, any>
+    Factures: Sequelize.Model<FactureType, FactureTableType>
 }
 
 export class Entity_Facture extends EntityClass {
@@ -51,6 +69,10 @@ export class Entity_Facture extends EntityClass {
         this._model.hasMany(models.FacturePaiements, {
             as: "paiements",
             foreignKey: "comptabilite_facture_id"
-        })
+        });
+        this._model.hasMany(models.adhesions, {
+            as: "adhesions",
+            foreignKey: "comptabilite_facture_id"
+        });
     }
 }

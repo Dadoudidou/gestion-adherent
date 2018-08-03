@@ -38,11 +38,12 @@ declare namespace APIObjects {
     }>
 
     type FacturePaiement = Partial<{
-        __id: number
+        _id: number
+        __typename: "FacturePaiement"
         id: number
         type: string
         montant: number
-        date_banque: Date
+        date_banque: string | Date
         reference: string
         banque: string
         valide: boolean

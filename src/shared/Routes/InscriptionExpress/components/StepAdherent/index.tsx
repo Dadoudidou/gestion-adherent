@@ -28,6 +28,7 @@ const styles: StyleRulesCallback<classKey> = theme => ({
 })
 
 type StepAdherentProps = {
+    step?: number
     adherents?: APIObjects.Adherent[]
     addAdherent?: (adherent: APIObjects.Adherent) => void
     onClickNextStep?: () => void
@@ -42,6 +43,7 @@ class StepAdherent extends React.PureComponent<StepAdherentProps & WithStyles<cl
             }, 500);
         }
     }
+
 
     render(){
         let _canNextStep = false;

@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLList, GraphQLObjectTypeConfig, GraphQLFloat, GraphQLBoolean, GraphQLInputObjectType } from "graphql"
+import { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLList, GraphQLObjectTypeConfig, GraphQLFloat, GraphQLBoolean, GraphQLInputObjectType, GraphQLNonNull } from "graphql"
 import { AdhesionType } from "@server/database/entities/members/adhesion"
 import { ScalarDate } from "@server/graphql/default/types/Date";
 import { DocumentType } from "@server/database/entities/members/document";
@@ -16,9 +16,9 @@ export const AdhesionInput = new GraphQLInputObjectType({
     fields: () => ({
         id: { type: GraphQLInt },
         valide: { type: GraphQLBoolean },
-        adherent: { type: AdherentInput },
-        section: { type: AdminActiviteSectionInput },
-        tarif: { type: AdminTarifInput },
+        adherent: { type: new GraphQLNonNull(AdherentInput) },
+        //section: { type: AdminActiviteSectionInput },
+        tarif: { type:  new GraphQLNonNull(AdminTarifInput) },
         sessions: { type: new GraphQLList(AdminActiviteSessionInput), }
     })
 })

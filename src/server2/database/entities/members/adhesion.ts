@@ -6,6 +6,7 @@ import { AdherentType } from "@server/database/entities/members/adherent";
 import { ActSectionType } from "@server/database/entities/admin/activite_section";
 import { TarifType } from "@server/database/entities/admin/tarif";
 import { ActSessionType } from "@server/database/entities/admin/activite_session";
+import { FactureType } from "../comptabilite/facture";
 
 
 export type AdhesionType = {
@@ -16,9 +17,15 @@ export type AdhesionType = {
     admin_tarif_id: number
 
     getAdherent: () => Promise<AdherentType>
+    setAdherent: (value?: AdherentType) => Promise<AdherentType>
     getSection: () => Promise<ActSectionType>
+    setSection: (value?: ActSectionType) => Promise<ActSectionType>
     getTarif: () => Promise<TarifType>
+    setTarif: (value?: TarifType) => Promise<TarifType>
     getSessions: (opt?: Sequelize.FindOptions<ActSessionType>) => Promise<ActSessionType[]>
+    setSessions: (values?: ActSessionType[]) => Promise<void>
+    getFacture: () => Promise<FactureType>
+    setFacture: (value?: FactureType) => Promise<FactureType>
 } & Sequelize.Instance<any>
 
 export type AdhesionDBSet = {
@@ -51,6 +58,10 @@ export class Entity_Adhesion extends EntityClass {
             type: dataTypes.INTEGER,
             allowNull: false,
         } as Sequelize.DefineAttributeColumnOptions,
+        comptabilite_facture_id: {
+            type: dataTypes.INTEGER,
+            allowNull: true,
+        } as Sequelize.DefineAttributeColumnOptions,
     }
     model_options: Sequelize.DefineOptions<Entity_Adhesion> = {}
 
@@ -71,6 +82,10 @@ export class Entity_Adhesion extends EntityClass {
             through: "adherent_adhesion_session",
             as: "sessions",
             foreignKey: "adherent_adhesion_id"
+        });
+        this._model.belongsTo(models.Factures, {
+            as: "facture",
+            foreignKey: "comptabilite_facture_id"
         });
     }
 }

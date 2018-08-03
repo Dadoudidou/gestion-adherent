@@ -4,6 +4,18 @@ import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { FactureType } from "./facture";
 
+export type TiersInputType = {
+    id: number
+    nom: string
+    prenom: string
+    adresse: string
+    codepostal: string
+    ville: string
+    email:string
+    telephone_fixe: string
+    telephone_mobile: string
+}
+
 export type TiersType = {
     id: number
     nom: string
@@ -20,7 +32,7 @@ export type TiersType = {
 } & Sequelize.Instance<any>
 
 export type TiersDBSet = {
-    Tiers: Sequelize.Model<TiersType, any>
+    Tiers: Sequelize.Model<TiersType, Partial<TiersInputType>>
 }
 
 export class Entity_Tiers extends EntityClass {

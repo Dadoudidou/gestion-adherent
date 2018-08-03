@@ -16,6 +16,7 @@ const styles: StyleRulesCallback<classkey> = theme => ({
 type FactureProps = {
     facture: APIObjects.Facture
     onUpdateFacture?: (facture: APIObjects.Facture) => void
+    readOnly?: boolean
 
     tiersList?: APIObjects.Tiers[]
     onUpdateTiersList?: (tiersList?: APIObjects.Tiers[]) => void
@@ -88,6 +89,7 @@ class Facture extends React.PureComponent<FactureProps & WithStyles<classkey>, a
                         <ListSubheader>Tiers Payeur</ListSubheader>
                         <Paper>
                             <TiersSelection 
+                                readOnly={this.props.readOnly}
                                 tiers={this.props.tiersList}
                                 tiersSelected={this.props.facture.tiers}
                                 onSelect={this.handle_onTiersChanged}
@@ -112,14 +114,14 @@ class Facture extends React.PureComponent<FactureProps & WithStyles<classkey>, a
                         </Paper>
                     </Grid>
                     <Grid item className={this.props.classes.flex} style={{ textAlign: "right" }}>
-                        <ListSubheader>Montant à régler</ListSubheader>
+                        <ListSubheader>{this.props.readOnly ? "Montant" : "Montant à régler"}</ListSubheader>
                         <Typography variant="display2">{_sum} €</Typography>
                     </Grid>
                 </Grid>
                 <ListSubheader>Eléments facturés</ListSubheader>
                 <Paper>
                     <FactureDetails 
-                        canEdit
+                        canEdit={!this.props.readOnly}
                         items={this.props.facture.details}
                         onAddItem={this.handle_onEditItem}
                         onEditItem={this.handle_onEditItem}

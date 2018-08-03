@@ -1,0 +1,10 @@
+{
+    "dev":{
+        "driver":"mysql",
+        "user":"root",
+        "password": "",
+        "host": "localhost",
+        "database": "test",
+        "multiple-statements": true
+    }
+}

@@ -16,6 +16,8 @@ import StepperBar from "./Components/StepperBar"
 import SwipeableViews from 'react-swipeable-views';
 import ViewAdherent from "./Components/StepAdherent"
 import ViewFacture from "./Components/StepFacture"
+import ViewRegelements from "./Components/StepReglements"
+import ViewResume from "./Components/StepResume"
 
 import QueueAnim from "rc-queue-anim"
 import { PermissionsList } from "@shared/Services/Auth/permissions";
@@ -24,6 +26,7 @@ import { PermissionsList } from "@shared/Services/Auth/permissions";
 import { connect } from "react-redux"
 import { IEReducer } from "./routes"
 import { Actions } from "./reducer"
+import StepComponent from "./components/StepComponent";
 
 
 
@@ -61,6 +64,12 @@ class InscriptionExpressPage extends React.PureComponent<InscriptionExpressPageP
         }
     }
 
+    handle_onselectStep = (step) => {
+        if(step < 2){
+            this.props.onSelectStep(step);
+        }
+    }
+
     render(){
         return (
             <Authenticated>
@@ -76,8 +85,10 @@ class InscriptionExpressPage extends React.PureComponent<InscriptionExpressPageP
                             index={this.props.activeStep}
                             cellPadding={16}
                         >
-                            <div className={this.props.classes.slide}><ViewAdherent /></div>
-                            <div className={this.props.classes.slide}><ViewFacture /></div>
+                            <div className={this.props.classes.slide}><StepComponent step={0}><ViewAdherent /></StepComponent></div>
+                            <div className={this.props.classes.slide}><StepComponent step={1}><ViewFacture /></StepComponent></div>
+                            <div className={this.props.classes.slide}><StepComponent step={2}><ViewRegelements /></StepComponent></div>
+                            <div className={this.props.classes.slide}><StepComponent step={3}><ViewResume /></StepComponent></div>
                         </SwipeableViews>
                     </div>
                 </DocumentTitle>
@@ -92,6 +103,7 @@ export default connect<InscriptionExpressPageProps, Partial<InscriptionExpressPa
     }),
     (dispatch) => ({
         onSelectStep: (step) => {
+            
             dispatch(Actions.gotoStep(step))
         }
     })

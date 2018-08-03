@@ -174,6 +174,35 @@ export default {
 
             //#endregion
 
+            //#region selection Tiers
+
+            // -- adhérent le plus agé
+            let _tiers: APIObjects.Tiers = undefined;
+            let _age = 0;
+            _adherents.forEach(adherent => {
+                if(!adherent.datenaissance) return;
+                let age = moment().diff(moment(adherent.datenaissance), "days");
+                console.log(age);
+                if(age > _age && age >= moment().diff(moment().subtract(18, "years"), "days")){
+                    console.log("select - ", adherent.nom, adherent.prenom);
+                    _age = age;
+                    _tiers = {
+                        nom: adherent.nom,
+                        prenom: adherent.prenom,
+                        adresse: adherent.adresse,
+                        codepostal: adherent.codepostal,
+                        ville: adherent.ville,
+                        email: adherent.email,
+                        telephone_fixe: adherent.telephone_fixe,
+                        telephone_mobile: adherent.telephone_mobile
+                    }
+                }
+            });
+
+            _facture.tiers = _tiers;
+
+            //#endregion
+
             return _facture;
         }
         return null;

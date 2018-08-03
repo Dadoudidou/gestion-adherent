@@ -11,6 +11,8 @@ import { Tiers } from "./Tiers";
 import { FactureType } from "../../../../database/entities/comptabilite/facture";
 import { FactureDetail } from "./FactureDetail";
 import { FacturePaiement } from "./FacturePaiement";
+import { Adhesion } from "../members/Adhesion";
+import { getOperationRootType } from "../../../../../../node_modules/@types/graphql/execution/execute";
 
 
 export const Facture = new GraphQLObjectType({
@@ -44,6 +46,15 @@ export const Facture = new GraphQLObjectType({
                 if(root["paiements"]) return root["paiements"];
                 return null;
             },
+        },
+        adhesions: {
+            type: new GraphQLList(Adhesion),
+            args: {},
+            resolve: (root, args, context) => {
+                if(root.getAdhesions) return root.getAdhesions();
+                if(root["adhesions"]) return root["adhesions"];
+                return null;
+            }
         }
     })
 } as GraphQLObjectTypeConfig<FactureType, any>)

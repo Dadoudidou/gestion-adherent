@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Step, StepButton, Stepper } from "material-ui"
+import { Step, StepButton, Stepper, StepLabel } from "material-ui"
 
 type StepperBarProps = {
     activeStep?: number
@@ -9,24 +9,48 @@ type StepperBarProps = {
 export default ({ activeStep, onSelectStep }: StepperBarProps) => (
     <Stepper activeStep={activeStep}>
         <Step>
-            <StepButton onClick={() => onSelectStep(0)}>
-                Adhérents
-            </StepButton>
+            {activeStep < 2 ? 
+                <StepButton onClick={() => onSelectStep(0)}>
+                    Adhérents
+                </StepButton>
+            :
+                <StepLabel>
+                    Adhérents
+                </StepLabel>
+            }
         </Step>
         <Step>
-            <StepButton onClick={() => onSelectStep(1)}>
+            {activeStep < 2 ? 
+                <StepButton onClick={() => onSelectStep(1)}>
                 Facture
             </StepButton>
+            :
+                <StepLabel>
+                    Facture
+                </StepLabel>
+            }
         </Step>
         <Step>
-            <StepButton onClick={() => onSelectStep(2)}>
+            {activeStep < 2 ? 
+                <StepButton onClick={() => onSelectStep(2)}>
                 Réglements
             </StepButton>
+            :
+                <StepLabel>
+                    Réglements
+                </StepLabel>
+            }
         </Step>
         <Step>
-            <StepButton onClick={() => onSelectStep(3)}>
+            {activeStep < 2 ? 
+                <StepButton onClick={() => onSelectStep(3)}>
                 Résumé
             </StepButton>
+            :
+                <StepLabel>
+                    Résumé
+                </StepLabel>
+            }
         </Step>
     </Stepper>
 )

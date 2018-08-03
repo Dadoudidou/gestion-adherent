@@ -4,6 +4,14 @@ import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { FactureType } from "./facture";
 
+export type FactureDetailInputType = {
+    id: number
+    libelle: string
+    description: string
+    montant: number
+    ordre: number
+}
+
 export type FactureDetailType = {
     id: number
     libelle: string
@@ -14,7 +22,7 @@ export type FactureDetailType = {
 } & Sequelize.Instance<any>
 
 export type FactureDetailDBSet = {
-    FactureDetails: Sequelize.Model<FactureDetailType, any>
+    FactureDetails: Sequelize.Model<FactureDetailType, FactureDetailInputType>
 }
 
 export class Entity_FactureDetail extends EntityClass {

@@ -1,4 +1,4 @@
-import { injectReducer, default as store } from "./../Store/redux";
+import { injectReducer, default as store } from "../Store/redux";
 import { Actions, SessionReducer } from "./reducer";
 
 injectReducer({SessionReducer});

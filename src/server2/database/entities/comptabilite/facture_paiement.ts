@@ -4,6 +4,16 @@ import { EntityClass } from "../../EntityClass";
 import { DBModels } from "../..";
 import { FactureType } from "./facture";
 
+export type FacturePaiementInputType = {
+    id: number
+    type: string
+    montant: number
+    date_banque: Date
+    reference: string
+    banque: string
+    valide: boolean
+}
+
 export type FacturePaiementType = {
     id: number
     type: string
@@ -16,7 +26,7 @@ export type FacturePaiementType = {
 } & Sequelize.Instance<any>
 
 export type FacturePaiementDBSet = {
-    FacturePaiements: Sequelize.Model<FacturePaiementType, any>
+    FacturePaiements: Sequelize.Model<FacturePaiementType, FacturePaiementInputType>
 }
 
 export class Entity_FacturePaiement extends EntityClass {
@@ -38,7 +48,7 @@ export class Entity_FacturePaiement extends EntityClass {
             allowNull: false,
         } as Sequelize.DefineAttributeColumnOptions,
         date_banque: {
-            type: dataTypes.STRING,
+            type: dataTypes.DATEONLY,
             allowNull: true,
         } as Sequelize.DefineAttributeColumnOptions,
         reference: {
