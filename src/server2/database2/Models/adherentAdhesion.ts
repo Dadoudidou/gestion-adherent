@@ -4,6 +4,7 @@ import { AdherentInstance } from "@server/database2/Models/adherent";
 import { ActiviteSectionInstance } from "@server/database2/Models/activiteSection";
 import { TarifInstance } from "@server/database2/Models/tarif";
 import { ActiviteSessionInstance, ActiviteSessionAttributes } from "@server/database2/Models/activiteSession";
+import { ComptabiliteFactureInstance } from "@server/database2/Models/comptabiliteFacture";
 
 export type AdherentAdhesionInstance = {
     id: number
@@ -42,6 +43,10 @@ export type AdherentAdhesionAssociations = {
     removeSession: Sequelize.BelongsToManyRemoveAssociationMixin<ActiviteSessionInstance, any>
     removeSessions: Sequelize.BelongsToManyRemoveAssociationsMixin<ActiviteSessionInstance, any>
     setSessions: Sequelize.BelongsToManySetAssociationsMixin<ActiviteSessionInstance, any, any>
+
+    // -- belongsTo
+    getFacture: Sequelize.BelongsToGetAssociationMixin<ComptabiliteFactureInstance>
+    setFacture: Sequelize.BelongsToSetAssociationMixin<ComptabiliteFactureInstance, any>
 }
 
 export default {
@@ -70,6 +75,11 @@ export default {
             type: "belongsToMany",
             modelName: "activiteSession",
             options: { foreignKey: "adherent_adhesion_id", as: "sessions", through: "adherent_adhesion_session" }
-        }
+        },
+        {
+            type: "belongsTo",
+            modelName: "comptabiliteFacture",
+            options: { foreignKey: "comptabilite_facture_id", as: "facture" }
+        },
     ]
 } as DatabaseModel<AdherentAdhesionInstance, AdherentAdhesionAttributes>

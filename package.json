@@ -119,7 +119,7 @@
     "good-squeeze": "5.1.0",
     "graphql": "0.13.1",
     "graphql-tag": "2.9.2",
-    "graphql-tools": "2.21.0",
+    "graphql-tools": "3.1.1",
     "hapi": "17.2.0",
     "hapi-auth-basic": "5.0.0",
     "hapi-auth-cookie": "8.1.0",

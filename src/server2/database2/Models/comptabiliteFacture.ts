@@ -4,6 +4,7 @@ import { ActiviteSessionInstance, ActiviteSessionAttributes } from "./activiteSe
 import { ComptabiliteFactureDetailInstance, ComptabiliteFactureDetailAttributes } from "@server/database2/Models/comptabiliteFactureDetail";
 import { ComptabiliteFacturePaiementInstance, ComptabiliteFacturePaiementAttributes } from "@server/database2/Models/comptabiliteFacturePaiement";
 import { ComptabiliteTiersInstance, ComptabiliteTiersAttributes } from "@server/database2/Models/comptabiliteTiers";
+import { AdherentAdhesionInstance, AdherentAdhesionAttributes } from "@server/database2/Models/adherentAdhesion";
 
 export type ComptabiliteFactureInstance = {
     id: number
@@ -46,6 +47,18 @@ export type ComptabiliteFactureAssociations = {
     setTiers: Sequelize.BelongsToSetAssociationMixin<ComptabiliteTiersInstance, any>
     createTiers: Sequelize.BelongsToCreateAssociationMixin<ComptabiliteTiersAttributes>
 
+    // -- hasMany
+    getAdhesions: Sequelize.HasManyGetAssociationsMixin<AdherentAdhesionInstance>
+    setAdhesions: Sequelize.HasManySetAssociationsMixin<AdherentAdhesionInstance, any>
+    createAdhesion: Sequelize.HasManyCreateAssociationMixin<AdherentAdhesionAttributes, AdherentAdhesionInstance>
+    addAdhesion: Sequelize.HasManyAddAssociationMixin<AdherentAdhesionInstance, any>
+    addAdhesions: Sequelize.HasManyAddAssociationsMixin<AdherentAdhesionInstance, any>
+    removeAdhesion: Sequelize.HasManyRemoveAssociationMixin<AdherentAdhesionInstance, any>
+    removeAdhesions: Sequelize.HasManyRemoveAssociationsMixin<AdherentAdhesionInstance, any>
+    hasAdhesion: Sequelize.HasManyHasAssociationMixin<AdherentAdhesionInstance, any>
+    hasAdhesions: Sequelize.HasManyHasAssociationsMixin<AdherentAdhesionInstance, any>
+    countAdhesions: Sequelize.HasManyCountAssociationsMixin
+
 }
 
 export default {
@@ -69,6 +82,11 @@ export default {
             type: "belongsTo",
             modelName: "comptabiliteTiers",
             options: { foreignKey: "comptabilite_tiers_id", as: "tiers" }
-        }
+        },
+        {
+            type: "hasMany",
+            modelName: "adherentAdhesion",
+            options: { foreignKey: "comptabilite_facture_id", as: "adhesions" }
+        },
     ]
 } as DatabaseModel<ComptabiliteFactureInstance, ComptabiliteFactureAttributes>

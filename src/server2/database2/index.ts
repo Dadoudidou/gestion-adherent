@@ -94,7 +94,7 @@ export type DatabaseModel<TInstance, TAttributes> = {
     relations?: DatabaseModelRelation<DatabaseModelRelationType>[]
 }
 
-class DatabaseSingleton {
+export class DatabaseSingleton {
 
     static instance:DatabaseSingleton = null;
     static getInstance = () => {

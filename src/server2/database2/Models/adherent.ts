@@ -1,5 +1,5 @@
 import * as Sequelize from "sequelize";
-import { DatabaseModel } from "../index";
+import database2, { DatabaseModel } from "../index";
 import { AdherentDocumentInstance, AdherentDocumentAttributes } from "@server/database2/Models/adherentDocument";
 import { AdherentAdhesionInstance, AdherentAdhesionAttributes } from "@server/database2/Models/adherentAdhesion";
 import { TarifLicenceInstance, TarifLicenceAttributes } from "@server/database2/Models/tarifLicence";
@@ -17,7 +17,7 @@ export type AdherentInstance = {
     telephone_fixe: string
     telephone_mobile: string
     email: string
-} & AdherentAssociations
+} & AdherentAssociations & AdherentInstanceMethods
 
 export type AdherentAttributes = Partial<{
     id: number
@@ -84,6 +84,10 @@ export type AdherentAssociations = {
     setLicences: Sequelize.BelongsToManySetAssociationsMixin<TarifLicenceInstance, any, AdherentLicenceJoinAttributes>
 }
 
+type AdherentInstanceMethods = {
+    getAdhesionsByCampagnes: (campagnes_ids: number[]) => Promise<AdherentAdhesionInstance[]>
+}
+
 export default {
     tableName: "adherent_adherent",
     attributes: {
@@ -121,7 +125,31 @@ export default {
             modelName: "tarifLicence",
             options: { foreignKey: "adherent_id", as: "licences", through: "adherent_admin_licence" }
         }
-    ]
+    ],
+    options: {
+        instanceMethods:{
+            getAdhesionsByCampagnes(campagnes_ids: number[]){
+                return this.getAdhesions({
+                    include: [{ 
+                        model: database2.model("activiteSection"),
+                        as: 'section',
+                        required: true,
+                        include: [{
+                            model: database2.model("activite"),
+                            as: 'activite',
+                            required: true,
+                            include: [{
+                                model: database2.model("activiteCategorie"),
+                                as: 'categorie',
+                                required: true,
+                                where: { admin_saison_id: campagnes_ids }
+                            }]
+                        }]
+                    }]
+                })
+            },
+        }
+    }
 } as DatabaseModel<AdherentInstance, AdherentAttributes>
 
 

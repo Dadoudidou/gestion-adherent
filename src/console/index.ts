@@ -2,12 +2,13 @@ import database2 from "../server2/database2/index";
 import { config } from "@server/config"
 import { inspect } from "util"
 import { exitOnError } from "../../node_modules/winston";
+import { GraphQLSingleton } from "@server/graphql/V1";
 
 //import { getSchema } from "./../server2/graphql/default"
 //console.log(getSchema());
 
 const app = async () => {
-    database2.setup({
+    /*database2.setup({
         database: config.connectors.default.database,
         username: config.connectors.default.user,
         password: config.connectors.default.password,
@@ -18,18 +19,15 @@ const app = async () => {
         ...config.connectors.default.options,
         logging: console.log
     });
-
     
-    await database2.start();
-    let activite = await database2.model("activiteSection").find({ where: { id:2 } });
-    
-    let test = await activite.getSessions()
+    let model = database2.model("comptabiliteFacture");
+    for(let key in model["attributes"]){
+        console.log(key, model[key]);
+    }*/
 
-    let essai = database2.model("activite")
-
-    for(let key in activite){
-        console.log(key, typeof activite[key]);
-    }
+    GraphQLSingleton.getInstance().init();
+    let _schema = GraphQLSingleton.getInstance().getSchema()
+    console.log(_schema);
 
 }
 
