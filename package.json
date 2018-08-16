@@ -2,7 +2,7 @@
   "name": "gestionadherent",
   "version": "1.0.0",
   "description": "Gestion adhérent",
-  "main": "index.js",
+  "main": "build/server.js",
   "betterScripts": {
     "build:client": {
       "env": {
@@ -26,14 +26,15 @@
   "scripts": {
     "build": "better-npm-run build:server && better-npm-run build:client",
     "start": "node build/server.js",
-    "console": "webpack --config webpack.console.config.js",
-    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\" \"npm run dev:appli\" ",
+    "console": "webpack --config webpack.console.config.js --progress && node build/console.js",
+    "devold": "concurrently \"npm run dev:client\" \"npm run dev:server\" \"npm run dev:appli\" ",
     "dev:client": "webpack --config webpack.client.config.js --watch --progress",
     "dev:server": "webpack --config webpack.server.config.js --watch --progress",
     "dev:appli": "nodemon build/server.js --watch build/server.js",
     "storybook": "start-storybook -p 6006",
     "db-up": "db-migrate up --config config/database.json",
-    "db-down": "db-migrate down --config config/database.json"
+    "db-down": "db-migrate down --config config/database.json",
+    "dev": "webpack --config config/webpack.config.js --watch --progress"
   },
   "author": "David Violet",
   "license": "MIT",
@@ -55,6 +56,7 @@
     "babel-preset-stage-0": "6.24.1",
     "webpack": "4.16.3",
     "webpack-cli": "3.1.0",
+    "webpack-merge": "4.1.4",
     "html-webpack-plugin": "3.2.0",
     "webpack-dev-server": "3.1.5",
     "webpack-node-externals": "1.7.2",
@@ -96,8 +98,8 @@
     "@types/react-router": "4.0.23",
     "@types/react-router-dom": "4.2.5",
     "@types/react-swipeable-views": "0.12.1",
-    "@types/sequelize": "4.27.11",
-    "@types/winston": "2.3.8",
+    "@types/sequelize": "4.27.24",
+    "@types/winston": "2.3.9",
     "apollo-boost": "0.1.12",
     "apollo-cache-inmemory": "1.2.6",
     "apollo-client": "2.3.7",
@@ -146,8 +148,8 @@
     "react-swipeable-views": "0.12.13",
     "redux": "4.0.0",
     "redux-thunk": "2.2.0",
-    "sequelize": "4.37.4",
-    "winston": "2.4.0",
+    "sequelize": "4.38.0",
+    "winston": "3.0.0",
     "winston-mysql": "0.9.0"
   }
 }

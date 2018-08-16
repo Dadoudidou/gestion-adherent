@@ -7,6 +7,7 @@ const distPath = path.resolve(__dirname, 'build');
 
 module.exports = {
     name: "Server",
+    mode: "development",
     context: srcPath,
     entry: "./console/index.ts",
     output: {
@@ -18,13 +19,14 @@ module.exports = {
     resolve: {
         extensions: [".json", ".ts", ".tsx", ".js"],
         alias: { 
-            "@server": path.join(__dirname, 'src/server2')
+            "@server": path.join(__dirname, 'src/server2'),
+            "@shared": path.join(__dirname, 'src/shared'),
         },
         modules: [ "src", "node_modules" ]
     },
     externals: [ nodeExternals(), 'pg', 'sqlite3', 'tedious', 'pg-hstore'],
     module: {
-        loaders: [
+        rules: [
             {
                 test: /.tsx?$/,
                 exclude: [ /node_modules/ , path.resolve(__dirname, 'node_modules')],
@@ -52,6 +54,19 @@ module.exports = {
 
     ],
     stats: {
-        warnings: false
+        colors: true,
+        hash: false,
+        version: false,
+        timings: false,
+        assets: false,
+        chunks: false,
+        modules: false,
+        reasons: false,
+        children: false,
+        source: false,
+        errors: true,
+        errorDetails: true,
+        warnings: false,
+        publicPath: false
     }
 }
