@@ -21,6 +21,7 @@ module.exports = {
         alias: { 
             "@server": path.join(__dirname, 'src/server2'),
             "@shared": path.join(__dirname, 'src/shared'),
+            "@modules": path.join(__dirname, 'src/modules')
         },
         modules: [ "src", "node_modules" ]
     },

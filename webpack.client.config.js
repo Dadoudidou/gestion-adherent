@@ -48,7 +48,8 @@ webpackConfig.resolve = {
     extensions: ['*', '.js', '.json', '.ts', '.tsx'],
     mainFields: ['browser', 'main', 'module'],
     alias: {
-        "@shared": path.join(__dirname, 'src/shared')
+        "@shared": path.join(__dirname, 'src/shared'),
+        "@modules": path.join(__dirname, 'src/modules')
     }
 }
 

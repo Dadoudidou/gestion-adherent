@@ -19,6 +19,7 @@ import { ComptabiliteFactureInstance, ComptabiliteFactureAttributes } from "@ser
 import { ComptabiliteFactureDetailInstance, ComptabiliteFactureDetailAttributes } from "@server/database2/Models/comptabiliteFactureDetail";
 import { ComptabiliteFacturePaiementInstance, ComptabiliteFacturePaiementAttributes } from "@server/database2/Models/comptabiliteFacturePaiement";
 import { ComptabiliteTiersInstance, ComptabiliteTiersAttributes } from "@server/database2/Models/comptabiliteTiers";
+import { AppDatabaseLogger } from "@server/database2/logger";
 
 
 
@@ -104,13 +105,20 @@ export class DatabaseSingleton {
         return DatabaseSingleton.instance;
     }
 
+    static defaultSequelizeOptions: Sequelize.Options = {
+        logging: (msg) => AppDatabaseLogger.debug(msg)
+    }
+
     private sequelize: Sequelize.Sequelize = null;
     private pathToModels: string = "./database2/Models";
     private models: {[key:string]:Sequelize.Model<any, any>} = {}
     private relationships: {[key:string]: DatabaseModelRelation<any>[]} = {}
 
     setup(options: Sequelize.Options){
-        this.sequelize = new Sequelize(options);
+        this.sequelize = new Sequelize({
+            ...DatabaseSingleton.defaultSequelizeOptions,
+            ...options
+        });
         this.init();
     }
 

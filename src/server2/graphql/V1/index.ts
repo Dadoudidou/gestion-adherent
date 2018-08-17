@@ -1,9 +1,13 @@
 import { GraphQLObjectType, GraphQLScalarType, GraphQLField, GraphQLFieldConfig, GraphQLSchema, GraphQLDirective } from "graphql";
 import { DatabaseSingleton } from "@server/database2";
-
+import * as Hapi from "hapi";
+import { Credentials } from "@server/utils/auth";
 
 export type GraphQLContext = { 
     db: DatabaseSingleton
+    request: Hapi.Request
+    auth: Hapi.RequestAuth
+    credentials: Credentials
 }
 export type GQLField<TArgs = any> = GraphQLFieldConfig<any, GraphQLContext, TArgs>
 
@@ -31,7 +35,7 @@ export class GraphQLSingleton {
     directives: GraphQLDirective[]
     schema: GraphQLSchema
 
-    setup(options: GraphQLSingletonSetupOptions){
+    setup(options?: GraphQLSingletonSetupOptions){
         this.init();
     }
 
@@ -65,5 +69,6 @@ export class GraphQLSingleton {
     getSchema(): GraphQLSchema{
         return this.schema;
     }
-
 }
+
+export default GraphQLSingleton.getInstance();

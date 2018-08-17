@@ -19,7 +19,8 @@ module.exports = {
         extensions: [".json", ".ts", ".tsx", ".js"],
         alias: { 
             "@shared": path.join(__dirname, 'src/shared'),
-            "@server": path.join(__dirname, 'src/server2')
+            "@server": path.join(__dirname, 'src/server2'),
+            "@modules": path.join(__dirname, 'src/modules')
         },
         modules: [ "src", "node_modules" ]
     },

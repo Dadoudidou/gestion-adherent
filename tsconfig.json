@@ -29,7 +29,8 @@
         "paths": {
             "@shared/*": ["src/shared/*"],
             "@server/*": ["src/server2/*"],
-            "@client/*": ["src/client/*"]
+            "@client/*": ["src/client/*"],
+            "@modules/*": ["src/modules/*"]
         }
     }
 }
