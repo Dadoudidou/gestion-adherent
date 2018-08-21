@@ -1,12 +1,16 @@
 import { Options } from "sequelize";
 import { ServerOptions } from "hapi";
 
+// -- import du fichier .env
+import * as DotEnv from "dotenv"
+DotEnv.config();
+
 
 export const config = {
-    secret: "2#^>G.QDm+~][Xa",
+    secret: process.env.APP_SECRET as any,
     server: {
-        host: "localhost",
-        port: 9080,
+        host: process.env.APP_SERVER_HOST as any,
+        port: process.env.APP_SERVER_PORT as any,
         routes: {
             cors: {
                 maxAge: 86400 // 1 jour
@@ -16,11 +20,11 @@ export const config = {
     connectors: {
         default: {
             type: "mysql",
-            host: "localhost",
-            port: 3306,
-            database: "gestion",
-            user: "root",
-            password: null,
+            host: process.env.APP_DB_HOST as any,
+            port: process.env.APP_DB_PORT as any,
+            database: process.env.APP_DB_DATABASE as any,
+            user: process.env.APP_DB_USER as any,
+            password: process.env.APP_DB_PASSWORD as any,
             options: {
                 define: {
                     timestamps: false

@@ -1,5 +1,6 @@
 import * as Sequelize from "sequelize";
 import { DatabaseModel } from "../index";
+import { UserPermissionInstance, UserPermissionAttributes } from "@server/database2/Models/userPermission";
 
 export type UserGroupInstance = {
     id: number
@@ -25,16 +26,16 @@ export type UserGroupAssociations = {
     setUsers: Sequelize.BelongsToManySetAssociationsMixin<UserGroupInstance, any, any>
     
     // -- belongsToMany
-    addPermission: Sequelize.BelongsToManyAddAssociationMixin<UserGroupInstance, any, any>
-    addPermissions: Sequelize.BelongsToManyAddAssociationsMixin<UserGroupInstance, any, any>
+    addPermission: Sequelize.BelongsToManyAddAssociationMixin<UserPermissionInstance, any, any>
+    addPermissions: Sequelize.BelongsToManyAddAssociationsMixin<UserPermissionInstance, any, any>
     countPermissions: Sequelize.BelongsToManyCountAssociationsMixin
-    createPermission: Sequelize.BelongsToManyCreateAssociationMixin<UserGroupAttributes, UserGroupInstance, any>
-    getPermissions: Sequelize.BelongsToManyGetAssociationsMixin<UserGroupInstance>
-    hasPermission: Sequelize.BelongsToManyHasAssociationMixin<UserGroupInstance, any>
-    hasPermissions: Sequelize.BelongsToManyHasAssociationsMixin<UserGroupInstance, any>
-    removePermission: Sequelize.BelongsToManyRemoveAssociationMixin<UserGroupInstance, any>
-    removePermissions: Sequelize.BelongsToManyRemoveAssociationsMixin<UserGroupInstance, any>
-    setPermissions: Sequelize.BelongsToManySetAssociationsMixin<UserGroupInstance, any, any>
+    createPermission: Sequelize.BelongsToManyCreateAssociationMixin<UserPermissionAttributes, UserPermissionInstance, any>
+    getPermissions: Sequelize.BelongsToManyGetAssociationsMixin<UserPermissionInstance>
+    hasPermission: Sequelize.BelongsToManyHasAssociationMixin<UserPermissionInstance, any>
+    hasPermissions: Sequelize.BelongsToManyHasAssociationsMixin<UserPermissionInstance, any>
+    removePermission: Sequelize.BelongsToManyRemoveAssociationMixin<UserPermissionInstance, any>
+    removePermissions: Sequelize.BelongsToManyRemoveAssociationsMixin<UserPermissionInstance, any>
+    setPermissions: Sequelize.BelongsToManySetAssociationsMixin<UserPermissionInstance, any, any>
 }
 
 export default {

@@ -4,12 +4,15 @@ import * as jwt from "jsonwebtoken"
 import { config } from "@server/config"
 import { getServer } from "@server/app"
 
-import { CheckPassword, UserType } from "@server/database/entities/users/user";
-import { PermissionType } from "@server/database/entities/users/permission";
+//import { CheckPassword, UserType } from "@server/database/entities/users/user";
+//import { PermissionType } from "@server/database/entities/users/permission";
 import { Policy } from "catbox";
 
 import * as Boom from "boom";
 import { sharedCheckPermissions } from "@shared/permissions";
+import database2 from "@server/database2";
+import { UserInstance, CheckPassword } from "@server/database2/Models/user";
+import { asyncForEach } from "@server/utils/array";
 
 
 const TestUsernamePassword = async function(username: string, password: string) {
@@ -23,16 +26,31 @@ const TestUsernamePassword = async function(username: string, password: string) 
 }
 
 const checkDatabaseUser = async (username: string, password: string) => {
-    let _user = await dbcontext.models.users.find({ where: { login: username }});
+    let _user = await database2.model("user").find({ where: { login: username }});
+    //let _user = await dbcontext.models.users.find({ where: { login: username }});
     if(!_user) throw Boom.forbidden("username or password are invalid");
     let _passwordChecked = await CheckPassword(password, _user.pwd);
     if(!_passwordChecked) throw Boom.forbidden("username or password are invalid");
     return _user;
 }
 
-const getPermissions = async (user: UserType) => {
+const getPermissions = async (user: UserInstance) => {
     let _permissions: { id: number, nom: string }[] = [];
-    let _groups = await user.getGroups({ include: [ { model:dbcontext.models.permissions, as:"permissions"} ] });
+    let _groups = await user.getGroups();
+    await asyncForEach(_groups, async (group) => {
+        let permissions = await group.getPermissions();
+        if(!permissions) return;
+        permissions.forEach(permission => {
+            let _index = _permissions.map(x => x.id).indexOf(permission.id);
+            if(_index == -1) {
+                _permissions.push({ 
+                    id: permission.id,
+                    nom: permission.nom.toLowerCase()
+                });
+            }
+        })
+    })
+    /*let _groups = await user.getGroups({ include: [ { model:dbcontext.models.permissions, as:"permissions"} ] });
     _groups.forEach(group => {
         if(!group["permissions"]) return;
         group["permissions"].forEach((permission: PermissionType) => {
@@ -44,7 +62,7 @@ const getPermissions = async (user: UserType) => {
                 });
             }
         })
-    })
+    })*/
     return _permissions;
 }
 
