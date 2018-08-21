@@ -106,7 +106,7 @@ export class DatabaseSingleton {
     }
 
     static defaultSequelizeOptions: Sequelize.Options = {
-        logging: (msg) => AppDatabaseLogger.debug(msg)
+        logging: (msg) => AppDatabaseLogger.info(msg)
     }
 
     private sequelize: Sequelize.Sequelize = null;
@@ -164,10 +164,10 @@ export class DatabaseSingleton {
         await this.sequelize
             .authenticate()
             .then(() => {
-                console.log("Connexion au serveur de base de donnée")
+                AppDatabaseLogger.info("Connexion au serveur de base de donnée")
             })
             .catch(err => {
-                console.log(err);
+                AppDatabaseLogger.error(err);
             })
     }
 

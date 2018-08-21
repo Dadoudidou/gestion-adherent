@@ -25,7 +25,7 @@ export const config = {
                 define: {
                     timestamps: false
                 },
-                logging: false
+                //logging: false
             } as Options
         }
     }

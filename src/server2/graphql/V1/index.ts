@@ -37,6 +37,7 @@ export class GraphQLSingleton {
 
     setup(options?: GraphQLSingletonSetupOptions){
         this.init();
+        return this;
     }
 
     private createGraphObject(name: string, requireContext: __WebpackModuleApi.RequireContext): GraphQLObjectType {

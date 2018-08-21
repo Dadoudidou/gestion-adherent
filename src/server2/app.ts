@@ -12,8 +12,22 @@ import { config } from "./config"
 import { getSchema } from "./graphql/default"
 import routeHandler_auth from "./routes/auth"
 import routeHandler_Root from "./routes/root"
+
 import ApiGraphQL, { GraphQLContext } from "./graphql/V1";
+ApiGraphQL.setup();
+
 import database2 from "@server/database2";
+database2.setup({
+    database: config.connectors.default.database,
+    username: config.connectors.default.user,
+    password: config.connectors.default.password,
+    dialect: config.connectors.default.type,
+    port: config.connectors.default.port,
+    host: config.connectors.default.host,
+    protocol: "tcp",
+    ...config.connectors.default.options,
+})
+
 import HapiLogPlugin from "@server/utils/Logger/hapi-log-plugin"
 
 moment.locale("fr");
@@ -43,6 +57,9 @@ async function createServer(){
     // -- enregistrement des stratégies d'authentifications
     setGraphiqlStrategy(server);
     setGraphqlStrategy(server);
+
+    // -- connexion au serveur de base de données
+    await database2.start();
 
     //#region ROUTES
 
@@ -79,7 +96,7 @@ async function createServer(){
             },
             graphqlOptions: (request: Hapi.Request) => {
                 return {
-                    schema: ApiGraphQL.getSchema(),
+                    schema: ApiGraphQL.setup().getSchema(),
                     context: {
                         auth: request.auth,
                         request: request,

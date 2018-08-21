@@ -3,10 +3,10 @@ import Logger from "@modules/Logger";
 import consoleTransport from "@server/utils/Logger/transports/consoleTransport";
 import HapiEventFormat from "@modules/Logger/Formats/HapiEventFormat";
 
-const HapiLog = Logger.createLogger("App:Server:Log").add(consoleTransport());
-const HapiRequestLog = Logger.createLogger("App:Server:Request").add(consoleTransport());
-const HapiRequestErrorLog = Logger.createLogger("App:Server:RequestError").add(consoleTransport());
-const HapiResponseLog = Logger.createLogger("App:Server:Response").add(consoleTransport());
+const HapiLog = Logger.createLogger("Server:Log").add(consoleTransport());
+const HapiRequestLog = Logger.createLogger("Server:Request").add(consoleTransport());
+const HapiRequestErrorLog = Logger.createLogger("Server:RequestError").add(consoleTransport());
+const HapiResponseLog = Logger.createLogger("Server:Response").add(consoleTransport());
 
 const requestLogHandler = (request: Hapi.Request, event: Hapi.RequestEvent) => {
     let _message = `[${request.method}] ${request.path}`
