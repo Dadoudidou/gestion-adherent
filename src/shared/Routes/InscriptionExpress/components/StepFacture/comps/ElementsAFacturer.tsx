@@ -6,7 +6,7 @@ import * as moment from "moment"
 import {
     StyleRulesCallback, withStyles, WithStyles,
     Typography, ListSubheader, List, ListItem, ListItemText, Paper
-} from "material-ui"
+} from "@material-ui/core"
 
 import {default as ElementList, ElementFacture} from "@shared/Components/Components/Facture/ListElements"
 import { descriptionTarif, dureeTarif } from "../../../../../Components/Utils/Tarifs";

@@ -2,7 +2,7 @@ import * as React from "react"
 import { 
     Button, List, MenuItem, ListItemIcon, ListItemText,
     withStyles, WithStyles, StyleRulesCallback
-} from "material-ui"
+} from "@material-ui/core"
 import { connect } from "react-redux"
 import { IEReducer } from "../../../routes";
 import ReduxStore from "@shared/Services/Store/redux"

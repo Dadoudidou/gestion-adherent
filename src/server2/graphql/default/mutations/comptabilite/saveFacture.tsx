@@ -116,7 +116,7 @@ export default {
                     reference: item.reference,
                     type: item.type,
                     valide: false
-                })
+                } as any)
             });
 
             return _facture;

@@ -4,7 +4,7 @@ import {
     StyleRulesCallback, withStyles, WithStyles,
     Grid, Paper, Typography, Button, DialogTitle, Dialog, DialogActions, DialogContent,
     CircularProgress
-} from "material-ui"
+} from "@material-ui/core"
 
 import {connect} from "react-redux"
 import { IEReducer } from "./../../routes"

@@ -3,7 +3,7 @@ import {
     Button, List, MenuItem, ListItemIcon, ListItemText,
     Tab, Tabs,
     withStyles, WithStyles, StyleRulesCallback
-} from "material-ui"
+} from "@material-ui/core"
 
 import EditAdherentInfo from "@shared/Components/Components/Adherent/EditAdherentInfo"
 import ListAdherentActivites from "@shared/Components/Connected/Adherent/ListAdherentActivites"

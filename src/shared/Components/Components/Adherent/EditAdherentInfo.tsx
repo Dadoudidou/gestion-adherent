@@ -3,8 +3,8 @@ import * as moment from "moment"
 import {
     Typography, TextField, Grid,
     StyleRulesCallback, withStyles, WithStyles
-} from "material-ui"
-import { GridProps } from "material-ui/Grid";
+} from "@material-ui/core"
+import { GridProps } from "@material-ui/core/Grid";
 
 import AutoCompleteAdherents from "@shared/Components/Connected/Adherent/SearchAdherentsAutoComplete"
 

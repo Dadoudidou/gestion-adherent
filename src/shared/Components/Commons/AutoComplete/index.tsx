@@ -4,10 +4,10 @@ import Downshift from "downshift";
 import { 
     MenuItem, TextField, Paper ,
     WithStyles, withStyles, StyleRulesCallback
-} from "material-ui"
-import { TextFieldProps } from "material-ui/TextField";
-import { PaperProps } from "material-ui/Paper";
-import { MenuItemProps } from "material-ui/Menu";
+} from "@material-ui/core"
+import { TextFieldProps } from "@material-ui/core/TextField";
+import { PaperProps } from "@material-ui/core/Paper";
+import { MenuItemProps } from "@material-ui/core/MenuItem";
 
 type classkey = "container" | "paper" | "inputRoot"
 

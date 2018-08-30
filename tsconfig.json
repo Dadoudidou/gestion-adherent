@@ -29,7 +29,7 @@
         "paths": {
             "@shared/*": ["src/shared/*"],
             "@server/*": ["src/server2/*"],
-            "@client/*": ["src/client/*"],
+            "@client/*": ["src/client2/*"],
             "@modules/*": ["src/modules/*"]
         }
     }

@@ -193,7 +193,7 @@ webpackConfig.module.rules.push(
     }
 );
 
-
+console.log(webpackConfig);
 module.exports = webpackConfig;
 
 /*if (process.env.NODE_ENV === 'analyse') {

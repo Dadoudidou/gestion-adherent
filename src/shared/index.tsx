@@ -34,7 +34,7 @@ import * as jss_preset_default from "jss-preset-default";
 const jss = createJss();
 jss.setup(jss_preset_default);
 
-import { MuiThemeProvider, createMuiTheme, colors } from "material-ui";
+import { MuiThemeProvider, createMuiTheme, colors } from "@material-ui/core"
 const theme = createMuiTheme({
     palette: {
         primary: colors.blue,

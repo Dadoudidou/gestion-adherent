@@ -4,7 +4,7 @@ import {
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     Button,
     StyleRulesCallback, withStyles, WithStyles
-} from "material-ui"
+} from "@material-ui/core"
 
 import TiersListItem from "./../TiersListItem";
 import TiersForm from "./../TiersForm";

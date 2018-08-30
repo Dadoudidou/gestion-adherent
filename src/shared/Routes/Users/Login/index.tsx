@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Paper, TextField, Button, Typography, Grid, withStyles, StyleRulesCallback, WithStyles } from "material-ui"
+import { Paper, TextField, Button, Typography, Grid, withStyles, StyleRulesCallback, WithStyles } from "@material-ui/core"
 import DocumentTitle from "@shared/Components/Commons/DocumentTitle"
 import Fetch from "@shared/Services/Fetch"
 import { Login as LoginFn } from "@shared/Services/Auth"

@@ -21,11 +21,14 @@ module.exports = {
         optimization:{
 
         },
+        devtool: !production ? 'inline-source-map' : 'source-map',
         resolve: {
-            extensions: [".json", ".ts", ".tsx", ".js"],
+            extensions: ["*", ".json", ".ts", ".tsx", ".js"],
             alias: { 
                 "@shared": path.join(srcPath, 'shared'),
-                "@server": path.join(srcPath, 'server2')
+                "@server": path.join(srcPath, 'server2'),
+                "@client": path.join(srcPath, 'client2'),
+                "@modules": path.join(srcPath, 'modules'),
             },
             modules: [ "src", "node_modules" ],
             mainFields: ['browser', 'main', 'module'],
@@ -50,13 +53,26 @@ module.exports = {
                 }
             ]
         },
-        stats: {
-            warnings: false
-        },
         plugins: [
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
             })
-        ]
+        ],
+        stats: {
+            colors: true,
+            hash: false,
+            version: false,
+            timings: false,
+            assets: false,
+            chunks: false,
+            modules: false,
+            reasons: false,
+            children: false,
+            source: false,
+            errors: true,
+            errorDetails: true,
+            warnings: false,
+            publicPath: false
+        }
     }
 }

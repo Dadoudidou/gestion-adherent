@@ -4,7 +4,7 @@ import {
     List, Button,
     ListItem, TextField, ListItemText,
     StyleRulesCallback, withStyles, WithStyles
-} from "material-ui"
+} from "@material-ui/core"
 import FactureDetail from "./../FactureDetail"
 import FactureDetailForm from "./../FactureDetailForm"
 

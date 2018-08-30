@@ -7,7 +7,7 @@ import Overdrive from "@shared/Services/Overdrive"
 import Authenticated from "@shared/Services/Auth/Authenticated"
 import Authorized from "@shared/Services/Auth/Authorized"
 
-import { Button } from "material-ui"
+import { Button } from "@material-ui/core"
 
 import QueueAnim from "rc-queue-anim"
 import { PermissionsList } from "@shared/Services/Auth/permissions";

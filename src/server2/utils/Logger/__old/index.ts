@@ -1,7 +1,7 @@
 import * as winston from "winston";
-import { WinstonMysqlTransport, WinstonMysqlTransportOptions } from "./winston-mysql"
+//import { WinstonMysqlTransport, WinstonMysqlTransportOptions } from "./winston-mysql"
 //import { config } from "./../../config"
-
+/*
 let _logger = new winston.Logger({
     exitOnError: false,
     transports: []
@@ -13,7 +13,7 @@ _logger.add(winston.transports.Console, {
     timestamp: true,
     colorize: true,
     prettyPrint: function(obj){ return JSON.stringify(obj); }
-})
+})*/
 
 // -- mysql
 /*
@@ -41,4 +41,4 @@ _logger.add(WinstonMysqlTransport as any, {
 } as WinstonMysqlTransportOptions)
 */
 
-export const logApp = _logger;
+export const logApp = null;

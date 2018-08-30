@@ -36,8 +36,8 @@ export class OverDrive extends React.PureComponent<OverdriveProps, OverdriveStat
 
     element: Element
     onShowLock: boolean
-    animationDelayTimeout: NodeJS.Timer
-    animationTimeout: NodeJS.Timer
+    animationDelayTimeout: any
+    animationTimeout: any
     bodyElement: HTMLDivElement
 
     animate = (prevPosition, prevElement) => {
@@ -47,10 +47,10 @@ export class OverDrive extends React.PureComponent<OverdriveProps, OverdriveStat
         prevPosition.top += (window.pageYOffset || document.documentElement.scrollTop);
         const nextPosition = this.getPosition(true);
         const noTransform = 'scaleX(1) scaleY(1) translateX(0px) translateY(0px)';
-        const targetScaleX = prevPosition.width / nextPosition.width;
-        const targetScaleY = prevPosition.height / nextPosition.height;
-        const targetTranslateX = prevPosition.left - nextPosition.left;
-        const targetTranslateY = prevPosition.top - nextPosition.top;
+        const targetScaleX = prevPosition.width / (nextPosition.width as number);
+        const targetScaleY = prevPosition.height / (nextPosition.height as number);
+        const targetTranslateX = prevPosition.left - (nextPosition.left as number);
+        const targetTranslateY = prevPosition.top - (nextPosition.top as number);
 
         if (targetScaleX === 1 &&
             targetScaleY === 1 &&

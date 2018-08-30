@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Button, AppBar, IconButton, Typography, Toolbar } from "material-ui"
+import { Button, AppBar, IconButton, Typography, Toolbar } from "@material-ui/core"
 
 export default () => (
     <AppBar  position="static">

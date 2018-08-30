@@ -5,8 +5,7 @@ import {
     Drawer, Paper, Typography,
     Dialog, DialogTitle, Button, IconButton,
     Toolbar, TextField
-} from "material-ui"
-import { DialogProps } from "material-ui/Dialog";
+} from "@material-ui/core"
 
 import { ActivitiesListProps, default as ActivitiesList } from "@shared/Components/Components/Lists/ActivitiesList"
 import TableSectionSessions from "@shared/Components/Components/Tables/Sessions";

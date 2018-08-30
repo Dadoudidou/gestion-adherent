@@ -2,7 +2,7 @@ import * as React from "react";
 import {
     ListItem, ListItemText, ListItemSecondaryAction, IconButton,
     StyleRulesCallback, withStyles, WithStyles
-} from "material-ui"
+} from "@material-ui/core"
 
 type classkey = "root" | "flex" | "amount"
 const styles: StyleRulesCallback<classkey> = theme => ({

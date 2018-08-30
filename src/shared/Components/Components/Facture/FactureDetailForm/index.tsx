@@ -3,7 +3,7 @@ import {
     ListItem, ListItemText, ListItemSecondaryAction, IconButton,
     TextField, Paper, InputAdornment,
     StyleRulesCallback, withStyles, WithStyles
-} from "material-ui"
+} from "@material-ui/core"
 import NumberField from "@shared/Components/Commons/NumberField"
 
 type classkey = "root" | "flex" | "amount"

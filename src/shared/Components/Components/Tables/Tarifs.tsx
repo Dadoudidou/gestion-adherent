@@ -4,7 +4,7 @@ import {
     withStyles, StyleRulesCallback, WithStyles,
     Typography,
     Checkbox
-} from "material-ui"
+} from "@material-ui/core"
 
 import DataTable from "@shared/Components/Commons/DataTable"
 import { Column } from "../../Commons/DataTable/classes";

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Step, StepButton, Stepper, StepLabel } from "material-ui"
+import { Step, StepButton, Stepper, StepLabel } from "@material-ui/core"
 
 type StepperBarProps = {
     activeStep?: number

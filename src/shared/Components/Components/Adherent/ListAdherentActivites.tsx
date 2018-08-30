@@ -4,8 +4,7 @@ import {
     Typography, TextField, Grid,
     List, ListItem, ListItemText, ListSubheader, Toolbar, Tooltip,
     StyleRulesCallback, withStyles, WithStyles, Button, IconButton
-} from "material-ui"
-import { GridProps } from "material-ui/Grid";
+} from "@material-ui/core"
 import { descriptionTarif, dureeTarif } from "../../Utils/Tarifs";
 
 

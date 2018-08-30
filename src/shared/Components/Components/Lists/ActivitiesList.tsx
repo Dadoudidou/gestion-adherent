@@ -3,7 +3,7 @@ import {
     withStyles, StyleRulesCallback, WithStyles,
     List, ListItem, ListItemText ,
     Menu, MenuItem, MenuList
-} from "material-ui"
+} from "@material-ui/core"
 
 type ActivitiesListClassKey = "secondaryElement" | "selectedItem" | "item"
 

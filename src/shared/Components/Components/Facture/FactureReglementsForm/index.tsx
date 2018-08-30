@@ -1,5 +1,5 @@
 import * as React from "react"
-import { TextField, Typography } from "material-ui"
+import { TextField, Typography } from "@material-ui/core"
 import FactureReglementForm from "./FactureReglementForm"
 import * as moment from "moment"
 

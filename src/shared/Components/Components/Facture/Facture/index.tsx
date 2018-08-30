@@ -2,7 +2,7 @@ import * as React from "react";
 import {
     ListSubheader, Paper, Grid, Typography,
     StyleRulesCallback, withStyles, WithStyles
-} from "material-ui"
+} from "@material-ui/core"
 import FactureDetails from "./../FactureDetails"
 import TiersSelection from "./../TiersSelection"
 

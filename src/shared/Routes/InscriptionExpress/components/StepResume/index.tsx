@@ -3,7 +3,7 @@ import * as moment from "moment"
 import {
     StyleRulesCallback, withStyles, WithStyles, ListSubheader,
     Grid, Paper, Typography, Button, DialogTitle, Dialog, DialogActions, DialogContent
-} from "material-ui"
+} from "@material-ui/core"
 
 import {connect} from "react-redux"
 import { IEReducer } from "./../../routes"

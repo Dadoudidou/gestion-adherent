@@ -2,7 +2,7 @@ import * as React from "react"
 import {
     Grid, Button, List, ListItem, Tab, Tabs, Paper,
     withStyles, StyleRulesCallback, WithStyles
-} from "material-ui"
+} from "@material-ui/core"
 
 import ListAdherents from "./comps/ListAdherents";
 import ViewAdherent from "./comps/ViewAdherent";

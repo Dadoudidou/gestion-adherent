@@ -9,7 +9,7 @@ import Authorized from "@shared/Services/Auth/Authorized"
 import { 
     Button, AppBar, IconButton, Typography, Toolbar,
     withStyles, WithStyles, StyleRulesCallback
- } from "material-ui"
+ } from "@material-ui/core"
 
 import HeaderBar from "./Components/HeaderBar"
 import StepperBar from "./Components/StepperBar"

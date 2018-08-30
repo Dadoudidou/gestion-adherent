@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Paper, TextField, Grid, withStyles, WithStyles, StyleRulesCallback } from "material-ui"
+import { Paper, TextField, Grid, withStyles, WithStyles, StyleRulesCallback } from "@material-ui/core"
 import * as moment from "moment";
 import NumberField from "../../../Commons/NumberField/index";
 

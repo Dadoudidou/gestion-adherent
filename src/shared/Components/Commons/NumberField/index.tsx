@@ -1,6 +1,6 @@
 import * as React from "react";
-import { TextFieldProps } from "material-ui/TextField";
-import { TextField } from "material-ui"
+import { TextFieldProps } from "@material-ui/core/TextField";
+import { TextField } from "@material-ui/core"
 
 type NumberFieldProps = {
 

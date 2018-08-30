@@ -3,7 +3,7 @@ import {
     ListSubheader, Paper, Grid, Typography, ListItem, ListItemText,
     TextField,
     StyleRulesCallback, withStyles, WithStyles
-} from "material-ui"
+} from "@material-ui/core"
 
 type classkey = "root" | "flex"
 const styles: StyleRulesCallback<classkey> = theme => ({

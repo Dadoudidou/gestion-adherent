@@ -3,7 +3,7 @@ import {
     StyleRulesCallback, withStyles, WithStyles,
     Typography, ListSubheader, List, ListItem, ListItemText, ListItemSecondaryAction, Grid, Paper,
     Button
-} from "material-ui"
+} from "@material-ui/core"
 
 export type ElementFacture = {
     primary: React.ReactNode

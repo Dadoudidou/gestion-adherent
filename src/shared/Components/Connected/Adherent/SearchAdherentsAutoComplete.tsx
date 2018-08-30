@@ -3,9 +3,9 @@ import * as React from "react"
 import * as Queries from "@shared/Components/Connected/Queries";
 import AutoComplete from "@shared/Components/Commons/AutoComplete";
 
-import { MenuItem } from "material-ui"
-import { TextFieldProps } from "material-ui/TextField";
-import { PaperProps } from "material-ui/Paper";
+import { MenuItem } from "@material-ui/core"
+import { TextFieldProps } from "@material-ui/core/TextField";
+import { PaperProps } from "@material-ui/core/Paper";
 
 
 type ComponentProps = {

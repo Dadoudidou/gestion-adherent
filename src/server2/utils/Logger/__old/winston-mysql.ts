@@ -1,6 +1,6 @@
 import * as winston from "winston"
 import * as mysql from "mysql2"
-
+/*
 export type WinstonMysqlTransportOptions = {
     host: string
     user: string
@@ -109,4 +109,4 @@ export class WinstonMysqlTransport extends winston.Transport {
         }
     }
 
-}
+}*/
