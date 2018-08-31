@@ -54,7 +54,9 @@ require("./index.scss");
 // -- PLUGINS
 import { PluginManager } from "@client/__Plugins";
 import { UserSystemPlugin } from "@client/__Plugins/UserSystem";
+import { AdminPlugin } from "@client/__Plugins/Admin";
 PluginManager.GetInstance().add(UserSystemPlugin);
+PluginManager.GetInstance().add(AdminPlugin);
 
 
 export default () => (

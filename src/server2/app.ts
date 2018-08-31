@@ -29,6 +29,7 @@ database2.setup({
 })
 
 import HapiLogPlugin from "@server/utils/Logger/hapi-log-plugin"
+import { each } from "bluebird";
 
 moment.locale("fr");
 
@@ -92,7 +93,48 @@ async function createServer(){
         options: {
             path: "/api_v1/graphql",
             route: {
-                auth: "auth-jwt-graphql",
+                //auth: "auth-jwt-graphql",
+                pre: [
+                    {
+                        method: async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
+
+                           /* if(request.payload["operations"]){
+                                const pay = {...JSON.parse(request.payload["operations"])};
+                                each(request.payload as any, ({filename, headers, bytes, path}, key) => {
+                                    if(filename){
+                                        
+                                    }
+                                })
+                            }*/
+
+                            console.log("--------------------------------------")
+                            console.log(request.payload);
+                            console.log("--------------------------------------")
+                            let _operations = request.payload["operations"];
+                            let _map = request.payload["map"];
+                            if(_operations && _map){
+                                const pay = {...JSON.parse(_operations)};
+                                const map = {...JSON.parse(_map)};
+                                for(let key in map){
+                                    if(request.payload[key]){
+                                        console.log("--------------------------------------")
+                                        console.log(request.payload[key].name)
+                                        console.log(request.payload[key].filename)
+                                        console.log(request.payload[key].headers)
+                                        console.log(request.payload[key].toString())
+                                        console.log("--------------------------------------")
+                                    }
+                                }
+                            }
+                            //console.log(request.raw)
+
+                            
+                            //let _process = await processRequest(request.raw.req, request.raw.res);
+                            return true;
+                        },
+                        assign: "fileUpload"
+                    }
+                ]
             },
             graphqlOptions: (request: Hapi.Request) => {
                 return {

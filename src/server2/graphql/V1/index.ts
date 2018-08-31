@@ -46,12 +46,12 @@ export class GraphQLSingleton {
         let _objectType = undefined;
         requireContext.keys().forEach(name => {
             let _actionName = name.replace(/\.ts$/i, "").replace(/^\.\//i, "");
-            let _field = _Files_Queries(name).default;
+            let _field = requireContext(name).default;
             _fields[_actionName] = _field;
             _nbFields++;
         });
         if(_nbFields > 0){
-            _objectType = new GraphQLObjectType({ name: "Query", fields: _fields });
+            _objectType = new GraphQLObjectType({ name: name, fields: _fields });
         }
         return _objectType;
     }
