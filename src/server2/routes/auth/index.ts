@@ -1,5 +1,5 @@
 import { Request, ResponseToolkit } from "hapi";
-import { readUserToken, getUserLogged, checkUser, login } from "@server/utils/auth";
+import { readUserToken, checkUser, login } from "@server/utils/auth";
 import * as boom from "boom";
 
 const handler = async ( request: Request, h: ResponseToolkit ) => {
@@ -22,7 +22,7 @@ const handler = async ( request: Request, h: ResponseToolkit ) => {
     // -- test token
     if(_token){
         let _decoded = await readUserToken(_token);
-        let _user = await getUserLogged(_decoded.id);
+        let _user = null; //await getUserLogged(_decoded.id);
         return _user;
     }
 
@@ -31,7 +31,7 @@ const handler = async ( request: Request, h: ResponseToolkit ) => {
     // -- test user
     let _userDb = await checkUser(_user, _pwd);
     // -- connection user
-    let _login = await login(_userDb);
+    let _login = null; //await login(_userDb);
     return _login;
 }
 
