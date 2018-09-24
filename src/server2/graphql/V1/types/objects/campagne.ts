@@ -13,7 +13,7 @@ export const GQLCampagne = new GraphQLObjectType({
         debut: { type: GQLScalarDate },
         fin: { type: GQLScalarDate },
         nom: { type: GraphQLString },
-        activites: {
+        categoriesActivites: {
             type: new GraphQLList(GQLActiviteCategorie),
             resolve: (source) => {
                 return source.getCategories();

@@ -1,22 +1,23 @@
-import * as Hapi from "hapi"
-import * as Inert from "inert"
-import { graphiqlHapi, graphqlHapi } from "apollo-server-hapi"
-import * as Boom from "boom";
-import * as Path from "path"
+import * as Express from "express"
+import { ApolloServer } from "apollo-server-express"
+import * as morgan from "morgan"
 import * as moment from "moment"
-import * as HapiBasicAuth from "hapi-auth-basic"
-import { HapiAuthJWT } from "./utils/auth/plugins/hapi-auth-jwt"
-import setGraphiqlStrategy from "./utils/auth/strategies/auth-basic-graphiql"
-import setGraphqlStrategy from "./utils/auth/strategies/auth-jwt-graphql"
 import { config } from "./config"
-import { getSchema } from "./graphql/default"
 import routeHandler_auth from "./routes/auth"
 import routeHandler_Root from "./routes/root"
+import * as jwt from "express-jwt"
 
+// -- graphql config
 import ApiGraphQL, { GraphQLContext } from "./graphql/V1";
 ApiGraphQL.setup();
 
+// -- database config
 import database2 from "@server/database2";
+import Logger from "@modules/Logger";
+import consoleTransport from "@modules/Logger/Transports/consoleTransport";
+import { getUserInfos } from "@server/utils/auth";
+import { nextTick } from "async";
+
 database2.setup({
     database: config.connectors.default.database,
     username: config.connectors.default.user,
@@ -28,259 +29,89 @@ database2.setup({
     ...config.connectors.default.options,
 })
 
-import HapiLogPlugin from "@server/utils/Logger/hapi-log-plugin"
-import { each } from "bluebird";
-
+// -- config moment
 moment.locale("fr");
 
-let server: Hapi.Server = undefined;
-
-export const getServer = () => server;
 
 async function createServer(){
 
-    // -- création du serveur
-    server = new Hapi.Server({ 
-        ...config.server,
-        //debug: { request: ['error'] }
+    // -- express Server
+    const app = Express();
+
+    // -- configuration
+    app.set("port", config.server.port);
+
+    // -- logger
+    let _loggerExpress = Logger.createLogger("Server:Express", { level: "debug", exitOnError: false })
+        .add(consoleTransport({ handleExceptions: true }));
+    let _loggerGraphql = Logger.createLogger("Server:GraphQL", { level: "debug", exitOnError: false })
+        .add(consoleTransport({ handleExceptions: true }));
+
+    // -- log request
+    app.use(morgan("dev", { stream: { write: (message, encoding) => {
+        if(typeof message == "string") message = message.replace("\n", "");
+        _loggerExpress.info(message);
+    }}}));
+
+    // -- auth jwt
+    app.use(async (req, res, next) => {
+        // -- recherche de auth jwt
+        if(req.headers.authorization && req.headers.authorization.split(' ')[0].toUpperCase() == 'JWT'){
+            let _token = req.headers.authorization.split(' ')[1];
+            let credential = await getUserInfos(_token);
+            req.user = credential;
+        }
+        next();
     });
 
-    // -- cache
-    const cache = server.cache({ segment: "sessions", expiresIn: 1 * 24 * 60 * 60 * 1000 });
-    server.app["cache"] = cache;
+    // -- routes /
+    app.get("/", routeHandler_Root);
 
-    // -- enregistrement de plugins
-    await server.register(HapiBasicAuth);       // authentification basic
-    await server.register(HapiAuthJWT);         // authentification basic jwt
-    await server.register(Inert);               // static files and directory
-    await server.register(HapiLogPlugin)        // log server
-
-    // -- enregistrement des stratégies d'authentifications
-    setGraphiqlStrategy(server);
-    setGraphqlStrategy(server);
-
-    // -- connexion au serveur de base de données
-    await database2.start();
-
-    //#region ROUTES
-
-    // -- /
-    server.route({
-        method: "GET",
-        path: "/",
-        options: {
-            log: { collect: true }
+    // -- apollo server
+    const graphQlServer = new ApolloServer({
+        schema: ApiGraphQL.setup().getSchema(),
+        context: async (request) => {
+            let _request = request as Express.Request
+            return {
+                request: _request,
+                credentials: _request.user,
+                db: database2,
+                logger: _loggerGraphql
+            } as GraphQLContext
         },
-        handler: routeHandler_Root
-    })
-
-    // -- files
-    server.route({
-        method: 'GET',
-        path: '/static/{param*}',
-        handler: {
-            directory: {
-                path: "./build/static",
-                listing: false,
-                index: false
-            }
-        }
-    })
-
-    // -- /api_v1/graphql
-    await server.register({
-        plugin: graphqlHapi as any,
-        options: {
-            path: "/api_v1/graphql",
-            route: {
-                //auth: "auth-jwt-graphql",
-                pre: [
-                    {
-                        method: async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
-
-                           /* if(request.payload["operations"]){
-                                const pay = {...JSON.parse(request.payload["operations"])};
-                                each(request.payload as any, ({filename, headers, bytes, path}, key) => {
-                                    if(filename){
-                                        
-                                    }
-                                })
-                            }*/
-
-                            console.log("--------------------------------------")
-                            console.log(request.payload);
-                            console.log("--------------------------------------")
-                            let _operations = request.payload["operations"];
-                            let _map = request.payload["map"];
-                            if(_operations && _map){
-                                const pay = {...JSON.parse(_operations)};
-                                const map = {...JSON.parse(_map)};
-                                for(let key in map){
-                                    if(request.payload[key]){
-                                        console.log("--------------------------------------")
-                                        console.log(request.payload[key].name)
-                                        console.log(request.payload[key].filename)
-                                        console.log(request.payload[key].headers)
-                                        console.log(request.payload[key].toString())
-                                        console.log("--------------------------------------")
-                                    }
-                                }
-                            }
-                            //console.log(request.raw)
-
-                            
-                            //let _process = await processRequest(request.raw.req, request.raw.res);
-                            return true;
-                        },
-                        assign: "fileUpload"
-                    }
-                ]
-            },
-            graphqlOptions: (request: Hapi.Request) => {
-                return {
-                    schema: ApiGraphQL.setup().getSchema(),
-                    context: {
-                        auth: request.auth,
-                        request: request,
-                        credentials: request.auth.credentials,
-                        db: database2
-                    } as GraphQLContext,
-                    formatError: err => {
-                        console.debug(err);
-                        if(err.originalError && Boom.isBoom(err.originalError)){
-
-                        }
-                        return err;
-                    },
-                    debug: true
-                }
-            }
+        formatError: error => {
+            _loggerGraphql.error(error);
+            return error;
         },
+        debug: true,
+        uploads: true,
+        tracing: false
+    });
+    graphQlServer.applyMiddleware({
+        app: app,
+        path: "/api_v1/graphql",
     })
 
-    // -- /api_v1/graphiql
-    await server.register({
-        plugin: graphiqlHapi as any,
-        options:{
-            path: "/api_v1/graphiql",
-            route: {
-                description: "GraphiQL Endpoint (documentation)",
-                auth: "auth-basic-graphiql",
-                ext: {
-                    onPreResponse: [{
-                        method: async (request, reply: Hapi.ResponseToolkit) => {
-                            let _response = request.response;
-                            let _token = (request.auth && request.auth.credentials) ? request.auth.credentials.token : undefined;
+    // -- log error
+    app.use((err, req, res, next) => {
+        _loggerExpress.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+    });
 
-                            if(_response.isBoom || !_response.source || !_token){
-                                return reply.continue;
-                            }
-                            return reply.response(request.response.source.replace("</head>", `
-                                <script>
-                                window.__TOKEN = "${_token}";
-                                console.info("A new AccessToken '${_token}' was automatically injected into this debug session.");
-                                </script>
-                                </head>
-                            `));
-                        }
-                    }]
-                }
-            },
-            graphiqlOptions: {
-                endpointURL: "/api_v1/graphql",
-                passHeader: "'Authorization': window.__TOKEN ? 'JWT ' + window.__TOKEN : ''"
-            }
-        }
-    })
+    // -- static files
+    app.use("/static", Express.static("build/static"));
 
-    // -- /api/graphql
-    /*
-    await server.register({
-        plugin: graphqlHapi as any,
-        options: {
-            path: "/api/graphql",
-            route: {
-                auth: "auth-jwt-graphql",
-            },
-            graphqlOptions: (request: Hapi.Request) => {
-                return {
-                    schema: getSchema(),
-                    context: {
-                        auth: request.auth,
-                        request: request,
-                        credentials: request.auth.credentials
-                    },
-                    formatError: err => {
-                        console.debug(err);
-                        if(err.originalError && Boom.isBoom(err.originalError)){
 
-                        }
-                        return err;
-                    },
-                    debug: true
-                }
-            }
-        },
-    })
+    
 
-    // -- /graphiql
-    await server.register({
-        plugin: graphiqlHapi as any,
-        options:{
-            path: "/graphiql",
-            route: {
-                description: "GraphiQL Endpoint (documentation)",
-                auth: "auth-basic-graphiql",
-                ext: {
-                    onPreResponse: [{
-                        method: async (request, reply: Hapi.ResponseToolkit) => {
-                            let _response = request.response;
-                            let _token = (request.auth && request.auth.credentials) ? request.auth.credentials.token : undefined;
+    
 
-                            if(_response.isBoom || !_response.source || !_token){
-                                return reply.continue;
-                            }
-                            return reply.response(request.response.source.replace("</head>", `
-                                <script>
-                                window.__TOKEN = "${_token}";
-                                console.info("A new AccessToken '${_token}' was automatically injected into this debug session.");
-                                </script>
-                                </head>
-                            `));
-                        }
-                    }]
-                }
-            },
-            graphiqlOptions: {
-                endpointURL: "/api/graphql",
-                passHeader: "'Authorization': window.__TOKEN ? 'JWT ' + window.__TOKEN : ''"
-            }
-        }
-    })*/
+    
 
-    // -- /auth
-    server.route({
-        method: "POST",
-        path: "/auth",
-        handler: routeHandler_auth
-    })
 
-    // -- /all pages
-    server.route({
-        method: "*",
-        path: "/{p*}",
-        options: {
-            log: { collect: true }
-        },
-        handler: (request, reply) => {
-            return reply.response("Not found").code(404);
-            //return "Not found";
-        }
-    })
+    // -- ecoute du port
+    app.listen(app.get("port"));
 
-    //#endregion
-
-    return server;
+    return app;
 }
 
 

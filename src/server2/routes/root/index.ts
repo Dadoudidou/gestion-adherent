@@ -1,8 +1,10 @@
-import { Request, ResponseToolkit } from "hapi";
+
+import { Request, Response, NextFunction } from "express"
 
 
-const handler = async ( request: Request, h: ResponseToolkit ) => {
-    return `
+const handler = async ( request: Request, h: Response, next: NextFunction ) => {
+
+    h.send(`
     <!DOCTYPE html>
     <html>
     <head>
@@ -17,7 +19,8 @@ const handler = async ( request: Request, h: ResponseToolkit ) => {
         <script src="/static/js/client.js"></script>
     </body>
     </html>
-    `;
+    `);
+    next();
 }
 
 export default handler;

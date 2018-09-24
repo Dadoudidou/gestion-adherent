@@ -1,7 +1,8 @@
-import logger from "@server/utils/logger";
-import consoleTransport from "@server/utils/Logger/transports/consoleTransport";
+import Logger from "@modules/Logger";
+import ConsoleTransport from "@modules/Logger/Transports/ConsoleTransport";
 
-export const AppDatabaseLogger = logger.createLogger("Server:Database", {
+
+export const AppDatabaseLogger = Logger.createLogger("Server:Database", {
         level: "debug"
     })
-    .add(consoleTransport());
+    .add(ConsoleTransport());

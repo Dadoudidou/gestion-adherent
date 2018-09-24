@@ -1,13 +1,17 @@
 import { GraphQLObjectType, GraphQLScalarType, GraphQLField, GraphQLFieldConfig, GraphQLSchema, GraphQLDirective } from "graphql";
 import { DatabaseSingleton } from "@server/database2";
 import * as Hapi from "hapi";
+import * as Express from "express";
 import { Credentials } from "@server/utils/auth";
+import { LoggerItem } from "@modules/Logger";
+import { enforceResolver, traceResolver } from "@server/graphql/_ResolverMiddleware";
+
 
 export type GraphQLContext = { 
     db: DatabaseSingleton
-    request: Hapi.Request
-    auth: Hapi.RequestAuth
+    request: Express.Request
     credentials: Credentials
+    logger: LoggerItem
 }
 export type GQLField<TArgs = any> = GraphQLFieldConfig<any, GraphQLContext, TArgs>
 
@@ -58,6 +62,7 @@ export class GraphQLSingleton {
 
     init() {
         this.queryObj = this.createGraphObject("Query", _Files_Queries);
+        enforceResolver(this.queryObj, [ traceResolver ]);
         this.mutationObj = this.createGraphObject("Mutation", _Files_Mutations);
         this.directives = [];
         this.schema = new GraphQLSchema({

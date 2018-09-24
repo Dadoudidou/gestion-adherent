@@ -2,10 +2,7 @@ import { dbcontext } from "@server/database";
 
 import * as jwt from "jsonwebtoken"
 import { config } from "@server/config"
-import { getServer } from "@server/app"
 
-//import { CheckPassword, UserType } from "@server/database/entities/users/user";
-//import { PermissionType } from "@server/database/entities/users/permission";
 import { Policy } from "catbox";
 
 import * as Boom from "boom";
@@ -15,6 +12,26 @@ import { UserInstance, CheckPassword } from "@server/database2/Models/user";
 import { asyncForEach } from "@server/utils/array";
 
 
+export type Credentials = {
+    token: string
+    permissions: {id: number, nom: string}[]
+    user: UserInstance
+}
+
+export type checkUserResponse = {
+    id: number,
+    nom: string,
+    prenom: string,
+    login: string,
+    permissions: { id: number, nom: string }[]
+}
+
+type JwtData = {
+    id: number
+}
+
+
+/** Test des entrées utilisateurs */
 const TestUsernamePassword = async function(username: string, password: string) {
     if(!username || !password){
         throw Boom.badRequest("username and password must not empty");
@@ -25,6 +42,7 @@ const TestUsernamePassword = async function(username: string, password: string) 
     return ({ username, password })
 }
 
+/** Vérification de l'existence en base de donnée */
 const checkDatabaseUser = async (username: string, password: string) => {
     let _user = await database2.model("user").find({ where: { login: username }});
     //let _user = await dbcontext.models.users.find({ where: { login: username }});
@@ -34,6 +52,13 @@ const checkDatabaseUser = async (username: string, password: string) => {
     return _user;
 }
 
+const checkDatabaseUserId = async (id: number) => {
+    let _user = await database2.model("user").find({ where: { id: id }});
+    if(!_user) throw Boom.forbidden("username or password are invalid");
+    return _user;
+}
+
+/** Récupération des droits */
 const getPermissions = async (user: UserInstance) => {
     let _permissions: { id: number, nom: string }[] = [];
     let _groups = await user.getGroups();
@@ -50,46 +75,10 @@ const getPermissions = async (user: UserInstance) => {
             }
         })
     })
-    /*let _groups = await user.getGroups({ include: [ { model:dbcontext.models.permissions, as:"permissions"} ] });
-    _groups.forEach(group => {
-        if(!group["permissions"]) return;
-        group["permissions"].forEach((permission: PermissionType) => {
-            let _index = _permissions.map(x => x.id).indexOf(permission.id);
-            if(_index == -1) {
-                _permissions.push({ 
-                    id: permission.id,
-                    nom: permission.nom.toLowerCase()
-                });
-            }
-        })
-    })*/
     return _permissions;
 }
 
 
-export type Credentials = {
-    sid: string
-    user: {
-        id: number,
-        nom: string,
-        prenom: string,
-        login: string,
-        permissions: { id: number, nom: string }[]
-    }
-}
-
-export type cacheUser = {
-    token: string
-    user: checkUserResponse
-}
-
-export type checkUserResponse = {
-    id: number,
-    nom: string,
-    prenom: string,
-    login: string,
-    permissions: { id: number, nom: string }[]
-}
 
 /** Test la présence d'un utilisateur */
 export const checkUser = async (username: string, password: string) => {
@@ -107,37 +96,38 @@ export const checkUser = async (username: string, password: string) => {
 }
 
 /** Connecte un utilisateur */
-export const login = async (user: checkUserResponse) => {
+export const login = async (username: string, password: string) : Promise<Credentials> => {
+
+    // -- test des paramètres
+    let _args = await TestUsernamePassword(username, password);
+    // -- test bdd
+    let _user = await checkDatabaseUser(_args.username, _args.password);
+    // -- get permissions
+    let _permissions = await getPermissions(_user);
 
     // -- génération d'un token
-    let _token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 1 * 24 * 60 * 60 * 1000 });
-
-    // -- objet en cache
-    let _cacheObj: cacheUser = {
+    let _token = jwt.sign(
+        { id: _user.id } as JwtData, 
+        config.secret, 
+        { expiresIn: 1 * 24 * 60 * 60 * 1000 }
+    );
+    
+    return {
         token: _token,
-        user
+        permissions: _permissions,
+        user: _user
     };
-
-    // -- mise en cache
-    let _server = getServer();
-    if(!_server) throw new Error("No server initied");
-    let cache = _server.app["cache"] as Policy;
-    if(cache){
-        await cache.set(user.id.toString(), _cacheObj, 0);
-    }
-
-    return _cacheObj;
 }
 
 /** Test les permissions d'accès d'un utilisateur */
-export const checkPermissions = (permissions:number[], user: cacheUser): boolean => {
-    if(!user) return false;
-    if(!user.user) return false;
-    if(!user.user.permissions) return false;
-    return sharedCheckPermissions(permissions, user.user.permissions.map(x => x.id));
+export const checkPermissions = (permissions:number[], credential: Credentials): boolean => {
+    if(!credential) return false;
+    if(!credential.permissions) return false;
+    return sharedCheckPermissions(permissions, credential.permissions.map(x => x.id));
 }
 
-export const readUserToken = async (token: string) => {
+/** Lit un token */
+export const readUserToken = (token: string) : JwtData => {
     try {
         let decoded = jwt.verify(token, config.secret) as any;
         return decoded;
@@ -155,16 +145,18 @@ export const readUserToken = async (token: string) => {
     
 }
 
-export const getUserLogged = async (userId: string | number) => {
-    let _server = getServer();
-    if(!_server) throw new Error("Server not initialized");
+export const getUserInfos = async (token: string): Promise<Credentials> => {
 
-    //get cache object
-    let cache = _server.app["cache"] as Policy;
-    if(!cache) throw new Error("Cache not initialized");
+    let _info = readUserToken(token);
 
-    let cached = await cache.get(String(userId)) as any;
-    if(!cached) throw new Error("User not connected");
+    // -- récupération des informations
+    let _user = await checkDatabaseUserId(_info.id);
+    // -- get permissions
+    let _permissions = await getPermissions(_user);
 
-    return cached as cacheUser;
+    return {
+        token: token,
+        permissions: _permissions,
+        user: _user
+    }
 }

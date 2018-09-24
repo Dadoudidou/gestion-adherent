@@ -1,5 +1,7 @@
 import * as winston from "winston";
 
+export type LoggerItem = winston.Logger
+
 class Logger {
 
     static instance:Logger = null;
