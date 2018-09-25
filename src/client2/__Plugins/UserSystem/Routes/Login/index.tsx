@@ -5,7 +5,9 @@ import {
 } from '@material-ui/core'
 import DocumentTitle from '@client/Components/DocumentTitle';
 import { getHistory } from '@client/System/Router';
-import { Login as LoginFn } from "@client/System/Auth"
+import { Login as LoginFn, setToken } from "@client/System/Auth"
+import apolloStore from "@client/System/Store/apolloStore"
+import { authQuery, authQueryData, authQueryVariables } from './../../Queries/auth';
 //import QueueAnim from "rc-queue-anim"
 
 type classKey = 'root' | "paper" | "container" | "paperitem"
@@ -45,6 +47,7 @@ class LoginRoute extends React.PureComponent<LoginRouteProps & WithStyles<classK
             pwd: ""
         }
     }
+    
     onLogin = (event: React.MouseEvent<HTMLElement>) => {
         
         event.stopPropagation();
@@ -76,13 +79,24 @@ class LoginRoute extends React.PureComponent<LoginRouteProps & WithStyles<classK
 
         if(!_state.err || ( !_state.err.user && !_state.err.pwd )){
 
-            LoginFn(_state.user, _state.pwd)
+            //LoginFn(_state.user, _state.pwd)
+            apolloStore.query<authQueryData, authQueryVariables>({
+                query: authQuery,
+                variables: { username:_state.user, password:_state.pwd }
+            })
             .then(rep => {
+                setToken(rep.data.auth);
                 getHistory().push("/test");
             })
             .catch(err => {
                 let _message = "Une erreur est survenue";
                 if(err.message) _message = err.message;
+
+                if(err.graphQLErrors){
+                    if(err.graphQLErrors[0].extensions.exception.output.statusCode == 401){
+                        _message = "Votre login ou mot de passe est invalide"
+                    }
+                }
 
                 this.setState({
                     ...this.state,
