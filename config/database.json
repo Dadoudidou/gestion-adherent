@@ -1,10 +1,10 @@
 {
-    "dev":{
-        "driver":"mysql",
-        "user":"root",
-        "password": "",
-        "host": "localhost",
-        "database": "test",
-        "multiple-statements": true
+    "migrationFolder":"migrations",
+    "extension":"sql",
+    "database":{
+        "host": "127.0.0.1",
+        "username": "root",
+        "password": null,
+        "database": "test"
     }
 }

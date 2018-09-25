@@ -1,0 +1,4 @@
+DROP TABLE gestion.comptabilite_facture,
+comptabilite_facture_detail,
+comptabilite_facture_paiement,
+comptabilite_tiers;

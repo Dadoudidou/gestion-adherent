@@ -32,8 +32,6 @@
     "dev:server": "webpack --config webpack.server.config.js --watch --progress",
     "dev:appli": "nodemon build/server.js --watch build/server.js",
     "storybook": "start-storybook -p 6006",
-    "db-up": "db-migrate up --config config/database.json",
-    "db-down": "db-migrate down --config config/database.json",
     "dev": "webpack --config config/webpack.config.js --watch --progress"
   },
   "author": "David Violet",
