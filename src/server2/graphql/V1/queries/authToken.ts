@@ -13,12 +13,14 @@ type args = {
 
 export default {
     type: GQLUser,
+    description: "Récupère les informations de l'utilisateur à l'aide d'un token",
     args: {
         token: { type: new GraphQLNonNull(GraphQLString) },
     },
     resolve: async (root, args, ctx) => {
         let _login = await getUserInfos(args.token);
         return _login.user;
-    }
+    },
+    
 } as GQLField<args>
 

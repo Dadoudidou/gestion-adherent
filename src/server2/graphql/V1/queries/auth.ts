@@ -13,6 +13,7 @@ type args = {
 
 export default {
     type: GraphQLString,
+    description: "Authentifie un utilisateur et retourne un token si l'authentification réussie",
     args: {
         username: { type: new GraphQLNonNull(GraphQLString) },
         password: { type: new GraphQLNonNull(GraphQLString) }
@@ -21,6 +22,7 @@ export default {
         let _login = await login(args.username, args.password)
         .catch(err => { throw Boom.unauthorized() });
         return _login.token;
-    }
+    },
+    
 } as GQLField<args>
 

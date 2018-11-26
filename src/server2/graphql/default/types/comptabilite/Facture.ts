@@ -12,7 +12,7 @@ import { FactureType } from "../../../../database/entities/comptabilite/facture"
 import { FactureDetail } from "./FactureDetail";
 import { FacturePaiement } from "./FacturePaiement";
 import { Adhesion } from "../members/Adhesion";
-import { getOperationRootType } from "../../../../../../node_modules/@types/graphql/execution/execute";
+
 
 
 export const Facture = new GraphQLObjectType({

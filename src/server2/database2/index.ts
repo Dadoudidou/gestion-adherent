@@ -106,7 +106,9 @@ export class DatabaseSingleton {
     }
 
     static defaultSequelizeOptions: Sequelize.Options = {
-        logging: (msg) => AppDatabaseLogger.info(msg)
+        logging: (msg) => {
+            //AppDatabaseLogger.info(msg)
+        }
     }
 
     private sequelize: Sequelize.Sequelize = null;

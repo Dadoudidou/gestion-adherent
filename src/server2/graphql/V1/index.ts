@@ -4,7 +4,7 @@ import * as Hapi from "hapi";
 import * as Express from "express";
 import { Credentials } from "@server/utils/auth";
 import { LoggerItem } from "@modules/Logger";
-import { enforceResolver, traceResolver } from "@server/graphql/_ResolverMiddleware";
+import { enforceResolver, traceResolver, isAuthenticatedResolver } from "@server/graphql/_ResolverMiddleware";
 
 
 export type GraphQLContext = { 
@@ -13,7 +13,9 @@ export type GraphQLContext = {
     credentials: Credentials
     logger: LoggerItem
 }
-export type GQLField<TArgs = any> = GraphQLFieldConfig<any, GraphQLContext, TArgs>
+export type GQLField<TArgs = any> = {
+    //permissions?: number[]
+} & GraphQLFieldConfig<any, GraphQLContext, TArgs>
 
 var _Files_Queries = require.context("./queries/", false, /\.ts/);
 var _Files_Mutations = require.context("./mutations/", false, /\.ts/);
@@ -55,14 +57,14 @@ export class GraphQLSingleton {
             _nbFields++;
         });
         if(_nbFields > 0){
-            _objectType = new GraphQLObjectType({ name: name, fields: _fields });
+            _objectType = new GraphQLObjectType({ name: name,  fields: _fields });
         }
         return _objectType;
     }
 
     init() {
         this.queryObj = this.createGraphObject("Query", _Files_Queries);
-        enforceResolver(this.queryObj, [ traceResolver ]);
+        enforceResolver(this.queryObj, [ isAuthenticatedResolver, traceResolver]);
         this.mutationObj = this.createGraphObject("Mutation", _Files_Mutations);
         this.directives = [];
         this.schema = new GraphQLSchema({

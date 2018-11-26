@@ -10,13 +10,15 @@ type args = {
 
 export default {
     type: GQLCampagne,
+    description: "Information d'une campagne",
     args: {
         id: { type: new GraphQLNonNull(GraphQLInt) }
     },
-    resolve: composeResolver(traceResolver)((root, args, ctx) => {
+    resolve: (root, args, ctx) => {
         return ctx.db.model("campagne").find({
             where: { id: args.id }
         })
-    })
+    },
+    
 } as GQLField<args>
 
