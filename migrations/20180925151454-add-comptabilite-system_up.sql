@@ -1,3 +1,16 @@
+CREATE TABLE `comptabilite_tiers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(45) NOT NULL,
+  `prenom` varchar(45) NOT NULL,
+  `adresse` varchar(45) DEFAULT NULL,
+  `codepostal` varchar(6) DEFAULT NULL,
+  `ville` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `telephone_fixe` varchar(10) DEFAULT NULL,
+  `telephone_mobile` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
 CREATE TABLE `comptabilite_facture` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date_creation` datetime NOT NULL,
@@ -33,15 +46,4 @@ CREATE TABLE `comptabilite_facture_paiement` (
   CONSTRAINT `fk_comptabilite_facture_paiement_comptabilite_facture1` FOREIGN KEY (`comptabilite_facture_id`) REFERENCES `comptabilite_facture` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `comptabilite_tiers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(45) NOT NULL,
-  `prenom` varchar(45) NOT NULL,
-  `adresse` varchar(45) DEFAULT NULL,
-  `codepostal` varchar(6) DEFAULT NULL,
-  `ville` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `telephone_fixe` varchar(10) DEFAULT NULL,
-  `telephone_mobile` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+

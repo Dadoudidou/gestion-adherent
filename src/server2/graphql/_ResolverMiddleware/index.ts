@@ -82,7 +82,7 @@ export const traceResolver: ResolverMiddlewareFn<any, GraphQLContext, any> = (fn
 }
 
 export const isAuthenticatedResolver: ResolverMiddlewareFn<any, GraphQLContext, any> = (fn) => async (obj, args, context, info) => {
-    if(info.fieldName != "auth") if(!context.credentials) throw Boom.forbidden("You are not connected");
+    if(info.fieldName != "auth" && info.fieldName != "adm_import_adherents_file") if(!context.credentials) throw Boom.forbidden("You are not connected");
     return await fn(obj, args, context, info);
 }
 

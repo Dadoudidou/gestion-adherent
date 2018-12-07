@@ -15,7 +15,7 @@ class ImportAdherentRoute extends React.PureComponent<ImportAdherentRouteProps, 
     render(){
         return (
             <div>
-                <Authenticated>
+                {/*<Authenticated>*/}
                     <Mutation mutation={upload_file}>
                         {uploadFile => (
                             <input 
@@ -29,7 +29,7 @@ class ImportAdherentRoute extends React.PureComponent<ImportAdherentRouteProps, 
                             />
                         )}
                     </Mutation>
-                </Authenticated>
+                {/*</Authenticated>*/}
             </div>
         )
     }
